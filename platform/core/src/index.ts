@@ -23,12 +23,18 @@ import {
   DisplaySetService,
   ToolbarService,
   MeasurementService,
+  MeasurementServiceRegistration,
   ViewportGridService,
+  ViewportGridServiceRegistration,
   HangingProtocolService,
+  HangingProtocolServiceRegistration,
   pubSubServiceInterface,
   PubSubService,
   UserAuthenticationService,
   CustomizationService,
+  StateSyncService,
+  StateSyncServiceRegistration,
+  Services,
 } from './services';
 
 import IWebApiDataSource from './DataSources/IWebApiDataSource';
@@ -60,6 +66,7 @@ const OHIF = {
   //
   CineService,
   CustomizationService,
+  StateSyncService,
   UIDialogService,
   UIModalService,
   UINotificationService,
@@ -68,7 +75,9 @@ const OHIF = {
   MeasurementService,
   ToolbarService,
   ViewportGridService,
+  ViewportGridServiceRegistration,
   HangingProtocolService,
+  HangingProtocolServiceRegistration,
   UserAuthenticationService,
   IWebApiDataSource,
   DicomMetadataStore,
@@ -97,6 +106,8 @@ export {
   //
   CineService,
   CustomizationService,
+  StateSyncService,
+  StateSyncServiceRegistration,
   UIDialogService,
   UIModalService,
   UINotificationService,

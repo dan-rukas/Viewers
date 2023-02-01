@@ -1,5 +1,5 @@
 import MODULE_TYPES from './MODULE_TYPES.js';
-import log from './../log.js';
+import log from '../log.js';
 
 export default class ExtensionManager {
   constructor({
@@ -136,7 +136,7 @@ export default class ExtensionManager {
       throw new Error('Attempting to register a null/undefined extension.');
     }
 
-    let extensionId = extension.id;
+    const extensionId = extension.id;
 
     if (!extensionId) {
       // Note: Mode framework cannot function without IDs.
@@ -203,6 +203,7 @@ export default class ExtensionManager {
           case MODULE_TYPES.CONTEXT:
           case MODULE_TYPES.LAYOUT_TEMPLATE:
           case MODULE_TYPES.CUSTOMIZATION:
+          case MODULE_TYPES.STATE_SYNC:
           case MODULE_TYPES.UTILITY:
             // Default for most extension points,
             // Just adds each entry ready for consumption by mode.

@@ -10,6 +10,7 @@ import {
   utilities as csUtils,
   CONSTANTS,
 } from '@cornerstonejs/core';
+import { Services } from '@ohif/core';
 
 import { setEnabledElement } from '../state';
 
@@ -20,6 +21,9 @@ import {
   IVolumeViewport,
 } from '@cornerstonejs/core/dist/esm/types';
 import getSOPInstanceAttributes from '../utils/measurementServiceMappings/utils/getSOPInstanceAttributes';
+
+import { CornerstoneViewportService } from '../services/ViewportService/CornerstoneViewportService';
+import Presentation from '../types/Presentation';
 
 const STACK = 'stack';
 
@@ -116,15 +120,18 @@ const OHIFCornerstoneViewport = React.memo(props => {
   const elementRef = useRef();
 
   const {
-    MeasurementService,
+    measurementService,
     DisplaySetService,
     ToolBarService,
     ToolGroupService,
     SyncGroupService,
-    CornerstoneViewportService,
     CornerstoneCacheService,
-    ViewportGridService,
-  } = servicesManager.services;
+    viewportGridService,
+    stateSyncService,
+  } = servicesManager.services as Services;
+
+  const cornerstoneViewportService: CornerstoneViewportService =
+    servicesManager.services.cornerstoneViewportService;
 
   // useCallback for scroll bar height calculation
   const setImageScrollBarHeight = useCallback(() => {
@@ -135,13 +142,28 @@ const OHIFCornerstoneViewport = React.memo(props => {
   // useCallback for onResize
   const onResize = useCallback(() => {
     if (elementRef.current) {
-      CornerstoneViewportService.resize();
+      cornerstoneViewportService.resize();
       setImageScrollBarHeight();
     }
   }, [elementRef]);
 
+  const storePresentation = () => {
+    const oldPresentation = cornerstoneViewportService.getPresentation(
+      viewportIndex
+    );
+    const { presentationSync } = stateSyncService.getState();
+    if (oldPresentation) {
+      stateSyncService.reduce({
+        presentationSync: {
+          ...presentationSync,
+          [oldPresentation.id]: oldPresentation,
+        },
+      });
+    }
+  };
+
   const cleanUpServices = useCallback(() => {
-    const viewportInfo = CornerstoneViewportService.getViewportInfoByIndex(
+    const viewportInfo = cornerstoneViewportService.getViewportInfoByIndex(
       viewportIndex
     );
 
@@ -170,7 +192,7 @@ const OHIFCornerstoneViewport = React.memo(props => {
       }
 
       const { viewportId, element } = evt.detail;
-      const viewportInfo = CornerstoneViewportService.getViewportInfo(
+      const viewportInfo = cornerstoneViewportService.getViewportInfo(
         viewportId
       );
       const viewportIndex = viewportInfo.getViewportIndex();
@@ -202,7 +224,7 @@ const OHIFCornerstoneViewport = React.memo(props => {
 
   // disable the element upon unmounting
   useEffect(() => {
-    CornerstoneViewportService.enableViewport(
+    cornerstoneViewportService.enableViewport(
       viewportIndex,
       viewportOptions,
       elementRef.current
@@ -216,12 +238,14 @@ const OHIFCornerstoneViewport = React.memo(props => {
     setImageScrollBarHeight();
 
     return () => {
+      storePresentation();
+
       cleanUpServices();
 
-      CornerstoneViewportService.disableElement(viewportIndex);
+      cornerstoneViewportService.disableElement(viewportIndex);
 
       if (onElementDisabled) {
-        const viewportInfo = CornerstoneViewportService.getViewportInfoByIndex(
+        const viewportInfo = cornerstoneViewportService.getViewportInfoByIndex(
           viewportIndex
         );
 
@@ -247,7 +271,7 @@ const OHIFCornerstoneViewport = React.memo(props => {
     const { unsubscribe } = DisplaySetService.subscribe(
       DisplaySetService.EVENTS.DISPLAY_SET_SERIES_METADATA_INVALIDATED,
       async invalidatedDisplaySetInstanceUID => {
-        const viewportInfo = CornerstoneViewportService.getViewportInfoByIndex(
+        const viewportInfo = cornerstoneViewportService.getViewportInfoByIndex(
           viewportIndex
         );
 
@@ -261,7 +285,7 @@ const OHIFCornerstoneViewport = React.memo(props => {
           );
 
           const keepCamera = true;
-          CornerstoneViewportService.updateViewport(
+          cornerstoneViewportService.updateViewport(
             viewportIndex,
             newViewportData,
             keepCamera
@@ -288,11 +312,20 @@ const OHIFCornerstoneViewport = React.memo(props => {
         initialImageIndex
       );
 
-      CornerstoneViewportService.setViewportData(
+      storePresentation();
+
+      const { presentationSync } = stateSyncService.getState();
+      const { presentationId } = viewportOptions;
+      const presentation = presentationId
+        ? (presentationSync[presentationId] as Presentation)
+        : null;
+
+      cornerstoneViewportService.setViewportData(
         viewportIndex,
         viewportData,
         viewportOptions,
-        displaySetOptions
+        displaySetOptions,
+        presentation
       );
     };
 
@@ -311,23 +344,23 @@ const OHIFCornerstoneViewport = React.memo(props => {
    */
   useEffect(() => {
     const unsubscribeFromJumpToMeasurementEvents = _subscribeToJumpToMeasurementEvents(
-      MeasurementService,
+      measurementService,
       DisplaySetService,
       elementRef,
       viewportIndex,
       displaySets,
-      ViewportGridService,
-      CornerstoneViewportService
+      viewportGridService,
+      cornerstoneViewportService
     );
 
     _checkForCachedJumpToMeasurementEvents(
-      MeasurementService,
+      measurementService,
       DisplaySetService,
       elementRef,
       viewportIndex,
       displaySets,
-      ViewportGridService,
-      CornerstoneViewportService
+      viewportGridService,
+      cornerstoneViewportService
     );
 
     return () => {

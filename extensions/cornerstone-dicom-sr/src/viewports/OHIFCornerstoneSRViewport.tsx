@@ -31,8 +31,10 @@ function OHIFCornerstoneSRViewport(props) {
     viewportLabel,
     servicesManager,
     extensionManager,
+    viewportOptions: srViewportOptions,
   } = props;
 
+  const { viewportId } = srViewportOptions;
   const { t } = useTranslation('SRViewport');
 
   const {
@@ -81,14 +83,24 @@ function OHIFCornerstoneSRViewport(props) {
     sendTrackedMeasurementsEvent = tracked?.[1];
   }
   if (!sendTrackedMeasurementsEvent) {
-    // if no panels from measurement-tracking extension is used, this code will trun
+    // if no panels from measurement-tracking extension is used, this code will run
     trackedMeasurements = null;
     sendTrackedMeasurementsEvent = (eventName, { displaySetInstanceUID }) => {
       MeasurementService.clearMeasurements();
-      hydrateStructuredReport(
+      const { SeriesInstanceUIDs } = hydrateStructuredReport(
         { servicesManager, extensionManager },
         displaySetInstanceUID
       );
+      console.log('Hydrated', SeriesInstanceUIDs);
+      const displaySets = DisplaySetService.getDisplaySetsForSeries(
+        SeriesInstanceUIDs[0]
+      );
+      if (displaySets.length) {
+        viewportGridService.setDisplaySetsForViewport({
+          viewportIndex: activeViewportIndex,
+          displaySetInstanceUIDs: [displaySets[0].displaySetInstanceUID],
+        });
+      }
     };
   }
 
@@ -209,6 +221,7 @@ function OHIFCornerstoneSRViewport(props) {
         // override the activeImageDisplaySetData
         displaySets={[activeImageDisplaySetData]}
         viewportOptions={{
+          viewportId,
           toolGroupId: `${SR_TOOLGROUP_BASE_NAME}`,
         }}
         onElementEnabled={onElementEnabled}
@@ -414,6 +427,7 @@ OHIFCornerstoneSRViewport.propTypes = {
   dataSource: PropTypes.object,
   children: PropTypes.node,
   customProps: PropTypes.object,
+  viewportOptions: PropTypes.object.isRequired,
 };
 
 OHIFCornerstoneSRViewport.defaultProps = {

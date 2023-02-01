@@ -358,8 +358,8 @@ export default async function init({
 
   ViewportGridService.subscribe(
     ViewportGridService.EVENTS.ACTIVE_VIEWPORT_INDEX_CHANGED,
-    ({ viewportIndex }) => {
-      const viewportId = `viewport-${viewportIndex}`;
+    ({ viewportIndex, viewportId }) => {
+      viewportId = viewportId || `viewport-${viewportIndex}`;
       const toolGroup = ToolGroupService.getToolGroupForViewport(viewportId);
 
       if (!toolGroup || !toolGroup._toolInstances?.['ReferenceLines']) {
@@ -416,9 +416,9 @@ function _showCPURenderingModal(UIModalService, HangingProtocolService) {
   };
 
   const { unsubscribe } = HangingProtocolService.subscribe(
-    HangingProtocolService.EVENTS.HANGING_PROTOCOL_APPLIED_FOR_VIEWPORT,
-    ({ progress }) => {
-      const done = callback(progress);
+    HangingProtocolService.EVENTS.PROTOCOL_CHANGED,
+    () => {
+      const done = callback(100);
 
       if (done) {
         unsubscribe();

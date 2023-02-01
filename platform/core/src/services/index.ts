@@ -9,12 +9,17 @@ import DisplaySetService from './DisplaySetService';
 import ToolbarService from './ToolBarService';
 import ViewportGridService from './ViewportGridService';
 import CineService from './CineService';
-import HangingProtocolService from './HangingProtocolService';
+import {
+  HangingProtocolService,
+  HangingProtocolServiceRegistration,
+} from './HangingProtocolService';
 import pubSubServiceInterface, {
   PubSubService,
 } from './_shared/pubSubServiceInterface';
 import UserAuthenticationService from './UserAuthenticationService';
 import CustomizationService from './CustomizationService';
+
+import StateSyncService from './StateSyncService';
 
 import Services from '../types/Services';
 
@@ -23,6 +28,7 @@ export {
   MeasurementService,
   ServicesManager,
   CustomizationService,
+  StateSyncService,
   UIDialogService,
   UIModalService,
   UINotificationService,

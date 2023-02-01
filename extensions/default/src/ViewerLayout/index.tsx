@@ -168,15 +168,13 @@ function ViewerLayout({
 
   useEffect(() => {
     const { unsubscribe } = HangingProtocolService.subscribe(
-      HangingProtocolService.EVENTS.HANGING_PROTOCOL_APPLIED_FOR_VIEWPORT,
+      HangingProtocolService.EVENTS.PROTOCOL_CHANGED,
 
       // Todo: right now to set the loading indicator to false, we need to wait for the
       // HangingProtocolService to finish applying the viewport matching to each viewport,
       // however, this might not be the only approach to set the loading indicator to false. we need to explore this further.
-      ({ progress }) => {
-        if (progress === 100) {
-          setShowLoadingIndicator(false);
-        }
+      () => {
+        setShowLoadingIndicator(false);
       }
     );
 

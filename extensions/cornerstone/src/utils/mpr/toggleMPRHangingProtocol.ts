@@ -225,7 +225,7 @@ function _getViewportsInfo({ protocol, stage, viewports, servicesManager }) {
     ToolGroupService,
   } = servicesManager.services;
 
-  const { numRows, numCols } = ViewportGridService.getState();
+  const { numRows, numCols } = ViewportGridService.getState().layout;
 
   let viewportMatchDetails = new Map();
 

@@ -45,36 +45,23 @@ function LayoutSelector({
     };
   }, [isOpen]);
 
-  useEffect(() => {
-    /* Reset to default layout when component unmounts */
-    return () => {
-      viewportGridService.setLayout({ numCols: 1, numRows: 1 });
-    };
-  }, []);
-
   const onInteractionHandler = () => setIsOpen(!isOpen);
   const DropdownContent = isOpen ? OHIFLayoutSelector : null;
 
-  const onSelectionHandler = ({ numRows, numCols }) => {
-    // TODO Introduce a service to persist the state of the current hanging protocol/app.
-
-    // TODO Here the layout change will amount to a change of hanging protocol as specified by the extension for this layout selector tool
-    // followed by the change of the grid itself.
-    if (HangingProtocolService.getActiveProtocol().protocol.id === 'mpr') {
-      ToolBarService.recordInteraction({
-        groupId: 'MPR',
-        itemId: 'MPR',
-        interactionType: 'toggle',
+  const onSelectionHandler = props => {
+    ToolBarService.recordInteraction(
+      {
+        interactionType: 'action',
         commands: [
           {
-            commandName: 'toggleMPR',
+            commandName: 'setViewportLayout',
             commandOptions: {},
-            context: 'CORNERSTONE',
+            context: 'DEFAULT',
           },
         ],
-      });
-    }
-    viewportGridService.setLayout({ numRows, numCols });
+      },
+      props
+    );
   };
 
   return (

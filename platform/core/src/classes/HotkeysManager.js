@@ -1,6 +1,7 @@
 import objectHash from 'object-hash';
 import log from './../log.js';
 import { hotkeys } from '../utils';
+import isequal from 'lodash.isequal';
 
 /**
  *
@@ -59,11 +60,19 @@ export class HotkeysManager {
    *
    * @param {HotkeyDefinition[] | Object} [hotkeyDefinitions=[]] Contains hotkeys definitions
    */
-  setHotkeys(hotkeyDefinitions = []) {
+  setHotkeys(hotkeyDefinitions = [], key = 'hotkey-definitions') {
     try {
       const definitions = this.getValidDefinitions(hotkeyDefinitions);
+      // TODO - deduplicate the current set for storage so that only
+      // differences from default are stored.
+      if (isequal(definitions, this.hotkeyDefaults)) {
+        console.log('hotkeys REMOVING unused definition', key);
+        localStorage.removeItem(key);
+      } else {
+        console.log('hotkeys setting local storage', key);
+        localStorage.setItem(key, JSON.stringify(definitions));
+      }
       definitions.forEach(definition => this.registerHotkeys(definition));
-      localStorage.setItem('hotkey-definitions', JSON.stringify(definitions));
     } catch (error) {
       const { UINotificationService } = this._servicesManager.services;
       UINotificationService.show({
@@ -165,7 +174,7 @@ export class HotkeysManager {
    * @returns {undefined}
    */
   registerHotkeys(
-    { commandName, commandOptions = {}, keys, label, isEditable } = {},
+    { commandName, commandOptions = {}, context, keys, label, isEditable } = {},
     extension
   ) {
     if (!commandName) {
@@ -194,9 +203,10 @@ export class HotkeysManager {
       label,
       isEditable,
     };
-    this._bindHotkeys(commandName, commandOptions, keys);
+    this._bindHotkeys(commandName, commandOptions, context, keys);
     log.info(
-      `[hotkeys] Binding ${commandName} with ${options} options to ${keys}`
+      `[hotkeys] Binding ${commandName} with ${options} from ${context ||
+      'default'} options to ${keys}`
     );
   }
 
@@ -226,7 +236,7 @@ export class HotkeysManager {
    * @param {string[]} keys - One or more key combinations that should trigger command
    * @returns {undefined}
    */
-  _bindHotkeys(commandName, commandOptions = {}, keys) {
+  _bindHotkeys(commandName, commandOptions = {}, context, keys) {
     const isKeyDefined = keys === '' || keys === undefined;
     if (isKeyDefined) {
       return;
@@ -238,7 +248,11 @@ export class HotkeysManager {
     hotkeys.bind(combinedKeys, evt => {
       evt.preventDefault();
       evt.stopPropagation();
-      this._commandsManager.runCommand(commandName, { evt, ...commandOptions });
+      this._commandsManager.runCommand(
+        commandName,
+        { evt, ...commandOptions },
+        context
+      );
     });
   }
 
