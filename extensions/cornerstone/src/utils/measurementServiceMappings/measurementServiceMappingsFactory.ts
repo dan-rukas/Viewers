@@ -4,6 +4,10 @@ import Bidirectional from './Bidirectional';
 import EllipticalROI from './EllipticalROI';
 import ArrowAnnotate from './ArrowAnnotate';
 import CobbAngle from './CobbAngle';
+import Angle from './Angle';
+import PlanarFreehandROI from './PlanarFreehandROI';
+import RectangleROI from './RectangleROI';
+import { getCustomToolsMappingFactory } from './customToolsMappingFactory';
 
 const measurementServiceMappingsFactory = (
   measurementService: MeasurementService,
@@ -13,9 +17,9 @@ const measurementServiceMappingsFactory = (
   /**
    * Maps measurement service format object to cornerstone annotation object.
    *
-   * @param {Measurement} measurement The measurement instance
-   * @param {string} definition The source definition
-   * @return {Object} Cornerstone annotation data
+   * @param measurement The measurement instance
+   * @param definition The source definition
+   * @return Cornerstone annotation data
    */
 
   const _getValueTypeFromToolType = toolType => {
@@ -26,7 +30,7 @@ const measurementServiceMappingsFactory = (
       BIDIRECTIONAL,
       POINT,
       ANGLE,
-    } = measurementService.VALUE_TYPES;
+    } = MeasurementService.VALUE_TYPES;
 
     // TODO -> I get why this was attempted, but its not nearly flexible enough.
     // A single measurement may have an ellipse + a bidirectional measurement, for instances.
@@ -35,6 +39,7 @@ const measurementServiceMappingsFactory = (
       Length: POLYLINE,
       EllipticalROI: ELLIPSE,
       RectangleROI: RECTANGLE,
+      PlanarFreehandROI: POLYLINE,
       Bidirectional: BIDIRECTIONAL,
       ArrowAnnotate: POINT,
       CobbAngle: ANGLE,
@@ -44,7 +49,7 @@ const measurementServiceMappingsFactory = (
     return TOOL_TYPE_TO_VALUE_TYPE[toolType];
   };
 
-  return {
+  const factories = {
     Length: {
       toAnnotation: Length.toAnnotation,
       toMeasurement: csToolsAnnotation =>
@@ -56,7 +61,7 @@ const measurementServiceMappingsFactory = (
         ),
       matchingCriteria: [
         {
-          valueType: measurementService.VALUE_TYPES.POLYLINE,
+          valueType: MeasurementService.VALUE_TYPES.POLYLINE,
           points: 2,
         },
       ],
@@ -74,15 +79,16 @@ const measurementServiceMappingsFactory = (
         // TODO -> We should eventually do something like shortAxis + longAxis,
         // But its still a little unclear how these automatic interpretations will work.
         {
-          valueType: measurementService.VALUE_TYPES.POLYLINE,
+          valueType: MeasurementService.VALUE_TYPES.POLYLINE,
           points: 2,
         },
         {
-          valueType: measurementService.VALUE_TYPES.POLYLINE,
+          valueType: MeasurementService.VALUE_TYPES.POLYLINE,
           points: 2,
         },
       ],
     },
+
     EllipticalROI: {
       toAnnotation: EllipticalROI.toAnnotation,
       toMeasurement: csToolsAnnotation =>
@@ -94,7 +100,39 @@ const measurementServiceMappingsFactory = (
         ),
       matchingCriteria: [
         {
-          valueType: measurementService.VALUE_TYPES.ELLIPSE,
+          valueType: MeasurementService.VALUE_TYPES.ELLIPSE,
+        },
+      ],
+    },
+
+    RectangleROI: {
+      toAnnotation: RectangleROI.toAnnotation,
+      toMeasurement: csToolsAnnotation =>
+        RectangleROI.toMeasurement(
+          csToolsAnnotation,
+          displaySetService,
+          cornerstoneViewportService,
+          _getValueTypeFromToolType
+        ),
+      matchingCriteria: [
+        {
+          valueType: MeasurementService.VALUE_TYPES.POLYLINE,
+        },
+      ],
+    },
+
+    PlanarFreehandROI: {
+      toAnnotation: PlanarFreehandROI.toAnnotation,
+      toMeasurement: csToolsAnnotation =>
+        EllipticalROI.toMeasurement(
+          csToolsAnnotation,
+          displaySetService,
+          cornerstoneViewportService,
+          _getValueTypeFromToolType
+        ),
+      matchingCriteria: [
+        {
+          valueType: MeasurementService.VALUE_TYPES.POLYLINE,
         },
       ],
     },
@@ -110,7 +148,7 @@ const measurementServiceMappingsFactory = (
         ),
       matchingCriteria: [
         {
-          valueType: measurementService.VALUE_TYPES.POINT,
+          valueType: MeasurementService.VALUE_TYPES.POINT,
           points: 1,
         },
       ],
@@ -127,11 +165,48 @@ const measurementServiceMappingsFactory = (
         ),
       matchingCriteria: [
         {
-          valueType: measurementService.VALUE_TYPES.ANGLE,
+          valueType: MeasurementService.VALUE_TYPES.ANGLE,
+        },
+      ],
+    },
+
+    Angle: {
+      toAnnotation: Angle.toAnnotation,
+      toMeasurement: csToolsAnnotation =>
+        Angle.toMeasurement(
+          csToolsAnnotation,
+          displaySetService,
+          cornerstoneViewportService,
+          _getValueTypeFromToolType
+        ),
+      matchingCriteria: [
+        {
+          valueType: MeasurementService.VALUE_TYPES.ANGLE,
         },
       ],
     },
   };
+
+  // set up custom tools mapping factory.
+  const customToolsMappingFactory = getCustomToolsMappingFactory();
+  Object.keys(customToolsMappingFactory).forEach(factoryKey => {
+    const customToolMappingFactory = customToolsMappingFactory[factoryKey];
+    factories[factoryKey] = {
+      toAnnotation: customToolMappingFactory.toAnnotation,
+      toMeasurement: csToolsAnnotation =>
+        customToolMappingFactory.toMeasurement(
+          csToolsAnnotation,
+          displaySetService,
+          cornerstoneViewportService,
+          _getValueTypeFromToolType
+        ),
+      matchingCriteria: customToolMappingFactory.getMatchingCriteriaArray(
+        MeasurementService
+      ),
+    };
+  });
+
+  return factories;
 };
 
 export default measurementServiceMappingsFactory;

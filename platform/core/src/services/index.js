@@ -1,4 +1,7 @@
-import MeasurementService from './MeasurementService';
+import {
+  MeasurementService,
+  MeasurementServiceRegistration,
+} from './MeasurementService';
 import ServicesManager from './ServicesManager.js';
 import UIDialogService from './UIDialogService';
 import UIModalService from './UIModalService';
@@ -21,6 +24,7 @@ import {
 
 export {
   MeasurementService,
+  MeasurementServiceRegistration,
   ServicesManager,
   CustomizationService,
   CustomizationServiceRegistration,

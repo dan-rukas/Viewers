@@ -15,6 +15,7 @@ import {
   ProbeTool,
   AngleTool,
   CobbAngleTool,
+  PlanarFreehandROITool,
   MagnifyTool,
   CrosshairsTool,
   SegmentationDisplayTool,
@@ -42,6 +43,7 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(DragProbeTool);
   addTool(AngleTool);
   addTool(CobbAngleTool);
+  addTool(PlanarFreehandROITool);
   addTool(MagnifyTool);
   addTool(CrosshairsTool);
   addTool(SegmentationDisplayTool);

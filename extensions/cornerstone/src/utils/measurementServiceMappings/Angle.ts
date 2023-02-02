@@ -2,7 +2,7 @@ import SUPPORTED_TOOLS from './constants/supportedTools';
 import getSOPInstanceAttributes from './utils/getSOPInstanceAttributes';
 import { utils } from '@ohif/core';
 
-const CobbAngle = {
+const Angle = {
   toAnnotation: measurement => { },
 
   /**
@@ -21,7 +21,7 @@ const CobbAngle = {
     const { metadata, data, annotationUID } = annotation;
 
     if (!metadata || !data) {
-      console.warn('Cobb Angle tool: Missing metadata or data');
+      console.warn('Length tool: Missing metadata or data');
       return null;
     }
 
@@ -144,7 +144,7 @@ function _getReport(mappedAnnotations, points, FrameOfReferenceUID) {
 
   // Add Type
   columns.push('AnnotationType');
-  values.push('Cornerstone:CobbAngle');
+  values.push('Cornerstone:Angle');
 
   mappedAnnotations.forEach(annotation => {
     const { angle, unit } = annotation;
@@ -207,4 +207,4 @@ function getDisplayText(mappedAnnotations, displaySet) {
   return displayText;
 }
 
-export default CobbAngle;
+export default Angle;

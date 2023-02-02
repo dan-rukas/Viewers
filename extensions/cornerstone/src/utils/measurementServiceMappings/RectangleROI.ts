@@ -1,19 +1,13 @@
 import SUPPORTED_TOOLS from './constants/supportedTools';
 import getSOPInstanceAttributes from './utils/getSOPInstanceAttributes';
+import getModalityUnit from './utils/getModalityUnit';
 import { utils } from '@ohif/core';
 
-const CobbAngle = {
+const RectangleROI = {
   toAnnotation: measurement => { },
-
-  /**
-   * Maps cornerstone annotation event data to measurement service format.
-   *
-   * @param {Object} cornerstone Cornerstone event data
-   * @return {Measurement} Measurement instance
-   */
   toMeasurement: (
     csToolsEventDetail,
-    displaySetService,
+    DisplaySetService,
     CornerstoneViewportService,
     getValueTypeFromToolType
   ) => {
@@ -21,7 +15,7 @@ const CobbAngle = {
     const { metadata, data, annotationUID } = annotation;
 
     if (!metadata || !data) {
-      console.warn('Cobb Angle tool: Missing metadata or data');
+      console.warn('Length tool: Missing metadata or data');
       return null;
     }
 
@@ -45,19 +39,19 @@ const CobbAngle = {
     let displaySet;
 
     if (SOPInstanceUID) {
-      displaySet = displaySetService.getDisplaySetForSOPInstanceUID(
+      displaySet = DisplaySetService.getDisplaySetForSOPInstanceUID(
         SOPInstanceUID,
         SeriesInstanceUID
       );
     } else {
-      displaySet = displaySetService.getDisplaySetsForSeries(SeriesInstanceUID);
+      displaySet = DisplaySetService.getDisplaySetsForSeries(SeriesInstanceUID);
     }
 
     const { points } = data.handles;
 
     const mappedAnnotations = getMappedAnnotations(
       annotation,
-      displaySetService
+      DisplaySetService
     );
 
     const displayText = getDisplayText(mappedAnnotations, displaySet);
@@ -72,7 +66,7 @@ const CobbAngle = {
       metadata,
       referenceSeriesUID: SeriesInstanceUID,
       referenceStudyUID: StudyInstanceUID,
-      frameNumber: mappedAnnotations?.[0]?.frameNumber || 1,
+      frameNumber: mappedAnnotations[0]?.frameNumber || 1,
       toolName: metadata.toolName,
       displaySetInstanceUID: displaySet.displaySetInstanceUID,
       label: data.label,
@@ -91,7 +85,7 @@ function getMappedAnnotations(annotation, DisplaySetService) {
   const targets = Object.keys(cachedStats);
 
   if (!targets.length) {
-    return;
+    return [];
   }
 
   const annotations = [];
@@ -99,6 +93,7 @@ function getMappedAnnotations(annotation, DisplaySetService) {
     const targetStats = cachedStats[targetId];
 
     if (!referencedImageId) {
+      // Todo: Non-acquisition plane measurement mapping not supported yet
       throw new Error(
         'Non-acquisition plane measurement mapping not supported'
       );
@@ -117,16 +112,20 @@ function getMappedAnnotations(annotation, DisplaySetService) {
     );
 
     const { SeriesNumber } = displaySet;
-    const { angle } = targetStats;
-    const unit = '\u00B0';
+    const { mean, stdDev, max, area, Modality } = targetStats;
+    const unit = getModalityUnit(Modality);
 
     annotations.push({
       SeriesInstanceUID,
       SOPInstanceUID,
       SeriesNumber,
       frameNumber,
+      Modality,
       unit,
-      angle,
+      mean,
+      stdDev,
+      max,
+      area,
     });
   });
 
@@ -144,12 +143,22 @@ function _getReport(mappedAnnotations, points, FrameOfReferenceUID) {
 
   // Add Type
   columns.push('AnnotationType');
-  values.push('Cornerstone:CobbAngle');
+  values.push('Cornerstone:EllipticalROI');
 
   mappedAnnotations.forEach(annotation => {
-    const { angle, unit } = annotation;
-    columns.push(`Angle (${unit})`);
-    values.push(angle);
+    const { mean, stdDev, max, area, unit } = annotation;
+
+    if (!mean || !unit || !max || !area) {
+      return;
+    }
+
+    columns.push(
+      `max (${unit})`,
+      `mean (${unit})`,
+      `std (${unit})`,
+      `area (mm2)`
+    );
+    values.push(max, mean, stdDev, area);
   });
 
   if (FrameOfReferenceUID) {
@@ -179,13 +188,7 @@ function getDisplayText(mappedAnnotations, displaySet) {
   const displayText = [];
 
   // Area is the same for all series
-  const {
-    angle,
-    unit,
-    SeriesNumber,
-    SOPInstanceUID,
-    frameNumber,
-  } = mappedAnnotations[0];
+  const { area, SOPInstanceUID, frameNumber } = mappedAnnotations[0];
 
   const instance = displaySet.images.find(
     image => image.SOPInstanceUID === SOPInstanceUID
@@ -198,13 +201,28 @@ function getDisplayText(mappedAnnotations, displaySet) {
 
   const instanceText = InstanceNumber ? ` I: ${InstanceNumber}` : '';
   const frameText = displaySet.isMultiFrame ? ` F: ${frameNumber}` : '';
-  if (angle === undefined) return displayText;
-  const roundedAngle = utils.roundNumber(angle, 2);
-  displayText.push(
-    `${roundedAngle} ${unit} (S: ${SeriesNumber}${instanceText}${frameText})`
-  );
+
+  // Area sometimes becomes undefined if `preventHandleOutsideImage` is off.
+  const roundedArea = utils.roundNumber(area || 0, 2);
+  displayText.push(`${roundedArea} mm<sup>2</sup>`);
+
+  // Todo: we need a better UI for displaying all these information
+  mappedAnnotations.forEach(mappedAnnotation => {
+    const { unit, max, SeriesNumber } = mappedAnnotation;
+
+    let maxStr = '';
+    if (max) {
+      const roundedMax = utils.roundNumber(max, 2);
+      maxStr = `Max: ${roundedMax} <small>${unit}</small> `;
+    }
+
+    const str = `${maxStr}(S:${SeriesNumber}${instanceText}${frameText})`;
+    if (!displayText.includes(str)) {
+      displayText.push(str);
+    }
+  });
 
   return displayText;
 }
 
-export default CobbAngle;
+export default RectangleROI;

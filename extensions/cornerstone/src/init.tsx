@@ -63,7 +63,7 @@ export default async function init({
 
   const {
     UserAuthenticationService,
-    MeasurementService,
+    measurementService,
     DisplaySetService,
     UIDialogService,
     UIModalService,
@@ -132,7 +132,7 @@ export default async function init({
 
   /* Measurement Service */
   const measurementServiceSource = connectToolsToMeasurementService(
-    MeasurementService,
+    measurementService,
     DisplaySetService,
     CornerstoneViewportService
   );
@@ -205,7 +205,7 @@ export default async function init({
         onSetLabel: item => {
           const { annotationUID } = item.value;
 
-          const measurement = MeasurementService.getMeasurement(annotationUID);
+          const measurement = measurementService.getMeasurement(annotationUID);
 
           callInputDialog(
             UIDialogService,
@@ -219,7 +219,7 @@ export default async function init({
                 label,
               });
 
-              MeasurementService.update(
+              measurementService.update(
                 updatedMeasurement.uid,
                 updatedMeasurement,
                 true

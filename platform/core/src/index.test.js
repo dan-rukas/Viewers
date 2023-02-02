@@ -31,6 +31,7 @@ describe('Top level exports', () => {
       'UIViewportDialogService',
       'DisplaySetService',
       'MeasurementService',
+      'MeasurementServiceRegistration',
       'ToolBarService',
       'Types',
       'ViewportGridService',
