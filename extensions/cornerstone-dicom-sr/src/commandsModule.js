@@ -89,7 +89,7 @@ const commandsModule = ({}) => {
       additionalFindingTypes,
       options = {},
     }) => {
-      // TODO -> Eventually use the measurements directly and not the dcmjs adapter,
+      // Use the @cornerstonejs adapter for converting to/from DICOM
       // But it is good enough for now whilst we only have cornerstone as a datasource.
       log.info('[DICOMSR] storeMeasurements');
 

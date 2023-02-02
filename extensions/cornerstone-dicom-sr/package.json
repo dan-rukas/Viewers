@@ -34,7 +34,6 @@
   "peerDependencies": {
     "@ohif/core": "^3.0.0",
     "@ohif/extension-cornerstone": "^3.0.0",
-    "@cornerstonejs/adapters": "^0.1.5",
     "@ohif/extension-measurement-tracking": "^3.0.0",
     "@ohif/ui": "^2.0.0",
     "dcmjs": "^0.29.4",
@@ -45,8 +44,9 @@
   },
   "dependencies": {
     "@babel/runtime": "7.16.3",
-    "classnames": "^2.2.6",
-    "@cornerstonejs/core": "^0.25.0",
-    "@cornerstonejs/tools": "^0.34.2"
+    "@cornerstonejs/adapters": "^0.2.0",
+    "@cornerstonejs/core": "^0.28.0",
+    "@cornerstonejs/tools": "^0.39.0",
+    "classnames": "^2.2.6"
   }
 }

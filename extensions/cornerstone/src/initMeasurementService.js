@@ -23,6 +23,11 @@ const initMeasurementService = (
     Bidirectional,
     EllipticalROI,
     ArrowAnnotate,
+    Angle,
+    CobbAngle,
+    Probe,
+    Rectangle,
+    FreehandROI,
   } = measurementServiceMappingsFactory(
     MeasurementService,
     DisplaySetService,
@@ -64,6 +69,19 @@ const initMeasurementService = (
     ArrowAnnotate.matchingCriteria,
     ArrowAnnotate.toAnnotation,
     ArrowAnnotate.toMeasurement
+  );
+
+//    Angle,
+//    Probe,
+//    Rectangle,
+//    FreehandROI,
+
+  MeasurementService.addMapping(
+    csTools3DVer1MeasurementSource,
+    'CobbAngle',
+    CobbAngle.matchingCriteria,
+    CobbAngle.toAnnotation,
+    CobbAngle.toMeasurement
   );
 
   return csTools3DVer1MeasurementSource;

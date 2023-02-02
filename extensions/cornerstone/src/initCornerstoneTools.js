@@ -14,6 +14,7 @@ import {
   DragProbeTool,
   ProbeTool,
   AngleTool,
+  CobbAngleTool,
   MagnifyTool,
   CrosshairsTool,
   SegmentationDisplayTool,
@@ -40,6 +41,7 @@ export default function initCornerstoneTools(configuration = {}) {
   addTool(ArrowAnnotateTool);
   addTool(DragProbeTool);
   addTool(AngleTool);
+  addTool(CobbAngleTool);
   addTool(MagnifyTool);
   addTool(CrosshairsTool);
   addTool(SegmentationDisplayTool);
@@ -76,6 +78,7 @@ const toolNames = {
   EllipticalROI: EllipticalROITool.toolName,
   Bidirectional: BidirectionalTool.toolName,
   Angle: AngleTool.toolName,
+  CobbAngle: CobbAngleTool.toolName,
   Magnify: MagnifyTool.toolName,
   Crosshairs: CrosshairsTool.toolName,
   SegmentationDisplay: SegmentationDisplayTool.toolName,

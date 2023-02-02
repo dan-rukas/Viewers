@@ -1,12 +1,14 @@
+import { MeasurementService } from '@ohif/core';
 import Length from './Length';
 import Bidirectional from './Bidirectional';
 import EllipticalROI from './EllipticalROI';
 import ArrowAnnotate from './ArrowAnnotate';
+import CobbAngle from './CobbAngle';
 
 const measurementServiceMappingsFactory = (
-  MeasurementService,
-  DisplaySetService,
-  CornerstoneViewportService
+  measurementService: MeasurementService,
+  displaySetService,
+  cornerstoneViewportService
 ) => {
   /**
    * Maps measurement service format object to cornerstone annotation object.
@@ -23,7 +25,8 @@ const measurementServiceMappingsFactory = (
       RECTANGLE,
       BIDIRECTIONAL,
       POINT,
-    } = MeasurementService.VALUE_TYPES;
+      ANGLE,
+    } = measurementService.VALUE_TYPES;
 
     // TODO -> I get why this was attempted, but its not nearly flexible enough.
     // A single measurement may have an ellipse + a bidirectional measurement, for instances.
@@ -34,6 +37,8 @@ const measurementServiceMappingsFactory = (
       RectangleROI: RECTANGLE,
       Bidirectional: BIDIRECTIONAL,
       ArrowAnnotate: POINT,
+      CobbAngle: ANGLE,
+      Angle: ANGLE,
     };
 
     return TOOL_TYPE_TO_VALUE_TYPE[toolType];
@@ -45,13 +50,13 @@ const measurementServiceMappingsFactory = (
       toMeasurement: csToolsAnnotation =>
         Length.toMeasurement(
           csToolsAnnotation,
-          DisplaySetService,
-          CornerstoneViewportService,
+          displaySetService,
+          cornerstoneViewportService,
           _getValueTypeFromToolType
         ),
       matchingCriteria: [
         {
-          valueType: MeasurementService.VALUE_TYPES.POLYLINE,
+          valueType: measurementService.VALUE_TYPES.POLYLINE,
           points: 2,
         },
       ],
@@ -61,19 +66,19 @@ const measurementServiceMappingsFactory = (
       toMeasurement: csToolsAnnotation =>
         Bidirectional.toMeasurement(
           csToolsAnnotation,
-          DisplaySetService,
-          CornerstoneViewportService,
+          displaySetService,
+          cornerstoneViewportService,
           _getValueTypeFromToolType
         ),
       matchingCriteria: [
         // TODO -> We should eventually do something like shortAxis + longAxis,
         // But its still a little unclear how these automatic interpretations will work.
         {
-          valueType: MeasurementService.VALUE_TYPES.POLYLINE,
+          valueType: measurementService.VALUE_TYPES.POLYLINE,
           points: 2,
         },
         {
-          valueType: MeasurementService.VALUE_TYPES.POLYLINE,
+          valueType: measurementService.VALUE_TYPES.POLYLINE,
           points: 2,
         },
       ],
@@ -83,29 +88,46 @@ const measurementServiceMappingsFactory = (
       toMeasurement: csToolsAnnotation =>
         EllipticalROI.toMeasurement(
           csToolsAnnotation,
-          DisplaySetService,
-          CornerstoneViewportService,
+          displaySetService,
+          cornerstoneViewportService,
           _getValueTypeFromToolType
         ),
       matchingCriteria: [
         {
-          valueType: MeasurementService.VALUE_TYPES.ELLIPSE,
+          valueType: measurementService.VALUE_TYPES.ELLIPSE,
         },
       ],
     },
+
     ArrowAnnotate: {
       toAnnotation: ArrowAnnotate.toAnnotation,
       toMeasurement: csToolsAnnotation =>
         ArrowAnnotate.toMeasurement(
           csToolsAnnotation,
-          DisplaySetService,
-          CornerstoneViewportService,
+          displaySetService,
+          cornerstoneViewportService,
           _getValueTypeFromToolType
         ),
       matchingCriteria: [
         {
-          valueType: MeasurementService.VALUE_TYPES.POINT,
+          valueType: measurementService.VALUE_TYPES.POINT,
           points: 1,
+        },
+      ],
+    },
+
+    CobbAngle: {
+      toAnnotation: CobbAngle.toAnnotation,
+      toMeasurement: csToolsAnnotation =>
+        CobbAngle.toMeasurement(
+          csToolsAnnotation,
+          displaySetService,
+          cornerstoneViewportService,
+          _getValueTypeFromToolType
+        ),
+      matchingCriteria: [
+        {
+          valueType: measurementService.VALUE_TYPES.ANGLE,
         },
       ],
     },

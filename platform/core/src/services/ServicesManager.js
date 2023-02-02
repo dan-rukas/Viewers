@@ -39,6 +39,10 @@ export default class ServicesManager {
         commandsManager: this._commandsManager,
         servicesManager: this,
       });
+      if (service.altName) {
+        console.log('Adding alternative service name', service.altName);
+        this.services[service.altName] = this.services[service.name];
+      }
     } else {
       log.warn(`Service create factory function not defined. Exiting early.`);
       return;

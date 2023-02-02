@@ -494,6 +494,21 @@ const toolbarButtons = [
           'Angle'
         ),
         _createToolButton(
+          'Cobb Angle',
+          'tool-angle',
+          'Cobb Angle',
+          [
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'CobbAngle',
+              },
+              context: 'CORNERSTONE',
+            },
+          ],
+          'Cobb Angle'
+        ),
+        _createToolButton(
           'Magnify',
           'tool-magnify',
           'Magnify',

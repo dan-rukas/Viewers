@@ -1,4 +1,4 @@
-import ExtensionManager from './ExtensionManager.js';
+import ExtensionManager from './ExtensionManager';
 import MODULE_TYPES from './MODULE_TYPES.js';
 import log from './../log.js';
 
