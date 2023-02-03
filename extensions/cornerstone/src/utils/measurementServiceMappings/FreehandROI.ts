@@ -1,8 +1,9 @@
+import { MeasurementService } from '@ohif/core';
 import { annotation as cs3DToolsAnnotation } from '@cornerstonejs/tools';
 import { extensionUtils as csExtensionUtils } from '@ohif/extension-cornerstone';
 
 /**
- * It updates a PlanarFreehandROI annotation data by the given measurement service format.
+ * It updates a FreehandROI annotation data by the given measurement service format.
  * It uses measurement.uid to seek for the related annotation and apply the changes.
  * @typedef {function(Object)} ToAnnotationMethod
  *
@@ -27,15 +28,15 @@ import { extensionUtils as csExtensionUtils } from '@ohif/extension-cornerstone'
  */
 
 /**
- * Measurement Mapping Service object for PlanarFreehandROI tool.
- * See {@link CustomTools.PlanarFreehandROITool} to see imaging annotation tool format.
+ * Measurement Mapping Service object for FreehandROI tool.
+ * See {@link CustomTools.FreehandROITool} to see imaging annotation tool format.
  *
  * @typedef {Object}
  * @property {ToAnnotationMethod} toAnnotation
  * @property {ToMeasurementMethod} toMeasurement
  * @property {GetMatchingCriteriaArray} getMatchingCriteriaArray
  */
-const PlanarFreehandROI = {
+const FreehandROI = {
   toAnnotation: measurement => {
     const annotationUID = measurement.uid;
     const cornerstone3DAnnotation = cs3DToolsAnnotation.state.getAnnotation(
@@ -52,11 +53,15 @@ const PlanarFreehandROI = {
     cornerstone3DAnnotation.data.finding = measurement.finding;
     cornerstone3DAnnotation.data.polyline = measurement.data.polyline;
     cornerstone3DAnnotation.data.isOpenContour = measurement.data.isOpenContour;
-    cornerstone3DAnnotation.data.isOpenUShapeContour = measurement.data.isOpenUShapeContour;
+    cornerstone3DAnnotation.data.isOpenUShapeContour =
+      measurement.data.isOpenUShapeContour;
     cornerstone3DAnnotation.data.handles = measurement.data.handles;
 
-
-    const lineDash = cornerstone3DAnnotation.data.findingSite || cornerstone3DAnnotation.data.finding ? '[]' : '';
+    const lineDash =
+      cornerstone3DAnnotation.data.findingSite ||
+        cornerstone3DAnnotation.data.finding
+        ? '[]'
+        : '';
 
     csExtensionUtils.annotation.setAnnotationLineDash(
       cornerstone3DAnnotation.annotationUID,
@@ -86,16 +91,14 @@ const PlanarFreehandROI = {
     const { metadata, data, annotationUID, isVisible } = cs3DAnnotation;
 
     if (!metadata || !data) {
-      console.warn('PlanarFreehandROI tool: Missing metadata or data');
+      console.warn('FreehandROI tool: Missing metadata or data');
       return null;
     }
 
     const active = csExtensionUtils.annotation.isAnnotationSelected(
       annotationUID
     );
-    const color = csExtensionUtils.annotation.getAnnotationColor(
-      annotationUID
-    );
+    const color = csExtensionUtils.annotation.getAnnotationColor(annotationUID);
 
     const { toolName, referencedImageId, FrameOfReferenceUID } = metadata;
 
@@ -154,10 +157,10 @@ const PlanarFreehandROI = {
     };
   },
 
-  getMatchingCriteriaArray: measurementService => {
+  getMatchingCriteriaArray: (measurementService: MeasurementService) => {
     return [
       {
-        valueType: measurementService.VALUE_TYPES.POLYLINE,
+        valueType: MeasurementService.VALUE_TYPES.POLYLINE,
         // OHIF does not yet support multi points for matching criteria
         points: 1,
       },
@@ -227,4 +230,4 @@ function getDisplayText(mappedAnnotations) {
   return '';
 }
 
-export default PlanarFreehandROI;
+export default FreehandROI;

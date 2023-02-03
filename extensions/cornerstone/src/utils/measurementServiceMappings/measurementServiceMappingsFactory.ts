@@ -5,7 +5,7 @@ import EllipticalROI from './EllipticalROI';
 import ArrowAnnotate from './ArrowAnnotate';
 import CobbAngle from './CobbAngle';
 import Angle from './Angle';
-import PlanarFreehandROI from './PlanarFreehandROI';
+import FreehandROI from './FreehandROI';
 import RectangleROI from './RectangleROI';
 import { getCustomToolsMappingFactory } from './customToolsMappingFactory';
 
@@ -39,7 +39,7 @@ const measurementServiceMappingsFactory = (
       Length: POLYLINE,
       EllipticalROI: ELLIPSE,
       RectangleROI: RECTANGLE,
-      PlanarFreehandROI: POLYLINE,
+      FreehandROI: POLYLINE,
       Bidirectional: BIDIRECTIONAL,
       ArrowAnnotate: POINT,
       CobbAngle: ANGLE,
@@ -121,8 +121,8 @@ const measurementServiceMappingsFactory = (
       ],
     },
 
-    PlanarFreehandROI: {
-      toAnnotation: PlanarFreehandROI.toAnnotation,
+    FreehandROI: {
+      toAnnotation: FreehandROI.toAnnotation,
       toMeasurement: csToolsAnnotation =>
         EllipticalROI.toMeasurement(
           csToolsAnnotation,

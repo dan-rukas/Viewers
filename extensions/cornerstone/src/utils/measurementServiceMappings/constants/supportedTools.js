@@ -7,5 +7,5 @@ export default [
   'CobbAngle',
   'Probe',
   'RectangleROI',
-  'PlanarFreehandROI',
+  'FreehandROI',
 ];

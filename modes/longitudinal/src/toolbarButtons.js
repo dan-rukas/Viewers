@@ -495,7 +495,7 @@ const toolbarButtons = [
         ),
         _createToolButton(
           'Cobb Angle',
-          'tool-angle',
+          'tool-cobb-angle',
           'Cobb Angle',
           [
             {

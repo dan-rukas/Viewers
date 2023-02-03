@@ -78,6 +78,8 @@ import toolCine from './../../assets/icons/tool-cine.svg';
 import toolCrosshair from './../../assets/icons/tool-crosshair.svg';
 import toolProbe from './../../assets/icons/tool-probe.svg';
 import toolAngle from './../../assets/icons/tool-angle.svg';
+import toolCobbAngle from './../../assets/icons/tool-cobb-angle.svg';
+import toolFreehand from './../../assets/icons/tool-freehand.svg';
 import toolReset from './../../assets/icons/tool-reset.svg';
 import toolRectangle from './../../assets/icons/tool-rectangle.svg';
 import toolFusionColor from './../../assets/icons/tool-fusion-color.svg';
@@ -181,6 +183,8 @@ const ICONS = {
   'tool-crosshair': toolCrosshair,
   'tool-probe': toolProbe,
   'tool-angle': toolAngle,
+  'tool-cobb-angle': toolCobbAngle,
+  'tool-freehand': toolFreehand,
   'tool-reset': toolReset,
   'tool-rectangle': toolRectangle,
   'tool-fusion-color': toolFusionColor,

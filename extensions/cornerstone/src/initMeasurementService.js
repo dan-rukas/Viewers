@@ -26,7 +26,7 @@ const initMeasurementService = (
     Angle,
     CobbAngle,
     RectangleROI,
-    PlanarFreehandROI,
+    FreehandROI,
     ...customTools
   } = measurementServiceMappingsFactory(
     measurementService,
@@ -97,10 +97,10 @@ const initMeasurementService = (
 
   measurementService.addMapping(
     csTools3DVer1MeasurementSource,
-    'PlanarFreehandROI',
-    PlanarFreehandROI.matchingCriteria,
-    PlanarFreehandROI.toAnnotation,
-    PlanarFreehandROI.toMeasurement
+    'FreehandROI',
+    FreehandROI.matchingCriteria,
+    FreehandROI.toAnnotation,
+    FreehandROI.toMeasurement
   );
 
   // add any existing custom tools

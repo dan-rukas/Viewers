@@ -51,13 +51,12 @@ const RELATIONSHIP_TYPE = {
 const CORNERSTONE_FREETEXT_CODE_VALUE = 'CORNERSTONEFREETEXT';
 
 /**
- * Basic SOPClassHandler:
- * - For all Image types that are stackable, create
- *   a displaySet with a stack of images
- *
- * @param {Array} sopClassHandlerModules List of SOP Class Modules
- * @param {SeriesMetadata} series The series metadata object from which the display sets will be created
- * @returns {Array} The list of display sets created for the given series object
+ * DICOM SR SOP Class Handler
+ * For all referenced images in the TID 1500/300 sections, add an image to the
+ * display.
+ * @param instances is a set of instances all from the same series
+ * @param servicesManager is the services that can be used for creating
+ * @returns The list of display sets created for the given instances object
  */
 function _getDisplaySetsFromSeries(
   instances,
@@ -69,7 +68,12 @@ function _getDisplaySetsFromSeries(
     throw new Error('No instances were provided');
   }
 
-  const instance = instances[0];
+  utils.sortStudyInstances(instances);
+  const instance = instances[instances.length - 1];
+
+  if (instances.length > 1) {
+    console.warn('Only selecting last instance of DICOM SR');
+  }
 
   const {
     StudyInstanceUID,
@@ -85,9 +89,9 @@ function _getDisplaySetsFromSeries(
   if (
     !ConceptNameCodeSequence ||
     ConceptNameCodeSequence.CodeValue !==
-      CodeNameCodeSequenceValues.ImagingMeasurementReport
+    CodeNameCodeSequenceValues.ImagingMeasurementReport
   ) {
-    console.warn(
+    console.log(
       'Only support Imaging Measurement Report SRs (TID1500) for now'
     );
     return [];
@@ -313,13 +317,13 @@ function _getMeasurements(ImagingMeasurementReportContentSequence) {
     MeasurementGroups
   );
 
-  let measurements = [];
+  const measurements = [];
 
   Object.keys(mergedContentSequencesByTrackingUniqueIdentifiers).forEach(
     trackingUniqueIdentifier => {
       const mergedContentSequence =
         mergedContentSequencesByTrackingUniqueIdentifiers[
-          trackingUniqueIdentifier
+        trackingUniqueIdentifier
         ];
 
       const measurement = _processMeasurement(mergedContentSequence);
@@ -359,7 +363,7 @@ function _getMergedContentSequencesByTrackingUniqueIdentifiers(
 
     if (
       mergedContentSequencesByTrackingUniqueIdentifiers[
-        trackingUniqueIdentifier
+      trackingUniqueIdentifier
       ] === undefined
     ) {
       // Add the full ContentSequence
@@ -474,9 +478,9 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
   const FindingSites = mergedContentSequence.filter(
     item =>
       item.ConceptNameCodeSequence.CodingSchemeDesignator ===
-        CodingSchemeDesignators.SRT &&
+      CodingSchemeDesignators.SRT &&
       item.ConceptNameCodeSequence.CodeValue ===
-        CodeNameCodeSequenceValues.FindingSite
+      CodeNameCodeSequenceValues.FindingSite
   );
 
   const measurement = {
@@ -493,7 +497,7 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
       Finding.ConceptCodeSequence.CodingSchemeDesignator
     ) &&
     Finding.ConceptCodeSequence.CodeValue ===
-      CodeNameCodeSequenceValues.CornerstoneFreeText
+    CodeNameCodeSequenceValues.CornerstoneFreeText
   ) {
     measurement.labels.push({
       label: CORNERSTONE_FREETEXT_CODE_VALUE,
@@ -509,7 +513,7 @@ function _processNonGeometricallyDefinedMeasurement(mergedContentSequence) {
           FindingSite.ConceptCodeSequence.CodingSchemeDesignator
         ) &&
         FindingSite.ConceptCodeSequence.CodeValue ===
-          CodeNameCodeSequenceValues.CornerstoneFreeText
+        CodeNameCodeSequenceValues.CornerstoneFreeText
     );
 
     if (cornerstoneFreeTextFindingSite) {
