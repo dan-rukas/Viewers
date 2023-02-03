@@ -9,10 +9,7 @@ import DisplaySetService from './DisplaySetService';
 import ToolbarService from './ToolBarService';
 import ViewportGridService from './ViewportGridService';
 import CineService from './CineService';
-import {
-  HangingProtocolService,
-  HangingProtocolServiceRegistration,
-} from './HangingProtocolService';
+import HangingProtocolService from './HangingProtocolService';
 import pubSubServiceInterface, {
   PubSubService,
 } from './_shared/pubSubServiceInterface';

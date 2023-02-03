@@ -18,6 +18,13 @@ type States = {
 /**
  */
 export default class StateSyncService extends PubSubService {
+  public static REGISTRATION = {
+    name: 'stateSyncService',
+    create: ({ configuration = {}, commandsManager }) => {
+      return new StateSyncService({ configuration, commandsManager });
+    },
+  };
+
   extensionManager: ExtensionManager;
   configuration: Obj;
   registeredStateSets: {
