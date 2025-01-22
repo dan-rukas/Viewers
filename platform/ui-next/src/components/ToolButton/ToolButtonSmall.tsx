@@ -26,7 +26,7 @@ function ToolButtonSmall(props: ToolButtonSmallProps) {
     label,
     tooltip,
     buttonSizeClass = 'w-8 h-8',
-    iconSizeClass = 'w-6 h-6 border',
+    iconSizeClass = 'w-6 h-6',
     isActive = false,
     disabled = false,
     onClick,
