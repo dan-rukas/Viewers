@@ -145,7 +145,7 @@ export const InputRange: React.FC<InputRangeProps> = ({
             type="number"
             value={internalValue}
             onChange={handleNumberChange}
-            className="w-[60px]" // narrower text box
+            className="w-[46px]"
           />
         </div>
       );
