@@ -1,7 +1,5 @@
 import React from 'react';
-import { InputRange } from '@ohif/ui-next';
-import { RowSegmentedControl } from '@ohif/ui-next';
-import { RowDoubleRange } from '@ohif/ui-next';
+import { ButtonGroup, InputDoubleRange, InputRange } from '../../components';
 
 const SETTING_TYPES = {
   RANGE: 'range',
@@ -20,7 +18,7 @@ function ToolSettings({ options }) {
   }
 
   return (
-    <div className="space-y-2 pb-4 text-white">
+    <div className="space-y-2 py-2 text-white">
       {options?.map(option => {
         if (option.condition && option.condition?.({ options }) === false) {
           return null;
@@ -67,29 +65,57 @@ const renderRangeSetting = option => {
 };
 
 const renderRadioSetting = option => {
+  const renderButtons = option => {
+    return option.values?.map(({ label, value: optionValue }, index) => (
+      <button
+        onClick={() => {
+          option.commands?.(optionValue);
+        }}
+        key={`button-${option.id}-${index}`}
+      >
+        {label}
+      </button>
+    ));
+  };
+
   return (
-    <RowSegmentedControl
+    <div
+      className="flex items-center justify-between text-[13px]"
       key={option.id}
-      option={option}
-    />
+    >
+      <span>{option.name}</span>
+      <div className="max-w-1/2">
+        <ButtonGroup
+          className="border-secondary-light rounded-md border"
+          activeIndex={option.values.findIndex(({ value }) => value === option.value) || 0}
+        >
+          {renderButtons(option)}
+        </ButtonGroup>
+      </div>
+    </div>
   );
 };
 
-function renderDoubleRangeSetting(option) {
+const renderDoubleRangeSetting = option => {
   return (
-    <RowDoubleRange
+    <div
+      className="flex w-full items-center"
       key={option.id}
-      values={option.value}
-      onChange={option.commands}
-      minValue={option.min}
-      maxValue={option.max}
-      step={option.step}
-      showLabel={false}
-      allowNumberEdit={true}
-      containerClassName="w-full"
-    />
+    >
+      <InputDoubleRange
+        values={option.value}
+        onChange={option.commands}
+        minValue={option.min}
+        maxValue={option.max}
+        step={option.step}
+        showLabel={true}
+        allowNumberEdit={true}
+        showAdjustmentArrows={false}
+        containerClassName="w-full"
+      />
+    </div>
   );
-}
+};
 
 const renderCustomSetting = option => {
   return (
