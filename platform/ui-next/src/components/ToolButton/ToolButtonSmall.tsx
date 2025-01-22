@@ -25,6 +25,8 @@ function ToolButtonSmall(props: ToolButtonSmallProps) {
     icon = 'MissingIcon',
     label,
     tooltip,
+    buttonSizeClass = 'w-8 h-8',
+    iconSizeClass = 'w-6 h-6 border',
     isActive = false,
     disabled = false,
     onClick,
@@ -32,8 +34,7 @@ function ToolButtonSmall(props: ToolButtonSmallProps) {
   } = props;
 
   // Combine your original styling classes with the ones from ToolButton
-  const baseClasses =
-    'relative flex items-center justify-center w-9 h-9 rounded-md transition-colors';
+  const baseClasses = 'relative flex items-center justify-center rounded-md transition-colors';
   const defaultClasses = 'bg-transparent hover:bg-transparent';
   const activeClasses = 'bg-highlight text-background';
   const disabledClasses = 'opacity-40 cursor-not-allowed';
@@ -65,6 +66,8 @@ function ToolButtonSmall(props: ToolButtonSmallProps) {
       className={appliedClasses}
       // onInteraction is used by ToolButton
       onInteraction={() => handleInteraction()}
+      buttonSizeClass={buttonSizeClass}
+      iconSizeClass={iconSizeClass}
     />
   );
 }

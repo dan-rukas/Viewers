@@ -10,6 +10,8 @@ interface ToolButtonProps {
   icon?: string;
   label?: string;
   tooltip?: string;
+  buttonSizeClass?: string;
+  iconSizeClass?: string;
   isActive?: boolean;
   /** Add a disabled prop: */
   disabled?: boolean;
@@ -24,8 +26,10 @@ function ToolButton(props: ToolButtonProps) {
     icon = 'MissingIcon',
     label,
     tooltip,
+    buttonSizeClass = 'w-10 h-10',
+    iconSizeClass = 'h-7 w-7',
     isActive = false,
-    disabled = false, // default to false
+    disabled = false,
     commands,
     onInteraction,
     className,
@@ -35,18 +39,18 @@ function ToolButton(props: ToolButtonProps) {
    * We preserve the styling logic that was here before,
    * but also add disabled styling:
    */
-  const baseClasses = 'w-10 h-10 !rounded-lg inline-flex items-center justify-center';
+  const baseClasses = '!rounded-lg inline-flex items-center justify-center';
   const defaultClasses = 'bg-transparent text-foreground hover:bg-background hover:text-highlight';
   const activeClasses = 'bg-highlight text-background hover:!bg-highlight/80';
   const disabledClasses = 'opacity-40 cursor-not-allowed';
 
   let buttonClasses = '';
   if (disabled) {
-    buttonClasses = cn(baseClasses, disabledClasses, className);
+    buttonClasses = cn(baseClasses, disabledClasses, buttonSizeClass, className);
   } else if (isActive) {
-    buttonClasses = cn(baseClasses, activeClasses, className);
+    buttonClasses = cn(baseClasses, activeClasses, buttonSizeClass, className);
   } else {
-    buttonClasses = cn(baseClasses, defaultClasses, className);
+    buttonClasses = cn(baseClasses, defaultClasses, buttonSizeClass, className);
   }
 
   // Pass disabled to Button so it doesn't trigger clicks
@@ -73,7 +77,7 @@ function ToolButton(props: ToolButtonProps) {
           >
             <Icons.ByName
               name={icon}
-              className="h-7 w-7"
+              className={iconSizeClass}
             />
           </Button>
         </TooltipTrigger>
