@@ -31,8 +31,6 @@ function ToolButton(props: ToolButtonProps) {
     className,
   } = props;
 
-  const IconComponent = Icons[icon] || Icons['MissingIcon'];
-
   /**
    * We preserve the styling logic that was here before,
    * but also add disabled styling:
@@ -73,7 +71,10 @@ function ToolButton(props: ToolButtonProps) {
             aria-label={tooltipText || id}
             disabled={disabled}
           >
-            <IconComponent className="h-7 w-7" />
+            <Icons.ByName
+              name={icon}
+              className="h-7 w-7"
+            />
           </Button>
         </TooltipTrigger>
 
