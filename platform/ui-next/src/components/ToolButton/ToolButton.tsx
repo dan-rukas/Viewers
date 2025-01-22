@@ -40,7 +40,8 @@ function ToolButton(props: ToolButtonProps) {
    * but also add disabled styling:
    */
   const baseClasses = '!rounded-lg inline-flex items-center justify-center';
-  const defaultClasses = 'bg-transparent text-foreground hover:bg-background hover:text-highlight';
+  const defaultClasses =
+    'bg-transparent text-foreground/80 hover:bg-background hover:text-highlight';
   const activeClasses = 'bg-highlight text-background hover:!bg-highlight/80';
   const disabledClasses = 'opacity-40 cursor-not-allowed';
 
