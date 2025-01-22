@@ -134,14 +134,6 @@ export type ViewportStructure = {
  */
 export type DisplaySetSelector = {
   id?: string;
-
-  /**
-   *  This can be set to true to allow unmatched views to replace a view showing this instance
-   * This is done at hte display set selector level to ensure that viewports sharing a display set
-   * don't get different values of allowUnmatchedView
-   */
-  allowUnmatchedView?: boolean;
-
   // The image matching rule (not currently implemented) selects which image to
   // display initially, only for stack views.
   imageMatchingRules?: MatchingRule[];
@@ -187,11 +179,8 @@ export type ViewportOptions = {
   initialImageOptions?: CustomOption<initialImageOptions>;
   syncGroups?: CustomOption<SyncGroup>[];
   customViewportProps?: Record<string, unknown>;
-  /**
-   * Set to true to allow non-matching drag and drop or options provided
-   * from options.displaySetSelectorsMap
-   * @deprecated Moving to display set selector
-   */
+  // Set to true to allow non-matching drag and drop or options provided
+  // from options.displaySetSelectorsMap
   allowUnmatchedView?: boolean;
 };
 

@@ -1,5 +1,4 @@
 import { DicomMetadataStore } from '../services/DicomMetadataStore/DicomMetadataStore';
-import formatPN from './formatPN';
 
 export default function downloadCSVReport(measurementData) {
   if (measurementData.length === 0) {
@@ -87,7 +86,7 @@ function _getCommonRowItems(measurement, seriesMetadata) {
 
   return {
     'Patient ID': firstInstance.PatientID, // Patient ID
-    'Patient Name': formatPN(firstInstance.PatientName) || '', // Patient Name
+    'Patient Name': firstInstance.PatientName?.Alphabetic || '', // Patient Name
     StudyInstanceUID: measurement.referenceStudyUID, // StudyInstanceUID
     SeriesInstanceUID: measurement.referenceSeriesUID, // SeriesInstanceUID
     SOPInstanceUID: measurement.SOPInstanceUID, // SOPInstanceUID

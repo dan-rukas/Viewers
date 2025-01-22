@@ -25,7 +25,7 @@ const contentItemFormatters = {
     return `${NumericValue} ${CodeValue}`;
   },
   PNAME: contentItem => {
-    const personName = contentItem.PersonName?.[0];
+    const personName = contentItem.PersonName?.[0]?.Alphabetic;
     return personName ? utils.formatPN(personName) : undefined;
   },
   DATE: contentItem => {

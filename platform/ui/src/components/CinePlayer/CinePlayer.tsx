@@ -120,7 +120,7 @@ const CinePlayer: React.FC<CinePlayerProps> = ({
             onClick={() => handleSetFrameRate(frameRate - 1)}
             data-cy={'cine-player-left-arrow'}
           >
-            <Icons.ChevronLeft />
+            <Icons.ArrowLeft />
           </div>
           <Tooltip
             position="top"
@@ -152,7 +152,7 @@ const CinePlayer: React.FC<CinePlayerProps> = ({
             onClick={() => handleSetFrameRate(frameRate + 1)}
             data-cy={'cine-player-right-arrow'}
           >
-            <Icons.ChevronRight />
+            <Icons.ArrowRight />
           </div>
         </div>
         <Icons.Close

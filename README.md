@@ -171,8 +171,7 @@ also supports a number of commands that can be found in their respective
 | Yarn Commands                | Description                                                   |
 | ---------------------------- | ------------------------------------------------------------- |
 | **Develop**                  |                                                               |
-| `dev`              | Default development experience for Viewer                     |
-| `dev:fast`             | Our experimental fast dev mode that uses rsbuild instead of webpack                     |
+| `dev` or `start`             | Default development experience for Viewer                     |
 | `test:unit`                  | Jest multi-project test runner; overall coverage              |
 | **Deploy**                   |                                                               |
 | `build`\*                    | Builds production output for our PWA Viewer                   |  |

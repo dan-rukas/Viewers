@@ -15,6 +15,7 @@ const ohif = {
   wsiSopClassHandler:
     '@ohif/extension-cornerstone.sopClassHandlerModule.DicomMicroscopySopClassHandler',
   thumbnailList: '@ohif/extension-default.panelModule.seriesList',
+  measurements: '@ohif/extension-default.panelModule.measurements',
 };
 
 const tracked = {
@@ -45,7 +46,6 @@ const dicomSeg = {
 
 const cornerstone = {
   panel: '@ohif/extension-cornerstone.panelModule.panelSegmentation',
-  measurements: '@ohif/extension-cornerstone.panelModule.panelMeasurement',
 };
 
 const dicomPmap = {
@@ -150,8 +150,7 @@ function modeFactory() {
               // leftPanels: [ohif.thumbnailList],
               // rightPanels: [dicomSeg.panel, ohif.measurements],
               leftPanels: [tracked.thumbnailList],
-              // Can use cornerstone.measurements for all measurements
-              rightPanels: [cornerstone.panel, tracked.measurements, cornerstone.measurements],
+              rightPanels: [cornerstone.panel, tracked.measurements],
               // rightPanelClosed: true, // optional prop to start with collapse panels
               viewports: [
                 {

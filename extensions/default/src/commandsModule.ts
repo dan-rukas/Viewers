@@ -1,4 +1,4 @@
-import { Types, DicomMetadataStore } from '@ohif/core';
+import { Types } from '@ohif/core';
 
 import { ContextMenuController, defaultContextMenu } from './CustomizableContextMenu';
 import DicomTagBrowser from './DicomTagBrowser/DicomTagBrowser';
@@ -16,7 +16,6 @@ import { useHangingProtocolStageIndexStore } from './stores/useHangingProtocolSt
 import { useToggleHangingProtocolStore } from './stores/useToggleHangingProtocolStore';
 import { useViewportsByPositionStore } from './stores/useViewportsByPositionStore';
 import { useToggleOneUpViewportGridStore } from './stores/useToggleOneUpViewportGridStore';
-import requestDisplaySetCreationForStudy from './Panels/requestDisplaySetCreationForStudy';
 
 export type HangingProtocolParams = {
   protocolId?: string;
@@ -34,7 +33,6 @@ export type UpdateViewportDisplaySetParams = {
 const commandsModule = ({
   servicesManager,
   commandsManager,
-  extensionManager,
 }: Types.Extensions.ExtensionParams): Types.Extensions.CommandsModule => {
   const {
     customizationService,
@@ -43,56 +41,12 @@ const commandsModule = ({
     uiNotificationService,
     viewportGridService,
     displaySetService,
-    multiMonitorService,
   } = servicesManager.services;
 
   // Define a context menu controller for use with any context menus
   const contextMenuController = new ContextMenuController(servicesManager, commandsManager);
 
   const actions = {
-    /**
-     * Runs a command in multi-monitor mode.  No-op if not multi-monitor.
-     */
-    multimonitor: async options => {
-      const { screenDelta, StudyInstanceUID, commands, hashParams } = options;
-      if (multiMonitorService.numberOfScreens < 2) {
-        return options.fallback?.(options);
-      }
-
-      const newWindow = await multiMonitorService.launchWindow(
-        StudyInstanceUID,
-        screenDelta,
-        hashParams
-      );
-
-      // Only run commands if we successfully got a window with a commands manager
-      if (newWindow && commands) {
-        // Todo: fix this properly, but it takes time for the new window to load
-        // and then the commandsManager is available for it
-        setTimeout(() => {
-          multiMonitorService.run(screenDelta, commands, options);
-        }, 1000);
-      }
-    },
-
-    /**
-     * Ensures that the specified study is available for display
-     * Then, if commands is specified, runs the given commands list/instance
-     */
-    loadStudy: async options => {
-      const { StudyInstanceUID } = options;
-      const displaySets = displaySetService.getActiveDisplaySets();
-      const isActive = displaySets.find(ds => ds.StudyInstanceUID === StudyInstanceUID);
-      if (isActive) {
-        return;
-      }
-      const [dataSource] = extensionManager.getActiveDataSource();
-      await requestDisplaySetCreationForStudy(dataSource, displaySetService, StudyInstanceUID);
-
-      const study = DicomMetadataStore.getStudy(StudyInstanceUID);
-      hangingProtocolService.addStudy(study);
-    },
-
     /**
      * Show the context menu.
      * @param options.menuId defines the menu name to lookup, from customizationService
@@ -181,13 +135,11 @@ const commandsModule = ({
      */
     setHangingProtocol: ({
       activeStudyUID = '',
-      StudyInstanceUID = '',
       protocolId,
       stageId,
       stageIndex,
       reset = false,
     }: HangingProtocolParams): boolean => {
-      const toUseStudyInstanceUID = activeStudyUID || StudyInstanceUID;
       try {
         // Stores in the state the display set selector id to displaySetUID mapping
         // Pass in viewportId for the active viewport.  This item will get set as
@@ -206,7 +158,7 @@ const commandsModule = ({
           }
         } else if (stageIndex === undefined && stageId === undefined) {
           // Re-set the same stage as was previously used
-          const hangingId = `${toUseStudyInstanceUID || hpInfo.activeStudyUID}:${protocolId}`;
+          const hangingId = `${activeStudyUID || hpInfo.activeStudyUID}:${protocolId}`;
           stageIndex = hangingProtocolStageIndexMap[hangingId]?.stageIndex;
         }
 
@@ -217,9 +169,11 @@ const commandsModule = ({
             stageIndex,
           });
 
-        const activeStudyChanged = hangingProtocolService.setActiveStudyUID(toUseStudyInstanceUID);
+        if (activeStudyUID) {
+          hangingProtocolService.setActiveStudyUID(activeStudyUID);
+        }
 
-        const storedHanging = `${toUseStudyInstanceUID || hangingProtocolService.getState().activeStudyUID}:${protocolId}:${
+        const storedHanging = `${hangingProtocolService.getState().activeStudyUID}:${protocolId}:${
           useStageIdx || 0
         }`;
 
@@ -227,25 +181,9 @@ const commandsModule = ({
         const restoreProtocol = !reset && viewportGridState[storedHanging];
 
         if (
-          reset ||
-          (activeStudyChanged &&
-            !viewportGridState[storedHanging] &&
-            stageIndex === undefined &&
-            stageId === undefined)
-        ) {
-          // Run the hanging protocol fresh, re-using the existing study data
-          // This is done on reset or when the study changes and we haven't yet
-          // applied it, and don't specify exact stage to use.
-          const displaySets = displaySetService.getActiveDisplaySets();
-          const activeStudy = {
-            StudyInstanceUID: toUseStudyInstanceUID,
-            displaySets,
-          };
-          hangingProtocolService.run(activeStudy, protocolId);
-        } else if (
           protocolId === hpInfo.protocolId &&
           useStageIdx === hpInfo.stageIndex &&
-          !toUseStudyInstanceUID
+          !activeStudyUID
         ) {
           // Clear the HP setting to reset them
           hangingProtocolService.setProtocol(protocolId, {
@@ -266,7 +204,7 @@ const commandsModule = ({
         // Do this after successfully applying the update
         const { setDisplaySetSelector } = useDisplaySetSelectorStore.getState();
         setDisplaySetSelector(
-          `${toUseStudyInstanceUID || hpInfo.activeStudyUID}:activeDisplaySet:0`,
+          `${activeStudyUID || hpInfo.activeStudyUID}:activeDisplaySet:0`,
           null
         );
         return true;
@@ -624,15 +562,27 @@ const commandsModule = ({
   };
 
   const definitions = {
-    multimonitor: actions.multimonitor,
-    loadStudy: actions.loadStudy,
-    showContextMenu: actions.showContextMenu,
-    closeContextMenu: actions.closeContextMenu,
-    clearMeasurements: actions.clearMeasurements,
-    displayNotification: actions.displayNotification,
-    setHangingProtocol: actions.setHangingProtocol,
-    toggleHangingProtocol: actions.toggleHangingProtocol,
-    navigateHistory: actions.navigateHistory,
+    showContextMenu: {
+      commandFn: actions.showContextMenu,
+    },
+    closeContextMenu: {
+      commandFn: actions.closeContextMenu,
+    },
+    clearMeasurements: {
+      commandFn: actions.clearMeasurements,
+    },
+    displayNotification: {
+      commandFn: actions.displayNotification,
+    },
+    setHangingProtocol: {
+      commandFn: actions.setHangingProtocol,
+    },
+    toggleHangingProtocol: {
+      commandFn: actions.toggleHangingProtocol,
+    },
+    navigateHistory: {
+      commandFn: actions.navigateHistory,
+    },
     nextStage: {
       commandFn: actions.deltaStage,
       options: { direction: 1 },
@@ -641,10 +591,18 @@ const commandsModule = ({
       commandFn: actions.deltaStage,
       options: { direction: -1 },
     },
-    setViewportGridLayout: actions.setViewportGridLayout,
-    toggleOneUp: actions.toggleOneUp,
-    openDICOMTagViewer: actions.openDICOMTagViewer,
-    updateViewportDisplaySet: actions.updateViewportDisplaySet,
+    setViewportGridLayout: {
+      commandFn: actions.setViewportGridLayout,
+    },
+    toggleOneUp: {
+      commandFn: actions.toggleOneUp,
+    },
+    openDICOMTagViewer: {
+      commandFn: actions.openDICOMTagViewer,
+    },
+    updateViewportDisplaySet: {
+      commandFn: actions.updateViewportDisplaySet,
+    },
   };
 
   return {

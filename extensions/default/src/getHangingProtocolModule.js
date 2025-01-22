@@ -1,4 +1,4 @@
-import { hpMN, hpMN8 } from './hangingprotocols/hpMNGrid';
+import hpMNGrid from './hangingprotocols/hpMNGrid';
 import hpMNCompare from './hangingprotocols/hpCompare';
 import hpMammography from './hangingprotocols/hpMammo';
 import hpScale from './hangingprotocols/hpScale';
@@ -142,12 +142,8 @@ function getHangingProtocolModule() {
     },
     // Create a MxN hanging protocol available by default
     {
-      name: hpMN.id,
-      protocol: hpMN,
-    },
-    {
-      name: hpMN8.id,
-      protocol: hpMN8,
+      name: hpMNGrid.id,
+      protocol: hpMNGrid,
     },
   ];
 }

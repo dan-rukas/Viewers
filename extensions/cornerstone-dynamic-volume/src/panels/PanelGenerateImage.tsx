@@ -218,6 +218,10 @@ export default function PanelGenerateImage({ servicesManager, commandsManager }:
     setTimePointsRangeToUseForGenerate(newValues);
   }
 
+  if (!dynamicVolume || timePointsRange.length === 0) {
+    return null;
+  }
+
   return (
     <DynamicVolumeControls
       fps={frameRate}

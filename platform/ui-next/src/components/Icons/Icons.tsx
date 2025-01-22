@@ -183,9 +183,7 @@ import Magnifier from './Sources/Magnifier';
 import LoadingOHIFMark from './Sources/LoadingOHIFMark';
 import ArrowLeftBold from './Sources/ArrowLeftBold';
 import Pencil from './Sources/Pencil';
-import NotificationWarning from './Sources/NotificationWarning';
-import ArrowRight from './Sources/ArrowRight';
-import ChevronLeft from './Sources/ChevronLeft';
+//
 //
 //
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -202,157 +200,157 @@ const ImageWrapper = ({ src, ...props }: { src: string } & ImageIconProps) => {
 };
 
 export const Icons = {
-  'CT-AAA': (props: ImageIconProps) => (
+  CTAAA: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTAAA}
       {...props}
     />
   ),
-  'CT-AAA2': (props: ImageIconProps) => (
+  CTAAA2: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTAAA2}
       {...props}
     />
   ),
-  'CT-Air': (props: ImageIconProps) => (
+  CTAir: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTAir}
       {...props}
     />
   ),
-  'CT-Bone': (props: ImageIconProps) => (
+  CTBone: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTBone}
       {...props}
     />
   ),
-  'CT-Bones': (props: ImageIconProps) => (
+  CTBones: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTBones}
       {...props}
     />
   ),
-  'CT-Cardiac': (props: ImageIconProps) => (
+  CTCardiac: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTCardiac}
       {...props}
     />
   ),
-  'CT-Cardiac2': (props: ImageIconProps) => (
+  CTCardiac2: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTCardiac2}
       {...props}
     />
   ),
-  'CT-Cardiac3': (props: ImageIconProps) => (
+  CTCardiac3: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTCardiac3}
       {...props}
     />
   ),
-  'CT-Chest-Contrast-Enhanced': (props: ImageIconProps) => (
+  CTChestContrastEnhanced: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTChestContrastEnhanced}
       {...props}
     />
   ),
-  'CT-Chest-Vessels': (props: ImageIconProps) => (
+  CTChestVessels: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTChestVessels}
       {...props}
     />
   ),
-  'CT-Coronary-Arteries': (props: ImageIconProps) => (
+  CTCoronaryArteries: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTCoronaryArteries}
       {...props}
     />
   ),
-  'CT-Coronary-Arteries-2': (props: ImageIconProps) => (
+  CTCoronaryArteries2: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTCoronaryArteries2}
       {...props}
     />
   ),
-  'CT-Coronary-Arteries-3': (props: ImageIconProps) => (
+  CTCoronaryArteries3: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTCoronaryArteries3}
       {...props}
     />
   ),
-  'CT-Cropped-Volume-Bone': (props: ImageIconProps) => (
+  CTCroppedVolumeBone: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTCroppedVolumeBone}
       {...props}
     />
   ),
-  'CT-Fat': (props: ImageIconProps) => (
+  CTFat: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTFat}
       {...props}
     />
   ),
-  'CT-Liver-Vasculature': (props: ImageIconProps) => (
+  CTLiverVasculature: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTLiverVasculature}
       {...props}
     />
   ),
-  'CT-Lung': (props: ImageIconProps) => (
+  CTLung: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTLung}
       {...props}
     />
   ),
-  'CT-MIP': (props: ImageIconProps) => (
+  CTMIP: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTMIP}
       {...props}
     />
   ),
-  'CT-Muscle': (props: ImageIconProps) => (
+  CTMuscle: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTMuscle}
       {...props}
     />
   ),
-  'CT-Pulmonary-Arteries': (props: ImageIconProps) => (
+  CTPulmonaryArteries: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTPulmonaryArteries}
       {...props}
     />
   ),
-  'CT-Soft-Tissue': (props: ImageIconProps) => (
+  CTSoftTissue: (props: ImageIconProps) => (
     <ImageWrapper
       src={CTSoftTissue}
       {...props}
     />
   ),
-  'DTI-FA-Brain': (props: ImageIconProps) => (
+  DTIFABrain: (props: ImageIconProps) => (
     <ImageWrapper
       src={DTIFABrain}
       {...props}
     />
   ),
-  'MR-Angio': (props: ImageIconProps) => (
+  MRAngio: (props: ImageIconProps) => (
     <ImageWrapper
       src={MRAngio}
       {...props}
     />
   ),
-  'MR-Default': (props: ImageIconProps) => (
+  MRDefault: (props: ImageIconProps) => (
     <ImageWrapper
       src={MRDefault}
       {...props}
     />
   ),
-  'MR-MIP': (props: ImageIconProps) => (
+  MRMIP: (props: ImageIconProps) => (
     <ImageWrapper
       src={MRMIP}
       {...props}
     />
   ),
-  'MR-T2-Brain': (props: ImageIconProps) => (
+  MRT2Brain: (props: ImageIconProps) => (
     <ImageWrapper
       src={MRT2Brain}
       {...props}
@@ -482,23 +480,6 @@ export const Icons = {
   ViewportViews,
   ChevronClosed,
   ChevronOpen,
-  ChevronRight: (props: IconProps) => {
-    return (
-      <ChevronLeft
-        {...props}
-        className={`${props.className || ''} rotate-180`.trim()}
-      />
-    );
-  },
-  ChevronLeft,
-  ChevronDown: (props: IconProps) => {
-    return (
-      <ChevronLeft
-        {...props}
-        className={`${props.className || ''} -rotate-90`.trim()}
-      />
-    );
-  },
   Alert,
   AlertOutline,
   NotificationInfo,
@@ -513,13 +494,20 @@ export const Icons = {
   Link,
   LoadingOHIFMark,
   ArrowLeft: ChevronClosed,
-  ArrowRight,
+  ArrowRight: (props: IconProps) => {
+    return (
+      <ChevronClosed
+        {...props}
+        className="rotate-180"
+      />
+    );
+  },
   ArrowLeftBold,
   ArrowRightBold: (props: IconProps) => {
     return (
       <ArrowLeftBold
         {...props}
-        className={`${props.className || ''} rotate-180`.trim()}
+        className="rotate-180"
       />
     );
   },
@@ -527,7 +515,7 @@ export const Icons = {
     return (
       <ChevronOpen
         {...props}
-        className={`${props.className || ''} -rotate-90`.trim()}
+        className="rotate-180"
       />
     );
   },
@@ -663,7 +651,6 @@ export const Icons = {
   'status-alert': (props: IconProps) => Alert(props),
   info: (props: IconProps) => Info(props),
   'notifications-info': (props: IconProps) => NotificationInfo(props),
-  'notificationwarning-diamond': (props: IconProps) => NotificationWarning(props),
   'content-prev': (props: IconProps) => ContentPrev(props),
   'content-next': (props: IconProps) => ContentNext(props),
   'icon-settings': (props: IconProps) => Settings(props),
@@ -685,10 +672,6 @@ export const Icons = {
   'layout-common-2x3': (props: IconProps) => LayoutCommon2x3(props),
   pencil: (props: IconProps) => Pencil(props),
   'icon-list-view': (props: IconProps) => ListView(props),
-  'chevron-menu': 'chevron-down',
-  'icon-status-alert': (props: IconProps) => Alert(props),
-  'info-link': (props: IconProps) => InfoLink(props),
-  'launch-info': (props: IconProps) => LaunchInfo(props),
   clipboard: (props: IconProps) => Clipboard(props),
 
   /** Adds an icon to the set of icons */

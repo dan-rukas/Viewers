@@ -5,14 +5,12 @@ import { metaData, Enums, utilities } from '@cornerstonejs/core';
 import type { ImageSliceData } from '@cornerstonejs/core/types';
 import { ViewportOverlay } from '@ohif/ui';
 import type { InstanceMetadata } from '@ohif/core/src/types';
-import { formatDICOMDate, formatDICOMTime, formatNumberPrecision } from './utils';
-import { utils } from '@ohif/core';
+import { formatPN, formatDICOMDate, formatDICOMTime, formatNumberPrecision } from './utils';
 import { StackViewportData, VolumeViewportData } from '../../types/CornerstoneCacheService';
 
 import './CustomizableViewportOverlay.css';
 
 const EPSILON = 1e-4;
-const { formatPN } = utils;
 
 type ViewportData = StackViewportData | VolumeViewportData;
 

@@ -11,6 +11,7 @@ function LayoutPreset({
   classNames: classNameProps,
   disabled,
 }) {
+  console.debug('🚀 ~ icon:', icon);
   return (
     <div
       className={classNames(classNameProps, disabled && 'ohif-disabled')}

@@ -6,8 +6,7 @@ import { HangingProtocolService, CommandsManager } from '@ohif/core';
 import { useAppConfig } from '@state';
 import ViewerHeader from './ViewerHeader';
 import SidePanelWithServices from '../Components/SidePanelWithServices';
-import { Onboarding, ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@ohif/ui-next';
-import useResizablePanels from './ResizablePanelsHook';
+import { Onboarding } from '@ohif/ui-next';
 
 function ViewerLayout({
   // From Extension Module Params
@@ -20,8 +19,6 @@ function ViewerLayout({
   ViewportGridComp,
   leftPanelClosed = false,
   rightPanelClosed = false,
-  leftPanelResizable = false,
-  rightPanelResizable = false,
 }: withAppTypes): React.FunctionComponent {
   const [appConfig] = useAppConfig();
 
@@ -37,21 +34,6 @@ function ViewerLayout({
   const [hasLeftPanels, setHasLeftPanels] = useState(hasPanels('left'));
   const [leftPanelClosedState, setLeftPanelClosed] = useState(leftPanelClosed);
   const [rightPanelClosedState, setRightPanelClosed] = useState(rightPanelClosed);
-
-  const [
-    leftPanelProps,
-    rightPanelProps,
-    resizablePanelGroupProps,
-    resizableLeftPanelProps,
-    resizableViewportGridPanelProps,
-    resizableRightPanelProps,
-    onHandleDragging,
-  ] = useResizablePanels(
-    leftPanelClosed,
-    setLeftPanelClosed,
-    rightPanelClosed,
-    setRightPanelClosed
-  );
 
   /**
    * Set body classes (tailwindcss) that don't allow vertical
@@ -141,56 +123,31 @@ function ViewerLayout({
       >
         <React.Fragment>
           {showLoadingIndicator && <LoadingIndicatorProgress className="h-full w-full bg-black" />}
-          <ResizablePanelGroup {...resizablePanelGroupProps}>
-            {/* LEFT SIDEPANELS */}
-
-            {hasLeftPanels ? (
-              <>
-                <ResizablePanel {...resizableLeftPanelProps}>
-                  <SidePanelWithServices
-                    side="left"
-                    isExpanded={!leftPanelClosedState}
-                    servicesManager={servicesManager}
-                    {...leftPanelProps}
-                  />
-                </ResizablePanel>
-                <ResizableHandle
-                  onDragging={onHandleDragging}
-                  disabled={!leftPanelResizable}
-                  className="!w-0"
-                />
-              </>
-            ) : null}
-            {/* TOOLBAR + GRID */}
-            <ResizablePanel {...resizableViewportGridPanelProps}>
-              <div className="flex h-full flex-1 flex-col">
-                <div className="relative flex h-full flex-1 items-center justify-center overflow-hidden bg-black">
-                  <ViewportGridComp
-                    servicesManager={servicesManager}
-                    viewportComponents={viewportComponents}
-                    commandsManager={commandsManager}
-                  />
-                </div>
-              </div>
-            </ResizablePanel>
-            {hasRightPanels ? (
-              <>
-                <ResizableHandle
-                  onDragging={onHandleDragging}
-                  disabled={!rightPanelResizable}
-                  className="!w-0"
-                />
-                <ResizablePanel {...resizableRightPanelProps}>
-                  <SidePanelWithServices
-                    side="right"
-                    isExpanded={!rightPanelClosedState}
-                    servicesManager={servicesManager}
-                    {...rightPanelProps}
-                  />
-                </ResizablePanel>
-              </>
-            ) : null}
-          </ResizablePanelGroup>
+          {/* LEFT SIDEPANELS */}
+          {hasLeftPanels ? (
+            <SidePanelWithServices
+              side="left"
+              activeTabIndex={leftPanelClosedState ? null : 0}
+              servicesManager={servicesManager}
+            />
+          ) : null}
+          {/* TOOLBAR + GRID */}
+          <div className="flex h-full flex-1 flex-col">
+            <div className="relative flex h-full flex-1 items-center justify-center overflow-hidden bg-black">
+              <ViewportGridComp
+                servicesManager={servicesManager}
+                viewportComponents={viewportComponents}
+                commandsManager={commandsManager}
+              />
+            </div>
+          </div>
+          {hasRightPanels ? (
+            <SidePanelWithServices
+              side="right"
+              activeTabIndex={rightPanelClosedState ? null : 0}
+              servicesManager={servicesManager}
+            />
+          ) : null}
         </React.Fragment>
       </div>
       <Onboarding />

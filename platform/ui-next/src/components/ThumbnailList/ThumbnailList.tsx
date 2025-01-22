@@ -10,7 +10,7 @@ const ThumbnailList = ({
   onClickUntrack,
   activeDisplaySetInstanceUIDs = [],
   viewPreset,
-  ThumbnailMenuItems,
+  onThumbnailContextMenu,
 }: withAppTypes) => {
   return (
     <div
@@ -34,9 +34,9 @@ const ThumbnailList = ({
             modality,
             componentType,
             countIcon,
+            isTracked,
             canReject,
             onReject,
-            isTracked,
             imageSrc,
             messages,
             imageAltText,
@@ -56,8 +56,6 @@ const ThumbnailList = ({
                 imageAltText={imageAltText}
                 messages={messages}
                 isActive={isActive}
-                canReject={canReject}
-                onReject={onReject}
                 modality={modality}
                 viewPreset={componentType === 'thumbnailNoImage' ? 'list' : viewPreset}
                 thumbnailType={componentType}
@@ -67,7 +65,9 @@ const ThumbnailList = ({
                 loadingProgress={loadingProgress}
                 onClickUntrack={() => onClickUntrack(displaySetInstanceUID)}
                 isHydratedForDerivedDisplaySet={isHydratedForDerivedDisplaySet}
-                ThumbnailMenuItems={ThumbnailMenuItems}
+                canReject={canReject}
+                onReject={onReject}
+                onThumbnailContextMenu={onThumbnailContextMenu}
               />
             );
           }

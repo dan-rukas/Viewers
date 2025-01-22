@@ -43,7 +43,6 @@ describe('Top level exports', () => {
       'progressTrackingUtils',
       'uuidv4',
       'addAccessors',
-      'MeasurementFilters',
     ].sort();
 
     const exports = Object.keys(utils.default).sort();

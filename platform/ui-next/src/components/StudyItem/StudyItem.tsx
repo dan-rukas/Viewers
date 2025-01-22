@@ -19,9 +19,7 @@ const StudyItem = ({
   onDoubleClickThumbnail,
   onClickUntrack,
   viewPreset = 'thumbnails',
-  ThumbnailMenuItems,
-  StudyMenuItems,
-  StudyInstanceUID,
+  onThumbnailContextMenu,
 }: withAppTypes) => {
   return (
     <Accordion
@@ -34,24 +32,19 @@ const StudyItem = ({
       defaultValue={isActive ? 'study-item' : undefined}
     >
       <AccordionItem value="study-item">
-        <AccordionTrigger className={classnames('hover:bg-accent bg-popover group rounded')}>
+        <AccordionTrigger className={classnames('hover:bg-accent bg-popover rounded')}>
           <div className="flex h-[40px] flex-1 flex-row">
-            <div className="flex w-full flex-row items-center">
+            <div className="flex w-full flex-row items-center justify-between">
               <div className="flex flex-col items-start text-[13px]">
                 <div className="text-white">{date}</div>
                 <div className="text-muted-foreground h-[18px] max-w-[160px] overflow-hidden truncate whitespace-nowrap">
                   {description}
                 </div>
               </div>
-              <div className="text-muted-foreground ml-auto flex flex-col items-end text-[12px]">
+              <div className="text-muted-foreground mr-2 flex flex-col items-end text-[12px]">
                 <div className="max-w-[150px] overflow-hidden text-ellipsis">{modalities}</div>
                 <div>{numInstances}</div>
               </div>
-              {StudyMenuItems && (
-                <div className="ml-2 flex items-center">
-                  <StudyMenuItems StudyInstanceUID={StudyInstanceUID} />
-                </div>
-              )}
             </div>
           </div>
         </AccordionTrigger>
@@ -68,7 +61,7 @@ const StudyItem = ({
               onThumbnailDoubleClick={onDoubleClickThumbnail}
               onClickUntrack={onClickUntrack}
               viewPreset={viewPreset}
-              ThumbnailMenuItems={ThumbnailMenuItems}
+              onThumbnailContextMenu={onThumbnailContextMenu}
             />
           )}
         </AccordionContent>
@@ -82,6 +75,7 @@ StudyItem.propTypes = {
   description: PropTypes.string,
   modalities: PropTypes.string.isRequired,
   numInstances: PropTypes.number.isRequired,
+  trackedSeries: PropTypes.number,
   isActive: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   isExpanded: PropTypes.bool,
@@ -91,8 +85,6 @@ StudyItem.propTypes = {
   onDoubleClickThumbnail: PropTypes.func,
   onClickUntrack: PropTypes.func,
   viewPreset: PropTypes.string,
-  StudyMenuItems: PropTypes.func,
-  StudyInstanceUID: PropTypes.string,
 };
 
 export { StudyItem };

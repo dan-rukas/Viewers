@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { Separator } from '@ohif/ui-next';
 import { PanelStudyBrowserHeader } from './PanelStudyBrowserHeader';
 import { defaultActionIcons, defaultViewPresets } from './constants';
-import MoreDropdownMenu from '../../Components/MoreDropdownMenu';
 
 const { sortStudyInstances, formatDate, createStudyBrowserTabs } = utils;
 
@@ -281,6 +280,10 @@ function PanelStudyBrowser({
 
   const activeDisplaySetInstanceUIDs = viewports.get(activeViewportId)?.displaySetInstanceUIDs;
 
+  const onThumbnailContextMenu = (commandName, options) => {
+    commandsManager.runCommand(commandName, options);
+  };
+
   return (
     <>
       <>
@@ -301,26 +304,16 @@ function PanelStudyBrowser({
         tabs={tabs}
         servicesManager={servicesManager}
         activeTabName={activeTabName}
+        onDoubleClickThumbnail={onDoubleClickThumbnailHandler}
+        activeDisplaySetInstanceUIDs={activeDisplaySetInstanceUIDs}
         expandedStudyInstanceUIDs={expandedStudyInstanceUIDs}
         onClickStudy={_handleStudyClick}
         onClickTab={clickedTabName => {
           setActiveTabName(clickedTabName);
         }}
-        onClickThumbnail={() => {}}
-        onDoubleClickThumbnail={onDoubleClickThumbnailHandler}
-        activeDisplaySetInstanceUIDs={activeDisplaySetInstanceUIDs}
         showSettings={actionIcons.find(icon => icon.id === 'settings').value}
         viewPresets={viewPresets}
-        ThumbnailMenuItems={MoreDropdownMenu({
-          commandsManager,
-          servicesManager,
-          menuItemsKey: 'studyBrowser.thumbnailMenuItems',
-        })}
-        StudyMenuItems={MoreDropdownMenu({
-          commandsManager,
-          servicesManager,
-          menuItemsKey: 'studyBrowser.studyMenuItems',
-        })}
+        onThumbnailContextMenu={onThumbnailContextMenu}
       />
     </>
   );

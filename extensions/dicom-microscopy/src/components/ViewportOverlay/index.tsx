@@ -3,10 +3,7 @@ import classnames from 'classnames';
 
 import listComponentGenerator from './listComponentGenerator';
 import './ViewportOverlay.css';
-import { formatDICOMDate, formatDICOMTime, formatNumberPrecision } from './utils';
-import { utils } from '@ohif/core';
-
-const { formatPN } = utils;
+import { formatDICOMDate, formatDICOMTime, formatNumberPrecision, formatPN } from './utils';
 
 interface OverlayItem {
   id: string;
