@@ -1,42 +1,11 @@
-/*****************************************************
- * File: platform/ui-next/src/components/ToolSettings/InputRange.tsx
- *
- * Purpose:
- *   - A single-handle slider for numeric input, similar
- *     to the legacy "InputRange" in /platform/ui.
- *   - Supports an optional numeric input box and a label
- *     on the left or right side.
- *
- * Usage:
- *   <InputRange
- *     value={someNumber}
- *     onChange={val => console.log('new val:', val)}
- *     minValue={0}
- *     maxValue={100}
- *     step={1}
- *     label="Radius (mm)"
- *     showLabel={true}
- *     labelPosition="right"
- *     allowNumberEdit={true}
- *   />
- *
- *****************************************************/
-
 import React, { useCallback, useState, useEffect } from 'react';
 import { Slider } from '../Slider'; // from your Radix-based slider in ui-next
 import { Input } from '../Input'; // from ui-next
 import { Label } from '../Label'; // from ui-next
 
-/** If you want consistent utility functions or class merges */
 import { cn } from '../../lib/utils';
 
-/**
- * InputRangeProps
- * ---------------
- * Below are typical props that mirror the old InputRange functionality.
- * Adjust or rename them as you see fit to match your codebase.
- */
-interface InputRangeProps {
+interface RowInputRangeProps {
   /** Current slider value */
   value: number;
   /** Called when the slider value changes */
@@ -65,14 +34,7 @@ interface InputRangeProps {
   containerClassName?: string;
 }
 
-/**
- * InputRange
- * ----------
- * A single-handle slider + optional numeric text input + label.
- * This replicates the older logic from the legacy InputRange, but
- * uses `@radix-ui/react-slider` under the hood for the slider.
- */
-export const InputRange: React.FC<InputRangeProps> = ({
+export const RowInputRange: React.FC<RowInputRangeProps> = ({
   value,
   onChange,
   minValue = 0,
@@ -164,14 +126,6 @@ export const InputRange: React.FC<InputRangeProps> = ({
     return <span>{internalValue}</span>;
   };
 
-  /**
-   * The UI layout:
-   * We'll do something like:
-   *   1) label/number input (left) -- slider -- (possibly label/number input right)
-   * or
-   *   slider -- label
-   * We'll put them in a row, flex. We'll handle "left" vs "right" logic.
-   */
   return (
     <div className={cn('flex items-center space-x-2', containerClassName)}>
       {/* If label is on the 'left', we render here */}
@@ -193,4 +147,4 @@ export const InputRange: React.FC<InputRangeProps> = ({
   );
 };
 
-export default InputRange;
+export default RowInputRange;

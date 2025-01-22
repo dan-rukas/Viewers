@@ -93,7 +93,7 @@ import {
   ToolButton,
   ToolButtonSmall,
   ToolButtonList,
-  InputRange,
+  RowInputRange,
   RowSegmentedControl,
   RowDoubleRange,
 } from './components';
@@ -205,7 +205,7 @@ export {
   ToolButton,
   ToolButtonSmall,
   ToolButtonList,
-  InputRange,
+  RowInputRange,
   RowSegmentedControl,
   RowDoubleRange,
 };

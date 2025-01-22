@@ -1,14 +1,6 @@
-/**
- * File: platform/ui-next/src/components/ToolSettings/RowDoubleRange.tsx
- */
-
 import React, { useEffect, useState } from 'react';
 import { DoubleSlider } from '@ohif/ui-next';
 
-/**
- * Props match the old InputDoubleRange usage in ToolSettings.tsx.
- * They ensure the new component can be a drop-in replacement.
- */
 interface RowDoubleRangeProps {
   /**
    * The current range values [start, end].
