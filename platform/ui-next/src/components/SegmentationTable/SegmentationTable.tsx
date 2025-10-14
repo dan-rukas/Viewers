@@ -64,6 +64,13 @@ export const SegmentationTableRoot = (props: SegmentationTableProps) => {
     renderOutline = props.renderOutline !== undefined ? props.renderOutline : true,
   } = activeRepresentation?.styles ?? {};
 
+  // Is this table's representation type currently the active type?
+  // If no type is specified for the table, treat it as active for styling purposes.
+  const isTypeActive =
+    !('segmentationRepresentationType' in contextProps) ||
+    !contextProps.segmentationRepresentationType ||
+    (activeRepresentation?.type === contextProps.segmentationRepresentationType);
+
   // Check if SegmentationTableConfig is present in children
   const hasConfigComponent = Children.toArray(children).some(
     child => isValidElement(child) && child.type === SegmentationTableConfig
@@ -121,7 +128,14 @@ export const SegmentationTableRoot = (props: SegmentationTableProps) => {
             </div>
           )}
         </PanelSection.Header>
-        <PanelSection.Content>{processedChildren}</PanelSection.Content>
+        <PanelSection.Content>
+          <div
+            className="group/type"
+            data-active={isTypeActive ? 'true' : 'false'}
+          >
+            {processedChildren}
+          </div>
+        </PanelSection.Content>
       </PanelSection>
     </SegmentationTableProvider>
   );

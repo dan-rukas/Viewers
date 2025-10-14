@@ -11,15 +11,20 @@ import { DropdownMenu, DropdownMenuTrigger } from '../DropdownMenu';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../Tooltip/Tooltip';
 import { ScrollArea } from '../../components';
 import { useDynamicMaxHeight } from '../../hooks/useDynamicMaxHeight';
+import { cn } from '../../lib/utils';
 
 // The Header container component
 const SegmentationExpandedHeader = ({ children }: { children: React.ReactNode }) => {
-  const { segmentation, isActive } = useSegmentationExpanded('SegmentationExpandedHeader');
+  const { segmentation } = useSegmentationExpanded('SegmentationExpandedHeader');
   const { onSegmentationClick } = useSegmentationTableContext('SegmentationExpandedHeader');
 
   return (
     <PanelSection.Header
-      className={`bg-muted my-0 rounded-none border-l-[2px] pl-0 ${isActive ? 'border-primary/70' : 'border-primary/35'}`}
+      className={cn(
+        'bg-muted my-0 rounded-none border-l-[2px] pl-0',
+        'group-data-[state=active]/seg:border-primary/70',
+        'group-data-[state=inactive]/seg:border-primary/35'
+      )}
       onClick={e => {
         e.stopPropagation();
         onSegmentationClick(segmentation.segmentationId);
@@ -81,10 +86,13 @@ const SegmentationExpandedInfo = () => {
 
 // Content component
 const SegmentationExpandedContent = ({ children }: { children: React.ReactNode }) => {
-  const { isActive } = useSegmentationExpanded('SegmentationExpandedContent');
   return (
     <PanelSection.Content
-      className={`border-l-[2px] py-0 pb-6 pl-[8px] ${isActive ? 'border-primary/70' : 'border-primary/35'}`}
+      className={cn(
+        'border-l-[2px] py-0 pb-6 pl-[8px]',
+        'group-data-[state=active]/seg:border-primary/70',
+        'group-data-[state=inactive]/seg:border-primary/35'
+      )}
     >
       <div className="segmentation-expanded-section">{children}</div>
     </PanelSection.Content>
@@ -133,7 +141,13 @@ const SegmentationExpandedRoot = ({ children }) => {
                   isActive={isActive}
                   onSegmentationClick={onSegmentationClick}
                 >
-                  {children}
+                  {/* Group trick wrapper: parent holds activeness */}
+                  <div
+                    className="group/seg"
+                    data-state={isActive ? 'active' : 'inactive'}
+                  >
+                    {children}
+                  </div>
                 </SegmentationExpandedProvider>
               </PanelSection>
             );

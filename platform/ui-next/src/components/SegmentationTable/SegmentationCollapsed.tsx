@@ -162,7 +162,13 @@ const SegmentationCollapsedRoot: React.FC<{ children?: React.ReactNode }> = ({
           isActive={true}
           onSegmentationClick={() => {}} // No-op since it's already the active one
         >
-          {children}
+          {/* Parent group for activeness: collapsed view is always active */}
+          <div
+            className="group/seg"
+            data-state="active"
+          >
+            {children}
+          </div>
         </SegmentationExpandedProvider>
       </PanelSection>
     </div>
