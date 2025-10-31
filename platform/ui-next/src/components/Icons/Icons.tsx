@@ -34,6 +34,7 @@ import More from './Sources/More';
 import MultiplePatients from './Sources/MultiplePatients';
 import NavigationPanelReveal from './Sources/NavigationPanelReveal';
 import OHIFLogo from './Sources/OHIFLogo';
+import OHIFLogoHorizontal from './Sources/OHIFLogoHorizontal';
 import Patient from './Sources/Patient';
 import PatientStudyList from './Sources/PatientStudyList';
 import Pin from './Sources/Pin';
@@ -158,6 +159,7 @@ import CheckBoxUnchecked from './Sources/CheckBoxUnChecked';
 import Close from './Sources/Close';
 import Pause from './Sources/Pause';
 import Play from './Sources/Play';
+import PanelRight from './Sources/PanelRight';
 import ViewportWindowLevel from './Sources/ViewportWindowLevel';
 import Search from './Sources/Search';
 import Clear from './Sources/Clear';
@@ -229,6 +231,7 @@ import ArrowRight from './Sources/ArrowRight';
 import ChevronLeft from './Sources/ChevronLeft';
 import StatusAlert from './Sources/StatusAlert';
 import Undo from './Sources/Undo';
+import SettingsStudyList from './Sources/SettingsStudyList';
 //
 //
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -503,6 +506,7 @@ export const Icons = {
   MultiplePatients,
   NavigationPanelReveal,
   OHIFLogo,
+  OHIFLogoHorizontal,
   Patient,
   PatientStudyList,
   Pin,
@@ -513,9 +517,11 @@ export const Icons = {
   Rename,
   Series,
   Settings,
+  SettingsStudyList,
   Show,
   SidePanelCloseLeft,
   SidePanelCloseRight,
+  PanelRight,
   SocialGithub,
   SortingAscending,
   SortingDescending,
@@ -646,6 +652,7 @@ export const Icons = {
   magnifier: (props: IconProps) => Magnifier(props),
   'status-alert-warning': (props: IconProps) => StatusWarning(props),
   'logo-dark-background': (props: IconProps) => OHIFLogoColorDarkBackground(props),
+  'ohif-logo-horizontal': (props: IconProps) => OHIFLogoHorizontal(props),
   'external-link': (props: IconProps) => ExternalLink(props),
   'checkbox-checked': (props: IconProps) => CheckBoxChecked(props),
   'checkbox-unchecked': (props: IconProps) => CheckBoxUnchecked(props),
@@ -686,6 +693,7 @@ export const Icons = {
   'power-off': (props: IconProps) => PowerOff(props),
   'icon-multiple-patients': (props: IconProps) => MultiplePatients(props),
   'icon-patient': (props: IconProps) => Patient(props),
+  'panel-right': (props: IconProps) => PanelRight(props),
   'chevron-down': (props: IconProps) => ChevronOpen(props),
   'tool-length': (props: IconProps) => ToolLength(props),
   'tool-3d-rotate': (props: IconProps) => Tool3DRotate(props),
@@ -752,6 +760,7 @@ export const Icons = {
   'content-prev': (props: IconProps) => ContentPrev(props),
   'content-next': (props: IconProps) => ContentNext(props),
   'icon-settings': (props: IconProps) => Settings(props),
+  'settings-study-list': (props: IconProps) => SettingsStudyList(props),
   close: (props: IconProps) => Close(props),
   pause: (props: IconProps) => Pause(props),
   'icon-pause': (props: IconProps) => Pause(props),
