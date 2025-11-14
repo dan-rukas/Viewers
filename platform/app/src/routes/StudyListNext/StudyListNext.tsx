@@ -6,11 +6,7 @@ import moment from 'moment';
 import { useAppConfig } from '@state';
 import { preserveQueryParameters } from '../../utils/preserveQueryParameters';
 
-import {
-  Header,
-  Onboarding,
-  InvestigationalUseDialog,
-} from '@ohif/ui-next';
+import { Onboarding, InvestigationalUseDialog } from '@ohif/ui-next';
 
 import {
   StudyListTable,
@@ -20,7 +16,7 @@ import {
   useStudyListState,
   defaultColumns,
 } from '@ohif/ui-next';
-import { Button, Icons, Popover, PopoverTrigger } from '@ohif/ui-next';
+import { Button, Icons, Popover, PopoverTrigger, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@ohif/ui-next';
 import { SettingsPopover } from '@ohif/ui-next';
 import { PreviewPanelShell } from '@ohif/ui-next';
 import { PatientSummary } from '@ohif/ui-next';
@@ -182,42 +178,103 @@ export default function StudyListNext({
     'ohif.userPreferencesModal'
   ) as coreTypes.MenuComponentCustomization;
 
-  const menuOptions = [
-    {
-      title: AboutModal?.menuTitle ?? t('Header:About'),
-      icon: 'info',
-      onClick: () =>
-        servicesManager.services.uiModalService.show({
-          content: AboutModal,
-          title: AboutModal?.title ?? t('AboutModal:About OHIF Viewer'),
-          containerClassName: AboutModal?.containerClassName ?? 'max-w-md',
-        }),
-    },
-    {
-      title: UserPreferencesModal?.menuTitle ?? t('Header:Preferences'),
-      icon: 'settings',
-      onClick: () =>
-        servicesManager.services.uiModalService.show({
-          content: UserPreferencesModal as unknown as React.ComponentType,
-          title: UserPreferencesModal?.title ?? t('UserPreferencesModal:User preferences'),
-          containerClassName:
-            UserPreferencesModal?.containerClassName ?? 'flex max-w-4xl p-6 flex-col',
-        }),
-    },
-  ];
-
-  if (appConfig?.oidc) {
-    menuOptions.push({
-      icon: 'power-off',
-      title: t('Header:Logout'),
-      onClick: () => {
-        navigate(`/logout?redirect_uri=${encodeURIComponent(window.location.href)}`);
-      },
-    });
-  }
-
   const LoadingIndicatorProgress = customizationService.getCustomization(
     'ui.loadingIndicatorProgress'
+  );
+
+  const DicomUploadComponent = customizationService.getCustomization('dicomUploadComponent');
+  const dataSourceConfigurationComponent = customizationService.getCustomization(
+    'ohif.dataSourceConfigurationComponent'
+  );
+
+  const toolbarMenu = (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" aria-label="Open settings" className="ml-2">
+          <Icons.GearSettings />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem
+          onSelect={() =>
+            servicesManager.services.uiModalService.show({
+              content: AboutModal,
+              title: AboutModal?.title ?? t('AboutModal:About OHIF Viewer'),
+              containerClassName: AboutModal?.containerClassName ?? 'max-w-md',
+            })
+          }
+        >
+          About
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={() =>
+            servicesManager.services.uiModalService.show({
+              content: UserPreferencesModal as unknown as React.ComponentType,
+              title: UserPreferencesModal?.title ?? t('UserPreferencesModal:User preferences'),
+              containerClassName:
+                UserPreferencesModal?.containerClassName ?? 'flex max-w-4xl p-6 flex-col',
+            })
+          }
+        >
+          Preferences
+        </DropdownMenuItem>
+        {DicomUploadComponent && dataSource.getConfig?.()?.dicomUploadEnabled ? (
+          <DropdownMenuItem
+            onSelect={() =>
+              servicesManager.services.uiModalService.show({
+                title: 'Upload files',
+                closeButton: true,
+                shouldCloseOnEsc: false,
+                shouldCloseOnOverlayClick: false,
+                content: () => (
+                  <DicomUploadComponent
+                    dataSource={dataSource}
+                    onComplete={() => {
+                      servicesManager.services.uiModalService.hide();
+                      onRefresh();
+                    }}
+                    onStarted={() => {
+                      servicesManager.services.uiModalService.show({
+                        title: 'Upload files',
+                        closeButton: false,
+                        shouldCloseOnEsc: false,
+                        shouldCloseOnOverlayClick: false,
+                        content: () => (
+                          <DicomUploadComponent dataSource={dataSource} />
+                        ),
+                      });
+                    }}
+                  />
+                ),
+              })
+            }
+          >
+            Upload files
+          </DropdownMenuItem>
+        ) : null}
+        {dataSourceConfigurationComponent ? (
+          <DropdownMenuItem
+            onSelect={() =>
+              servicesManager.services.uiModalService.show({
+                title: 'Configure Data Source',
+                content: dataSourceConfigurationComponent as unknown as React.ComponentType,
+              })
+            }
+          >
+            Configure Data Source
+          </DropdownMenuItem>
+        ) : null}
+        {appConfig?.oidc ? (
+          <DropdownMenuItem
+            onSelect={() =>
+              navigate(`/logout?redirect_uri=${encodeURIComponent(window.location.href)}`)
+            }
+          >
+            Logout
+          </DropdownMenuItem>
+        ) : null}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 
   const state = useStudyListState<UISLRow, WorkflowId>(rows as UISLRow[], { onLaunch: handleLaunch });
@@ -231,17 +288,12 @@ export default function StudyListNext({
   }, []);
 
   return (
-    <div className="flex h-screen flex-col bg-black">
-      <Header
-        isSticky
-        menuOptions={menuOptions}
-        isReturnEnabled={false}
-        WhiteLabeling={appConfig?.whiteLabeling}
-      />
+    <div className="flex h-screen min-h-0 flex-col bg-black overflow-hidden">
       <Onboarding />
       <InvestigationalUseDialog dialogConfiguration={appConfig?.investigationalUseDialog} />
-      <div className="flex h-full flex-col overflow-y-auto">
-        <div className="flex grow flex-col">
+      <div className="flex h-full min-h-0 flex-col">
+        <div className="flex flex-1 min-h-0 flex-col">
+          
           {isLoadingData ? (
             appConfig?.showLoadingIndicator && LoadingIndicatorProgress ? (
               <LoadingIndicatorProgress className={'h-full w-full bg-black'} />
@@ -254,7 +306,7 @@ export default function StudyListNext({
               defaultPreviewSizePercent={previewDefaultSize}
               className="h-full w-full"
               table={
-                <div className="flex h-full w-full flex-col px-3 pb-3 pt-0">
+                <div className="flex h-full min-h-0 w-full flex-col px-3 pb-3 pt-0">
                   <div className="min-h-0 flex-1">
                     <div className="bg-background h-full rounded-md px-2 pb-2 pt-0">
                       <StudyListTable
@@ -267,6 +319,7 @@ export default function StudyListNext({
                         onOpenPanel={() => state.setPanelOpen(true)}
                         onSelectionChange={(sel) => state.setSelected((sel as UISLRow[])[0] ?? null)}
                         toolbarLeft={<Icons.OHIFLogoHorizontal aria-label="OHIF logo" className="h-[22px] w-[232px]" />}
+                        toolbarRightExtras={toolbarMenu}
                         renderOpenPanelButton={() => <StudyListLayout.OpenPreviewButton />}
                       />
                     </div>
