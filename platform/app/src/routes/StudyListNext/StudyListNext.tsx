@@ -44,6 +44,7 @@ const ROUTE_TO_WORKFLOW: Record<string, WorkflowId> = {
   tmtv: 'TMTV Workflow',
   usAnnotation: 'US Workflow',
   'dynamic-volume': 'Preclinical 4D',
+  microscopy: 'Microscopy',
 };
 
 const WORKFLOW_TO_ROUTE: Record<WorkflowId, string> = {
@@ -52,6 +53,7 @@ const WORKFLOW_TO_ROUTE: Record<WorkflowId, string> = {
   'TMTV Workflow': 'tmtv',
   'US Workflow': 'usAnnotation',
   'Preclinical 4D': 'dynamic-volume',
+  Microscopy: 'microscopy',
 };
 
 function normalizeStudyDateTime(date?: string, time?: string) {
@@ -426,21 +428,57 @@ function SidePanelReal({ dataSource, extensionManager }: { dataSource: any; exte
             } catch {}
           }
 
+          // Prefer server endpoints for thumbnails; avoid Cornerstone canvas path to prevent proxy errors
           let src: string | null = null;
+          const cfg = dataSource.getConfig?.();
+          const StudyInstanceUID = instance.StudyInstanceUID || sid;
+          const SeriesInstanceUID = instance.SeriesInstanceUID || seriesUID;
+          const SOPInstanceUID = instance.SOPInstanceUID;
+          const wadoRoot = instance.wadoRoot || cfg?.wadoRoot || '';
+          const makeUrl = (kind: 'thumbnail' | 'rendered') =>
+            `${wadoRoot}/studies/${StudyInstanceUID}/series/${SeriesInstanceUID}/instances/${SOPInstanceUID}/${kind}?accept=image/jpeg`;
+
+          // Try thumbnail endpoint
           try {
-            if (instance && imageId) {
-              const getThumb = dataSource.retrieve.getGetThumbnailSrc(instance, imageId);
-              if (typeof getThumb === 'function') {
-                src = await getThumb(getImageSrc ? { getImageSrc } : undefined);
-                if (!src && getImageSrc) {
-                  // Last resort: generate via cornerstone directly
-                  src = await getImageSrc(imageId);
-                }
+            if (StudyInstanceUID && SeriesInstanceUID && SOPInstanceUID && wadoRoot) {
+              const bulkDataURI = makeUrl('thumbnail').replace('wadors:', '');
+              const blob = await dataSource.retrieve.bulkDataURI({
+                BulkDataURI: bulkDataURI,
+                StudyInstanceUID,
+              });
+              if (blob) {
+                src = URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }));
               }
             }
-          } catch (e) {
-            // ignore this one and continue
+          } catch {}
+
+          // Fallback: rendered endpoint
+          if (!src) {
+            try {
+              if (StudyInstanceUID && SeriesInstanceUID && SOPInstanceUID && wadoRoot) {
+                const bulkDataURI = makeUrl('rendered').replace('wadors:', '');
+                const blob = await dataSource.retrieve.bulkDataURI({
+                  BulkDataURI: bulkDataURI,
+                  StudyInstanceUID,
+                });
+                if (blob) {
+                  src = URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }));
+                }
+              }
+            } catch {}
           }
+
+          // Last resort: use data source helper (may use Cornerstone if configured as wadors)
+          if (!src && instance && imageId) {
+            try {
+              const getThumb = dataSource.retrieve.getGetThumbnailSrc(instance, imageId);
+              if (typeof getThumb === 'function') {
+                // Pass getImageSrc when available (needed for 'wadors' rendering mode)
+                src = await getThumb(getImageSrc ? { getImageSrc } : undefined);
+              }
+            } catch {}
+          }
+
           nextThumbs[seriesUID] = src ?? null;
         }
 
