@@ -143,22 +143,54 @@ export default function StudyListNext({
   }, [data, appConfig?.loadedModes]);
 
   const handleLaunch = React.useCallback(
-    (row: UISLRow & { studyInstanceUid?: string; _rawStudy?: any }, wf: WorkflowId) => {
+    (row: UISLRow & { studyInstanceUid?: string; _rawStudy?: any }, wf: WorkflowId | string) => {
       const loadedModes: any[] = appConfig?.loadedModes ?? [];
-      const targetRoute = WORKFLOW_TO_ROUTE[wf];
 
+      // Helper: resolve a routeName from a workflow label (union or mode displayName)
+      const resolveRoute = (label: string): string | null => {
+        // Union mapping first
+        const mapped = WORKFLOW_TO_ROUTE[label as WorkflowId];
+        if (mapped) return mapped;
+        // Try by matching mode displayName
+        const byName = loadedModes.find(m => String(m.displayName).toLowerCase() === String(label).toLowerCase());
+        if (byName) return byName.routeName;
+        return null;
+      };
+
+      // Compute available workflows for this row based on current business logic
+      const available = computeWorkflowsForStudy(loadedModes, row?._rawStudy ?? row);
+
+      // Determine target route
+      let targetRoute = resolveRoute(String(wf));
+      if (!targetRoute) {
+        // Fallback to first available workflow for the row
+        const first = available[0];
+        targetRoute = first ? resolveRoute(String(first)) : null;
+      }
+      if (!targetRoute) {
+        // Last resort: prefer viewer/basic
+        targetRoute = 'viewer';
+      }
+
+      // Handle viewer/basic alias
       let mode = loadedModes.find(m => m.routeName === targetRoute);
       if (!mode && targetRoute === 'viewer') {
         mode = loadedModes.find(m => m.routeName === 'basic') ?? null;
       }
-      if (!mode) {
-        return;
-      }
+      if (!mode) return;
 
+      // Validate mode again for this study
       const modalitiesToCheck = String(row?.modalities ?? '').replaceAll('/', '\\');
       const validity = mode.isValidMode?.({ modalities: modalitiesToCheck, study: row?._rawStudy });
       if (validity?.valid === false || validity?.valid === null) {
-        return;
+        // If default is invalid, try first available
+        const first = available.find(l => !!resolveRoute(String(l)));
+        if (first) {
+          const r = resolveRoute(String(first));
+          mode = loadedModes.find(m => m.routeName === r) ?? mode;
+        } else {
+          return;
+        }
       }
 
       const query = new URLSearchParams();
@@ -166,9 +198,7 @@ export default function StudyListNext({
         query.append('StudyInstanceUIDs', row.studyInstanceUid);
       }
       preserveQueryParameters(query);
-
-      const to = `${mode.routeName}${dataPath || ''}?${query.toString()}`;
-      navigate(to);
+      navigate(`${mode.routeName}${dataPath || ''}?${query.toString()}`);
     },
     [appConfig?.loadedModes, dataPath, navigate]
   );
@@ -380,31 +410,6 @@ function SidePanelReal({ dataSource, extensionManager }: { dataSource: any; exte
         // Ensure series/instances metadata is available so instances include imageId
         await dataSource.retrieve.series.metadata({ StudyInstanceUID: sid });
 
-        // Cornerstone-powered getImageSrc for wadors path
-        let getImageSrc: ((imageId: string) => Promise<string>) | null = null;
-        try {
-          const utilitiesModule = extensionManager?.getModuleEntry?.(
-            '@ohif/extension-cornerstone.utilityModule.common'
-          );
-          const { cornerstone } = utilitiesModule?.exports?.getCornerstoneLibraries?.() || {};
-          if (cornerstone?.utilities?.loadImageToCanvas) {
-            getImageSrc = (imageId: string) =>
-              new Promise((resolve, reject) => {
-                try {
-                  const canvas = document.createElement('canvas');
-                  cornerstone.utilities
-                    .loadImageToCanvas({ canvas, imageId, thumbnail: true })
-                    .then(() => resolve(canvas.toDataURL()))
-                    .catch(reject);
-                } catch (e) {
-                  reject(e);
-                }
-              });
-          }
-        } catch (e) {
-          // ignore; getImageSrc stays null and non-wadors paths will still work
-        }
-
         const nextThumbs: Record<string, string | null> = {};
         for (const s of series) {
           const seriesUID = s.seriesInstanceUid || s.SeriesInstanceUID;
@@ -428,56 +433,45 @@ function SidePanelReal({ dataSource, extensionManager }: { dataSource: any; exte
             } catch {}
           }
 
-          // Prefer server endpoints for thumbnails; avoid Cornerstone canvas path to prevent proxy errors
+          // Use data source helper; choose strategy based on configured thumbnailRendering
           let src: string | null = null;
-          const cfg = dataSource.getConfig?.();
-          const StudyInstanceUID = instance.StudyInstanceUID || sid;
-          const SeriesInstanceUID = instance.SeriesInstanceUID || seriesUID;
-          const SOPInstanceUID = instance.SOPInstanceUID;
-          const wadoRoot = instance.wadoRoot || cfg?.wadoRoot || '';
-          const makeUrl = (kind: 'thumbnail' | 'rendered') =>
-            `${wadoRoot}/studies/${StudyInstanceUID}/series/${SeriesInstanceUID}/instances/${SOPInstanceUID}/${kind}?accept=image/jpeg`;
-
-          // Try thumbnail endpoint
           try {
-            if (StudyInstanceUID && SeriesInstanceUID && SOPInstanceUID && wadoRoot) {
-              const bulkDataURI = makeUrl('thumbnail').replace('wadors:', '');
-              const blob = await dataSource.retrieve.bulkDataURI({
-                BulkDataURI: bulkDataURI,
-                StudyInstanceUID,
-              });
-              if (blob) {
-                src = URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }));
+            if (instance && imageId) {
+              const cfg = dataSource.getConfig?.();
+              const rendering = cfg?.thumbnailRendering;
+
+              // Cornerstone-powered getImageSrc only for 'wadors'
+              let opts: any = undefined;
+              if (rendering === 'wadors') {
+                try {
+                  const utilitiesModule = extensionManager?.getModuleEntry?.(
+                    '@ohif/extension-cornerstone.utilityModule.common'
+                  );
+                  const { cornerstone } = utilitiesModule?.exports?.getCornerstoneLibraries?.() || {};
+                  if (cornerstone?.utilities?.loadImageToCanvas) {
+                    const getImageSrc = (imageId: string) =>
+                      new Promise<string>((resolve, reject) => {
+                        try {
+                          const canvas = document.createElement('canvas');
+                          cornerstone.utilities
+                            .loadImageToCanvas({ canvas, imageId, thumbnail: true })
+                            .then(() => resolve(canvas.toDataURL()))
+                            .catch(reject);
+                        } catch (e) {
+                          reject(e);
+                        }
+                      });
+                    opts = { getImageSrc };
+                  }
+                } catch {}
+              }
+
+              const getThumb = dataSource.retrieve.getGetThumbnailSrc(instance, imageId);
+              if (typeof getThumb === 'function') {
+                src = await getThumb(opts);
               }
             }
           } catch {}
-
-          // Fallback: rendered endpoint
-          if (!src) {
-            try {
-              if (StudyInstanceUID && SeriesInstanceUID && SOPInstanceUID && wadoRoot) {
-                const bulkDataURI = makeUrl('rendered').replace('wadors:', '');
-                const blob = await dataSource.retrieve.bulkDataURI({
-                  BulkDataURI: bulkDataURI,
-                  StudyInstanceUID,
-                });
-                if (blob) {
-                  src = URL.createObjectURL(new Blob([blob], { type: 'image/jpeg' }));
-                }
-              }
-            } catch {}
-          }
-
-          // Last resort: use data source helper (may use Cornerstone if configured as wadors)
-          if (!src && instance && imageId) {
-            try {
-              const getThumb = dataSource.retrieve.getGetThumbnailSrc(instance, imageId);
-              if (typeof getThumb === 'function') {
-                // Pass getImageSrc when available (needed for 'wadors' rendering mode)
-                src = await getThumb(getImageSrc ? { getImageSrc } : undefined);
-              }
-            } catch {}
-          }
 
           nextThumbs[seriesUID] = src ?? null;
         }
