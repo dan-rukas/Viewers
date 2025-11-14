@@ -4,7 +4,7 @@ import { ErrorBoundary } from '@ohif/ui-next';
 
 // Route Components
 import DataSourceWrapper from './DataSourceWrapper';
-import WorkList from './WorkList';
+import StudyListNext from './StudyListNext/StudyListNext';
 import Local from './Local';
 import Debug from './Debug';
 import NotFound from './NotFound';
@@ -114,7 +114,7 @@ const createRoutes = ({
     path: '/',
     children: DataSourceWrapper,
     private: true,
-    props: { children: WorkList, servicesManager, extensionManager },
+    props: { children: StudyListNext, servicesManager, extensionManager },
   };
 
   const customRoutes = customizationService.getCustomization('routes.customRoutes');
