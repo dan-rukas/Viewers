@@ -215,6 +215,7 @@ export default function StudyListNext(props: Props) {
     <div className="h-full w-full">
       <StudyList
         data={withWorkflows(baseRows, appConfig)}
+        getRowId={(row: any, idx: number) => row.studyInstanceUid || row.accession || String(idx)}
         initialSorting={initialSorting}
         initialFilters={initialFilters}
         onLaunch={(row, wf) =>

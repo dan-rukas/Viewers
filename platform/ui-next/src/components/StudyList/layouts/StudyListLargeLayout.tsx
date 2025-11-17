@@ -39,7 +39,7 @@ export function StudyListLargeLayout({
   data,
   columns = defaultColumns(),
   title = 'Study List',
-  getRowId = (row) => row.accession,
+  getRowId = (row, index) => (row as any).studyInstanceUid || row.accession || String(index),
   enforceSingleSelection = true,
   showColumnVisibility = true,
   tableClassName,
