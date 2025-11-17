@@ -15,6 +15,7 @@ import {
   defaultColumns,
   PatientSummary,
   PreviewPanelShell,
+  PreviewPanelEmpty,
   Thumbnail,
   TooltipProvider,
   Icons,
@@ -38,6 +39,9 @@ type Props = withAppTypes & {
   dataPath?: string;
   onRefresh: () => void;
 };
+
+// Modalities that should not attempt pixel-based thumbnail rendering
+const NON_IMAGE_MODALITIES = new Set(['RTDOSE', 'RTPLAN', 'RTSTRUCT']);
 
 const ROUTE_TO_WORKFLOW: Record<string, WorkflowId> = {
   viewer: 'Basic Viewer',
@@ -163,9 +167,21 @@ export default function StudyListNext2({
     });
   }, [data, appConfig?.loadedModes]);
 
+  // URL rehydration is handled by StudyListNext2Entry before DataSourceWrapper mounts
+
   const handleLaunch = React.useCallback(
     (row: UISLRow & { studyInstanceUid?: string; _rawStudy?: any }, wf: WorkflowId | string) => {
       const loadedModes: any[] = appConfig?.loadedModes ?? [];
+      const { uiNotificationService } = servicesManager.services as any;
+
+      if (!row?.studyInstanceUid) {
+        uiNotificationService?.show?.({
+          title: 'Cannot launch viewer',
+          message: 'Selected study has no StudyInstanceUID. Launch is unavailable.',
+          type: 'warning',
+        });
+        return;
+      }
 
       const resolveRoute = (label: string): string | null => {
         const mapped = WORKFLOW_TO_ROUTE[label as WorkflowId];
@@ -188,7 +204,14 @@ export default function StudyListNext2({
       if (!mode && targetRoute === 'viewer') {
         mode = loadedModes.find(m => m.routeName === 'basic') ?? null;
       }
-      if (!mode) return;
+      if (!mode) {
+        uiNotificationService?.show?.({
+          title: 'Cannot launch viewer',
+          message: `No mode found for workflow "${String(wf)}".`,
+          type: 'warning',
+        });
+        return;
+      }
 
       const modalitiesToCheck = String(row?.modalities ?? '').replaceAll('/', '\\');
       const validity = mode.isValidMode?.({ modalities: modalitiesToCheck, study: row?._rawStudy });
@@ -203,13 +226,19 @@ export default function StudyListNext2({
       }
 
       const query = new URLSearchParams();
-      if (row?.studyInstanceUid) {
-        query.append('StudyInstanceUIDs', row.studyInstanceUid);
-      }
+      query.append('StudyInstanceUIDs', row.studyInstanceUid);
       preserveQueryParameters(query);
-      navigate(`${mode.routeName}${dataPath || ''}?${query.toString()}`);
+      try {
+        navigate(`${mode.routeName}${dataPath || ''}?${query.toString()}`);
+      } catch (e: any) {
+        uiNotificationService?.show?.({
+          title: 'Navigation error',
+          message: e?.message || 'Unexpected navigation error.',
+          type: 'error',
+        });
+      }
     },
-    [appConfig?.loadedModes, dataPath, navigate]
+    [appConfig?.loadedModes, dataPath, navigate, servicesManager?.services]
   );
 
   const state = useStudyListState<UISLRow, WorkflowId>(rows as UISLRow[], { onLaunch: handleLaunch });
@@ -323,6 +352,12 @@ function SidePanelPreview({ dataSource, extensionManager }: { dataSource: any; e
         for (const s of series) {
           const seriesUID = s.seriesInstanceUid || s.SeriesInstanceUID;
           if (!seriesUID) continue;
+          // Skip rendering thumbnails for non-image modalities (e.g., RTDOSE/RTPLAN/RTSTRUCT)
+          const modality = String(s.modality || s.Modality || '').toUpperCase();
+          if (NON_IMAGE_MODALITIES.has(modality)) {
+            nextThumbs[seriesUID] = null;
+            continue;
+          }
           const seriesMeta = DicomMetadataStore.getSeries?.(sid, seriesUID);
           let instance = seriesMeta?.instances?.[Math.floor((seriesMeta?.instances?.length || 1) / 2)];
           if (!instance) {
@@ -373,7 +408,11 @@ function SidePanelPreview({ dataSource, extensionManager }: { dataSource: any; e
 
               const getThumb = dataSource.retrieve.getGetThumbnailSrc(instance, imageId);
               if (typeof getThumb === 'function') {
-                src = await getThumb(opts);
+                try {
+                  src = await getThumb(opts);
+                } catch {
+                  src = null;
+                }
               }
             }
           } catch {}
@@ -463,9 +502,11 @@ function SidePanelPreview({ dataSource, extensionManager }: { dataSource: any; e
           </TooltipProvider>
         </DndProvider>
       ) : (
-        <div className="text-foreground/70 px-4 py-2">Select a study to preview series.</div>
+        <PreviewPanelEmpty
+          defaultMode={defaultWorkflow}
+          onDefaultModeChange={setDefaultWorkflow}
+        />
       )}
     </PreviewPanelShell>
   );
 }
-

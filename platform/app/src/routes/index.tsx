@@ -3,9 +3,14 @@ import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { ErrorBoundary } from '@ohif/ui-next';
 
 // Route Components
-import DataSourceWrapper from './DataSourceWrapper';
+// Study list variants:
+// - Default: StudyListNext2Entry (ui-next, with pre-DS hydration)
+// - Optional: StudyListNext (previous ui-next)
+// - Optional: WorkList (legacy)
 import StudyListNext from './StudyListNext/StudyListNext';
-import StudyListNext2 from './StudyListNext2/StudyListNext2';
+import WorkList from './WorkList/WorkList';
+import StudyListNext2Entry from './StudyListNext2/StudyListNext2Entry';
+import DataSourceWrapper from './DataSourceWrapper';
 import Local from './Local';
 import Debug from './Debug';
 import NotFound from './NotFound';
@@ -111,28 +116,26 @@ const createRoutes = ({
 
   console.log('Registering worklist route', routerBasename, path);
 
+  // Worklist Route: set `children` (and `props` if using DataSourceWrapper)
+
   const WorkListRoute = {
     path: '/',
-    children: DataSourceWrapper,
+    // Default: StudyListNext2Entry (pre-DS hydration)
+    children: StudyListNext2Entry,
     private: true,
-    // Default: StudyListNext2 (new)
-    props: { children: StudyListNext2, servicesManager, extensionManager },
-    // To switch back to the original StudyListNext quickly, replace the line above with:
+    // To use StudyListNext instead:
+    // children: DataSourceWrapper,
     // props: { children: StudyListNext, servicesManager, extensionManager },
-  };
-
-  const StudyListNext2Route = {
-    path: '/studylist2',
-    children: DataSourceWrapper,
-    private: true,
-    props: { children: StudyListNext2, servicesManager, extensionManager },
+    // To use legacy WorkList instead:
+    // children: DataSourceWrapper,
+    // props: { children: WorkList, servicesManager, extensionManager },
   };
 
   const customRoutes = customizationService.getCustomization('routes.customRoutes');
 
   const allRoutes = [
     ...routes,
-    ...(showStudyList ? [WorkListRoute, StudyListNext2Route] : [StudyListNext2Route]),
+    ...(showStudyList ? [WorkListRoute] : []),
     ...(customRoutes?.routes || []),
     ...bakedInRoutes,
     customRoutes?.notFoundRoute || notFoundRoute,
