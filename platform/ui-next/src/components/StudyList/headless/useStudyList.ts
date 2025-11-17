@@ -44,8 +44,14 @@ export function useStudyListState<T = any, W extends string = WorkflowId>(
     setPanelOpen,
     defaultWorkflow,
     setDefaultWorkflow,
-    availableWorkflowsFor: (r: Partial<T> | null | undefined) =>
-      getAvailableWorkflows((r ?? {}) as any) as readonly W[],
+    availableWorkflowsFor: (r: Partial<T> | null | undefined) => {
+      const workflows = (r as any)?.workflows as readonly W[] | undefined;
+      if (Array.isArray(workflows) && workflows.length > 0) {
+        // Trust app-provided workflows when present (real mode labels)
+        return workflows as readonly W[];
+      }
+      return getAvailableWorkflows((r ?? {}) as any) as readonly W[];
+    },
     launch,
     fetchSeriesThumbnails,
   } as const;

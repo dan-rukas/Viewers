@@ -269,7 +269,6 @@ function withWorkflows(
   appConfig: any
 ): (StudyRow & { studyInstanceUid: string })[] {
   const modes = (appConfig?.loadedModes ?? []) as any[];
-  const known = new Set<string>(ALL_WORKFLOW_OPTIONS as readonly string[]);
   const groupFirst = Boolean(appConfig?.groupEnabledModesFirst);
 
   const computeForStudy = (
@@ -291,10 +290,10 @@ function withWorkflows(
 
     const labels = sorted
       .filter(x => x.valid === true)
-      .map(x => String(x.mode.displayName))
-      .filter(l => known.has(l));
+      .map(x => String(x.mode.displayName));
 
-    return Array.from(new Set(labels)) as readonly WorkflowId[];
+    // Do not filter to a fixed registry here; honor real mode labels from appConfig
+    return Array.from(new Set(labels)) as unknown as readonly WorkflowId[];
   };
 
   return rows.map(r => ({
