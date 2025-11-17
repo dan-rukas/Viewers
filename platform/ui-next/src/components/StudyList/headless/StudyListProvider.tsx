@@ -14,6 +14,9 @@ export type StudyListContextValue<T = any, W extends string = string> = {
   availableWorkflowsFor: (row: Partial<T> | null | undefined) => readonly W[];
 
   launch: (row: T, wf: W) => void;
+
+  /** Optional: fetch series thumbnails for a study row */
+  fetchSeriesThumbnails?: (row: T) => Promise<any[]>;
 };
 
 export const StudyListContext = React.createContext<StudyListContextValue | undefined>(undefined);

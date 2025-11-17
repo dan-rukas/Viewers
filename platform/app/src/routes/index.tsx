@@ -5,6 +5,7 @@ import { ErrorBoundary } from '@ohif/ui-next';
 // Route Components
 import DataSourceWrapper from './DataSourceWrapper';
 import WorkList from './WorkList';
+import StudyListNext from './StudyListNext/StudyListNext';
 import Local from './Local';
 import Debug from './Debug';
 import NotFound from './NotFound';
@@ -110,11 +111,21 @@ const createRoutes = ({
 
   console.log('Registering worklist route', routerBasename, path);
 
+  const GatedStudyListOrWorkList = (routeProps: withAppTypes) => {
+    const [appConfig] = useAppConfig();
+    const flag = (appConfig as any)?.features?.studyListNext;
+    // Default to StudyListNext unless explicitly disabled
+    const useNext = flag === undefined ? true : Boolean(flag);
+    const Child = useNext ? StudyListNext : WorkList;
+    // DataSourceWrapper expects a layout component (receives data + managers)
+    return <Child {...routeProps} />;
+  };
+
   const WorkListRoute = {
     path: '/',
     children: DataSourceWrapper,
     private: true,
-    props: { children: WorkList, servicesManager, extensionManager },
+    props: { children: GatedStudyListOrWorkList, servicesManager, extensionManager },
   };
 
   const customRoutes = customizationService.getCustomization('routes.customRoutes');

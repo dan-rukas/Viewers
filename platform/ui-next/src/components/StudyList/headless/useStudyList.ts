@@ -15,9 +15,11 @@ export function useStudyListState<T = any, W extends string = WorkflowId>(
   {
     defaultWorkflowKey = 'studylist.defaultWorkflow',
     onLaunch,
+    fetchSeriesThumbnails,
   }: {
     defaultWorkflowKey?: string;
     onLaunch?: (row: T, wf: W) => void;
+    fetchSeriesThumbnails?: (row: T) => Promise<any[]>;
   } = {}
 ) {
   const [selected, setSelected] = React.useState<T | null>(null);
@@ -45,6 +47,7 @@ export function useStudyListState<T = any, W extends string = WorkflowId>(
     availableWorkflowsFor: (r: Partial<T> | null | undefined) =>
       getAvailableWorkflows((r ?? {}) as any) as readonly W[],
     launch,
+    fetchSeriesThumbnails,
   } as const;
 }
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ColumnDef, SortingState, VisibilityState } from '@tanstack/react-table';
+import type { ColumnDef, SortingState, VisibilityState, PaginationState, ColumnFiltersState } from '@tanstack/react-table';
 import { flexRender } from '@tanstack/react-table';
 import {
   DataTable,
@@ -30,6 +30,7 @@ type Props = {
   title?: React.ReactNode;
   getRowId?: (row: StudyRow, index: number) => string;
   initialSorting?: SortingState;
+  initialFilters?: ColumnFiltersState;
   initialVisibility?: VisibilityState;
   enforceSingleSelection?: boolean;
   showColumnVisibility?: boolean;
@@ -37,6 +38,11 @@ type Props = {
   onSelectionChange?: (rows: StudyRow[]) => void;
   isPanelOpen?: boolean;
   onOpenPanel?: () => void;
+  // URL sync hooks (optional)
+  onFiltersChange?: (filters: ColumnFiltersState) => void;
+  onSortingStateChange?: (sorting: SortingState) => void;
+  onPaginationChange?: (pagination: PaginationState) => void;
+  initialPagination?: PaginationState;
 
   /** Slots to decouple visuals from the table for DS migration */
   toolbarLeft?: React.ReactNode;
@@ -51,6 +57,7 @@ export function StudyListTable({
   title,
   getRowId,
   initialSorting = [],
+  initialFilters = [],
   initialVisibility = {},
   enforceSingleSelection = true,
   showColumnVisibility = true,
@@ -61,6 +68,10 @@ export function StudyListTable({
   toolbarLeft,
   toolbarRightExtras,
   renderOpenPanelButton,
+  onFiltersChange,
+  onSortingStateChange,
+  onPaginationChange,
+  initialPagination,
 }: Props) {
   return (
     <DataTable<StudyRow>
@@ -69,8 +80,13 @@ export function StudyListTable({
       getRowId={getRowId}
       initialSorting={initialSorting}
       initialVisibility={initialVisibility}
+      initialFilters={initialFilters}
+      initialPagination={initialPagination}
       enforceSingleSelection={enforceSingleSelection}
       onSelectionChange={onSelectionChange}
+      onFiltersChange={onFiltersChange}
+      onSortingStateChange={onSortingStateChange}
+      onPaginationChange={onPaginationChange}
     >
       <Content
         title={title}

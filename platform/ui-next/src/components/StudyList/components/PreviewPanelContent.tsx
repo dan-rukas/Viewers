@@ -8,6 +8,15 @@ import type { WorkflowId } from '../WorkflowsInfer';
 import { PatientSummary } from '../../PatientSummary';
 import { useStudyList } from '../headless/StudyListProvider';
 
+type ThumbnailRow = {
+  id: string;
+  description: string;
+  seriesNumber: number | string;
+  numInstances: number;
+  modality?: string;
+  imageSrc?: string;
+};
+
 export function PreviewPanelContent({
   study,
   defaultMode,
@@ -17,14 +26,42 @@ export function PreviewPanelContent({
   defaultMode: WorkflowId | null;
   onDefaultModeChange: (v: WorkflowId | null) => void;
 }) {
-  const { launch, availableWorkflowsFor } = useStudyList<StudyRow, WorkflowId>();
-  const seriesCount = React.useMemo(() => Math.floor(Math.random() * 7) + 3, []);
-  const thumbnails = Array.from({ length: seriesCount }, (_, i) => ({
-    id: `preview-${study.accession}-${i}`,
-    description: `Series ${i + 1}`,
-    seriesNumber: i + 1,
-    numInstances: 1,
-  }));
+  const { launch, availableWorkflowsFor, fetchSeriesThumbnails } = useStudyList<StudyRow, WorkflowId>();
+
+  const [thumbs, setThumbs] = React.useState<ThumbnailRow[] | null>(null);
+
+  React.useEffect(() => {
+    let mounted = true;
+    async function load() {
+      if (!fetchSeriesThumbnails) {
+        setThumbs(null);
+        return;
+      }
+      try {
+        const rows = await fetchSeriesThumbnails(study);
+        if (mounted) setThumbs(rows as ThumbnailRow[]);
+      } catch (_e) {
+        if (mounted) setThumbs(null);
+      }
+    }
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, [fetchSeriesThumbnails, study]);
+
+  const placeholders = React.useMemo(() => {
+    const n = Math.floor(Math.random() * 7) + 3;
+    return Array.from({ length: n }, (_, i) => ({
+      id: `preview-${study.accession}-${i}`,
+      description: `Series ${i + 1}`,
+      seriesNumber: i + 1,
+      numInstances: 1,
+      modality: study.modalities,
+    }));
+  }, [study]);
+
+  const thumbnails = thumbs ?? placeholders;
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -48,9 +85,10 @@ export function PreviewPanelContent({
                 key={item.id}
                 displaySetInstanceUID={item.id}
                 description={item.description}
-                seriesNumber={item.seriesNumber}
+                seriesNumber={item.seriesNumber as number}
                 numInstances={item.numInstances}
-                modality={study.modalities}
+                modality={item.modality ?? study.modalities}
+                imageSrc={item.imageSrc}
                 isActive={false}
                 onClick={() => {}}
                 onDoubleClick={() => {}}

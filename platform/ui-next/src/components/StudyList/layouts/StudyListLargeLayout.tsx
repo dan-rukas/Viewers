@@ -24,6 +24,15 @@ type Props = {
   showColumnVisibility?: boolean;
   tableClassName?: string;
   onLaunch?: (study: StudyRow, workflow: WorkflowId) => void;
+  fetchSeriesThumbnails?: (row: StudyRow) => Promise<any[]>;
+  // Initial state
+  initialSorting?: any;
+  initialFilters?: any;
+  // URL sync (optional)
+  onFiltersChange?: (filters: any) => void;
+  onSortingStateChange?: (sorting: any) => void;
+  onPaginationChange?: (pagination: any) => void;
+  initialPagination?: any;
 };
 
 export function StudyListLargeLayout({
@@ -35,8 +44,15 @@ export function StudyListLargeLayout({
   showColumnVisibility = true,
   tableClassName,
   onLaunch,
+  fetchSeriesThumbnails,
+  initialSorting,
+  initialFilters,
+  onFiltersChange,
+  onSortingStateChange,
+  onPaginationChange,
+  initialPagination,
 }: Props) {
-  const state = useStudyListState<StudyRow, WorkflowId>(data, { onLaunch });
+  const state = useStudyListState<StudyRow, WorkflowId>(data, { onLaunch, fetchSeriesThumbnails });
 
   const previewDefaultSize = React.useMemo(() => {
     if (typeof window !== 'undefined' && window.innerWidth > 0) {
@@ -68,6 +84,8 @@ export function StudyListLargeLayout({
                   columns={columns}
                   data={data}
                   getRowId={getRowId}
+                  initialSorting={initialSorting}
+                  initialFilters={initialFilters}
                   enforceSingleSelection={enforceSingleSelection}
                   showColumnVisibility={showColumnVisibility}
                   title={title}
@@ -77,6 +95,10 @@ export function StudyListLargeLayout({
                   tableClassName={tableClassName}
                   toolbarLeft={toolbarLeft}
                   renderOpenPanelButton={() => <StudyListLayout.OpenPreviewButton />}
+                  onFiltersChange={onFiltersChange}
+                  onSortingStateChange={onSortingStateChange}
+                  onPaginationChange={onPaginationChange}
+                  initialPagination={initialPagination}
                 />
               </div>
             </div>

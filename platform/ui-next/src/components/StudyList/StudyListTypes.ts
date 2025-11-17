@@ -8,7 +8,8 @@ export type StudyRow = {
   description: string;
   accession: string;
   instances: number;
+  /** Optional server UID for launch/preview wiring */
+  studyInstanceUid?: string;
   /** Optional, data-driven list of available workflows for this study (immutable) */
   workflows?: readonly WorkflowId[];
 };
-

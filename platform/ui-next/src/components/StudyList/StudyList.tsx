@@ -13,6 +13,15 @@ type Props = {
   showColumnVisibility?: boolean;
   tableClassName?: string;
   onLaunch?: (study: StudyRow, workflow: WorkflowId) => void;
+  fetchSeriesThumbnails?: (row: StudyRow) => Promise<any[]>;
+  // Initial state
+  initialSorting?: any;
+  initialFilters?: any;
+  // URL sync (optional)
+  onFiltersChange?: (filters: any) => void;
+  onSortingStateChange?: (sorting: any) => void;
+  onPaginationChange?: (pagination: any) => void;
+  initialPagination?: any;
 };
 
 /**
