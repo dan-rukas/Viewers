@@ -101,9 +101,11 @@ Launch Preservation
 - Phase 3: complete (metadata + caching; image rendering optional)
 - Phase 4: complete
 - Phase 5: complete
-- Phase 6: complete (series thumbnails with auth + object URLs)
+- Phase 6: complete (instance-level thumbnails with auth + Accept + fallback)
 - Phase 7: complete (initial URL → table hydration)
  - Phase 8: complete (optional StudyRow type extension)
+ - Phase 9: complete (stable selection IDs)
+ - Phase 10: complete (real workflow labels passthrough)
 
 ---
 
@@ -155,20 +157,58 @@ Notes
 ## Phase 6 – Wire Thumbnails Fetcher (Image URLs + Caching) (Completed)
 
 Approach
-- Prefer series‑level thumbnail endpoint when `wadoRoot` is known: `/studies/{study}/series/{series}/thumbnail`.
-- Fetch images with auth headers, create object URLs, and attach as `imageSrc`. Revoke URLs on eviction/unmount.
-- Keep a simple LRU (cap ~20 studies) to avoid unbounded memory.
-- Fallback gracefully to metadata‑only tiles when no endpoint is available.
+- Align with the viewer’s StudyBrowser: fetch instance‑level rendered JPEGs (or thumbnails) using DICOMweb retrieve.
+- Load series + instances metadata via `dataSource.retrieve.series.metadata({ StudyInstanceUID })` and read from `DicomMetadataStore`.
+- For each series, pick a representative instance (first) and build:
+  - Primary: `/studies/{study}/series/{series}/instances/{sop}/rendered?accept=image/jpeg`
+  - Fallback: `/thumbnail?accept=image/jpeg`
+- Pass Authorization headers and `credentials: 'include'`. Convert fetched blobs to object URLs.
+- LRU cache (~20 studies) and revoke URLs on eviction/unmount.
 
 Changes
 - Route: `platform/app/src/routes/StudyListNext/StudyListNext.tsx`
-  - Added helpers: `getWadoRoot`, `makeSeriesThumbnailUrl`, `getAuthHeaders`, `fetchObjectUrl`, `ensureCacheCapacity`.
-  - Enhanced `fetchSeriesThumbnailsForRow` to fetch thumbnails with auth and return `imageSrc` when available.
-  - Added cleanup on unmount to revoke any remaining object URLs.
+  - Added helpers: `getWadoRoot`, `makeInstanceThumbUrl`, `getAuthHeaders`, `fetchObjectUrl` (Accept + credentials), `ensureCacheCapacity`.
+  - `fetchSeriesThumbnailsForRow` now loads series+instances metadata (via retrieve) and fetches instance‑level images with fallback.
+  - Prefers `dataSource.retrieve.getGetThumbnailSrc(instance, imageId)` when available (non‑wadors) to respect server config and auth.
+  - Filters out non‑image modalities for preview fetches (SR/SEG/RT*, DOC, PMAP).
+  - Added unmount cleanup to revoke any remaining object URLs.
 
 Notes
-- If an instance‑level rendered endpoint is needed later, we can extend the fetcher to query one instance and request `/frames/1/rendered`.
 - Errors during image fetch are swallowed per‑item; the UI continues to display metadata tiles.
+- If your server requires cookie auth, `credentials: 'include'` is enabled; Authorization headers are also sent when present.
+
+---
+
+## Phase 9 – Stable Selection IDs (Completed)
+
+Problem
+- Selecting one row also highlighted other rows due to non‑unique `getRowId` (defaulted to accession which can duplicate).
+
+Fix
+- Prefer `studyInstanceUid` for row identity, falling back to accession or index.
+
+Changes
+- Layout: `platform/ui-next/src/components/StudyList/layouts/StudyListLargeLayout.tsx`
+  - Default `getRowId = (row, index) => row.studyInstanceUid || row.accession || String(index)`.
+- Route: `platform/app/src/routes/StudyListNext/StudyListNext.tsx`
+  - Explicitly passes the same `getRowId` to `StudyList` for consistency.
+
+---
+
+## Phase 10 – Real Workflow Labels Passthrough (Completed)
+
+Problem
+- Some valid modes (e.g., “TMTV Workflow”) were omitted because we filtered to ui‑next’s fixed workflow registry and re‑inferred in headless.
+
+Fix
+- Trust app‑provided workflows derived from `appConfig.loadedModes` and stop filtering to a fixed set.
+- Headless `availableWorkflowsFor` now returns row‑supplied workflows when present; falls back to inference only when missing.
+
+Changes
+- Route: `platform/app/src/routes/StudyListNext/StudyListNext.tsx`
+  - Removed filtering to `ALL_WORKFLOW_OPTIONS`; propagate real `mode.displayName` labels.
+- Headless: `platform/ui-next/src/components/StudyList/headless/useStudyList.ts`
+  - Prefer `row.workflows` (when provided) over heuristic inference.
 
 ---
 
