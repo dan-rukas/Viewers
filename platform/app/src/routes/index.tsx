@@ -5,6 +5,7 @@ import { ErrorBoundary } from '@ohif/ui-next';
 // Route Components
 import DataSourceWrapper from './DataSourceWrapper';
 import StudyListNext from './StudyListNext/StudyListNext';
+import StudyListNext2 from './StudyListNext2/StudyListNext2';
 import Local from './Local';
 import Debug from './Debug';
 import NotFound from './NotFound';
@@ -114,14 +115,24 @@ const createRoutes = ({
     path: '/',
     children: DataSourceWrapper,
     private: true,
-    props: { children: StudyListNext, servicesManager, extensionManager },
+    // Default: StudyListNext2 (new)
+    props: { children: StudyListNext2, servicesManager, extensionManager },
+    // To switch back to the original StudyListNext quickly, replace the line above with:
+    // props: { children: StudyListNext, servicesManager, extensionManager },
+  };
+
+  const StudyListNext2Route = {
+    path: '/studylist2',
+    children: DataSourceWrapper,
+    private: true,
+    props: { children: StudyListNext2, servicesManager, extensionManager },
   };
 
   const customRoutes = customizationService.getCustomization('routes.customRoutes');
 
   const allRoutes = [
     ...routes,
-    ...(showStudyList ? [WorkListRoute] : []),
+    ...(showStudyList ? [WorkListRoute, StudyListNext2Route] : [StudyListNext2Route]),
     ...(customRoutes?.routes || []),
     ...bakedInRoutes,
     customRoutes?.notFoundRoute || notFoundRoute,
