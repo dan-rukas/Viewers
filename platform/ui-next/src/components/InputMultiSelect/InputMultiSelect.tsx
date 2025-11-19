@@ -237,14 +237,48 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(({ className, disable
 });
 Field.displayName = 'InputMultiSelect.Field';
 
-type SummaryProps = React.HTMLAttributes<HTMLDivElement> & { format?: (firstLabel: string, extra: number) => string };
-const Summary = ({ className, format, ...rest }: SummaryProps) => {
-  const { value, normalized, clear } = useInputMultiSelect();
+type SummaryProps = React.HTMLAttributes<HTMLDivElement> & {
+  // Variant controls how selections are summarized:
+  //  - 'single' (default): one badge; when multiple selected, shows the count (e.g., "3").
+  //  - 'multi': each selected item renders as its own badge with remove affordance.
+  variant?: 'single' | 'multi';
+  // For 'single' variant, allow custom formatting (first label + extra count)
+  format?: (firstLabel: string, extra: number) => string;
+};
+const Summary = ({ className, format, variant = 'single', ...rest }: SummaryProps) => {
+  const { value, normalized, clear, remove } = useInputMultiSelect();
   if (!value || value.length === 0) return null;
+
+  if (variant === 'multi') {
+    return (
+      <div className={cn('flex flex-wrap items-center gap-1', className)} {...rest}>
+        {value.map((val) => {
+          const lab = normalized.find(o => o.value === val)?.label ?? val;
+          return (
+            <Badge key={val} variant="secondary" className="flex h-5 items-center gap-1 shrink-0 px-2">
+              <span className="truncate max-w-[160px]" title={lab}>{lab}</span>
+              <span
+                role="button"
+                tabIndex={0}
+                aria-label={`Remove ${lab}`}
+                className="cursor-pointer select-none opacity-80 hover:opacity-100"
+                onClick={() => remove(val)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); remove(val); } }}
+              >
+                ×
+              </span>
+            </Badge>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // 'single' variant
   const firstVal = value[0];
   const firstLabel = normalized.find(o => o.value === firstVal)?.label ?? firstVal;
-  const extra = value.length - 1;
-  const text = format ? format(firstLabel, extra) : `${firstLabel}${extra > 0 ? ` +${extra}` : ''}`;
+  const count = value.length;
+  const text = format ? format(firstLabel, Math.max(0, count - 1)) : (count > 1 ? String(count) : firstLabel);
   return (
     <Badge variant="secondary" className={cn('flex h-5 items-center gap-1 shrink-0 px-2', className)} {...rest}>
       <span className="truncate max-w-[160px]" title={firstLabel}>{text}</span>
