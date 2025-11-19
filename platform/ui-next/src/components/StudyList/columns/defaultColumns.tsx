@@ -5,6 +5,7 @@ import { Icons } from '../../Icons';
 import { Button } from '../../Button';
 import type { StudyRow } from '../StudyListTypes';
 import { StudyListActionsCell } from '../components/StudyListActionsCell';
+import { tokenizeModalities } from '../../../lib/filters';
 
 export function defaultColumns(): ColumnDef<StudyRow, unknown>[] {
   return [
@@ -72,10 +73,7 @@ export function defaultColumns(): ColumnDef<StudyRow, unknown>[] {
       filterFn: (row, colId, filter) => {
         const selected = Array.isArray(filter) ? (filter as string[]) : [];
         if (!selected.length) return true;
-        const tokens = String(row.getValue(colId) ?? '')
-          .toUpperCase()
-          .split(/[\s,/]+/)
-          .filter(Boolean);
+        const tokens = tokenizeModalities(String(row.getValue(colId) ?? ''));
         const set = new Set(tokens);
         return selected.some(v => set.has(String(v).toUpperCase()));
       },

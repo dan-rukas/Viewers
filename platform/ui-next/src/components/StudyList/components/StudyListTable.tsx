@@ -24,6 +24,7 @@ import { Input } from '../../Input';
 import { InputMultiSelect } from '../../InputMultiSelect';
 import type { StudyRow } from '../StudyListTypes';
 import { useStudyList } from '../headless/StudyListProvider';
+import { tokenizeModalities } from '../../../lib/filters';
 import type { WorkflowId } from '../WorkflowsInfer';
 
 type Props = {
@@ -118,12 +119,9 @@ function Content({
   const { table, setColumnFilters } = useDataTable<StudyRow>();
   const modalityOptions = React.useMemo(() => {
     const rows = (table.options?.data as StudyRow[]) ?? [];
-    const tokens = rows.flatMap(r => String(r.modalities ?? '')
-      .toUpperCase()
-      .split(/[\s,/]+/)
-      .filter(Boolean));
+    const tokens = rows.flatMap(r => tokenizeModalities(String(r.modalities ?? '')));
     return Array.from(new Set(tokens)).sort();
-  }, [table]);
+  }, [table.options?.data]);
   // Access headless state for default workflow + launch
   const { defaultWorkflow, launch } = useStudyList<StudyRow, WorkflowId>();
   const renderColGroup = React.useCallback(
