@@ -224,7 +224,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(({ className, disable
         else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
       }}
       className={cn(
-        'border-input text-foreground bg-background hover:bg-primary/10 focus-within:ring-ring flex min-h-7 w-full items-center gap-1 rounded border px-1.5 py-0.5 text-base shadow-sm transition-colors focus-within:outline-none focus-within:ring-1',
+        'border-input text-foreground bg-background hover:bg-primary/10 focus-within:ring-ring flex h-7 w-full items-center gap-1 rounded border px-2 py-1 text-base shadow-sm transition-colors focus-within:outline-none focus-within:ring-1',
         (disabledProp ?? disabled) ? 'opacity-50 pointer-events-none' : '',
         className
       )}
@@ -245,7 +245,7 @@ const Summary = ({ className, format, ...rest }: SummaryProps) => {
   const extra = value.length - 1;
   const text = format ? format(firstLabel, extra) : `${firstLabel}${extra > 0 ? ` +${extra}` : ''}`;
   return (
-    <Badge variant="secondary" className={cn('flex items-center gap-1 shrink-0', className)} {...rest}>
+    <Badge variant="secondary" className={cn('flex h-5 items-center gap-1 shrink-0 px-2', className)} {...rest}>
       <span className="truncate max-w-[160px]" title={firstLabel}>{text}</span>
       <span
         role="button"
@@ -274,7 +274,7 @@ const IMSInput = React.forwardRef<HTMLInputElement, InputPropsEx>(({ className, 
       }}
       aria-label={ariaLabel}
       placeholder={value.length === 0 ? placeholder : ''}
-      className={cn('h-6 min-w-0 flex-1 border-0 bg-transparent px-1 py-0 shadow-none focus-visible:ring-0', className)}
+      className={cn('h-5 min-w-0 flex-1 border-0 bg-transparent px-0 py-0 shadow-none focus-visible:ring-0 hover:bg-transparent', className)}
       value={query}
       onChange={(e) => {
         setQuery(e.target.value);
