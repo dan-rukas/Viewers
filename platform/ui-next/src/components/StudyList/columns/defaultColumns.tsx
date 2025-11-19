@@ -69,6 +69,16 @@ export function defaultColumns(): ColumnDef<StudyRow, unknown>[] {
         />
       ),
       cell: ({ row }) => <div className="truncate">{row.getValue('modalities')}</div>,
+      filterFn: (row, colId, filter) => {
+        const selected = Array.isArray(filter) ? (filter as string[]) : [];
+        if (!selected.length) return true;
+        const tokens = String(row.getValue(colId) ?? '')
+          .toUpperCase()
+          .split(/[\s,/]+/)
+          .filter(Boolean);
+        const set = new Set(tokens);
+        return selected.some(v => set.has(String(v).toUpperCase()));
+      },
       meta: {
         label: 'Modalities',
         headerClassName: 'w-[97px] min-w-[97px] max-w-[97px]',

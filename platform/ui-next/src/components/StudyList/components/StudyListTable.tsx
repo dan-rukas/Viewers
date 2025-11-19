@@ -20,6 +20,8 @@ import {
 } from '../../Table';
 import { ScrollArea } from '../../ScrollArea';
 import { Button } from '../../Button';
+import { Input } from '../../Input';
+import { InputMultiSelect } from '../../InputMultiSelect';
 import type { StudyRow } from '../StudyListTypes';
 import { useStudyList } from '../headless/StudyListProvider';
 import type { WorkflowId } from '../WorkflowsInfer';
@@ -114,6 +116,14 @@ function Content({
   renderOpenPanelButton?: (args: { onOpenPanel: () => void }) => React.ReactNode;
 }) {
   const { table, setColumnFilters } = useDataTable<StudyRow>();
+  const modalityOptions = React.useMemo(() => {
+    const rows = (table.options?.data as StudyRow[]) ?? [];
+    const tokens = rows.flatMap(r => String(r.modalities ?? '')
+      .toUpperCase()
+      .split(/[\s,/]+/)
+      .filter(Boolean));
+    return Array.from(new Set(tokens)).sort();
+  }, [table]);
   // Access headless state for default workflow + launch
   const { defaultWorkflow, launch } = useStudyList<StudyRow, WorkflowId>();
   const renderColGroup = React.useCallback(
@@ -202,6 +212,27 @@ function Content({
                   resetCellId="actions"
                   onReset={() => setColumnFilters([])}
                   excludeColumnIds={["instances"]}
+                  renderCell={({ columnId, value, setValue }) => {
+                    if (columnId === 'modalities') {
+                      const selected = Array.isArray(value) ? (value as string[]) : [];
+                      return (
+                        <InputMultiSelect
+                          options={modalityOptions}
+                          value={selected}
+                          onChange={(next) => setValue(next)}
+                          placeholder="Filter modalities..."
+                          ariaLabel="Filter Modalities"
+                        />
+                      );
+                    }
+                    return (
+                      <Input
+                        value={String((value as string) ?? '')}
+                        onChange={(e) => setValue(e.target.value)}
+                        className="h-7 w-full"
+                      />
+                    );
+                  }}
                 />
               </TableBody>
             </Table>
