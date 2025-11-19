@@ -145,32 +145,37 @@ export function InputMultiSelect({
         ref={fieldRef}
         className={cn(
           // mirror Input styling on a container; use focus-within to show ring
-          'border-input text-foreground bg-background hover:bg-primary/10 focus-within:ring-ring flex min-h-7 w-full flex-wrap items-center gap-1 rounded border px-1.5 py-0.5 text-base shadow-sm transition-colors focus-within:outline-none focus-within:ring-1',
+          'border-input text-foreground bg-background hover:bg-primary/10 focus-within:ring-ring flex min-h-7 w-full items-center gap-1 rounded border px-1.5 py-0.5 text-base shadow-sm transition-colors focus-within:outline-none focus-within:ring-1',
           disabled ? 'opacity-50 pointer-events-none' : ''
         )}
         role="group"
         onClick={() => inputRef.current?.focus()}
       >
-        {value && value.length > 0
-          ? value.map(val => {
-              const lab = normalized.find(o => o.value === val)?.label ?? val;
-              return (
-                <Badge key={val} variant="secondary" className="flex items-center gap-1">
-                  <span className="truncate max-w-[120px]" title={lab}>{lab}</span>
-                  <span
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`Remove ${lab} filter`}
-                    className="cursor-pointer select-none opacity-80 hover:opacity-100"
-                    onClick={() => remove(val)}
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); remove(val); } }}
-                  >
-                    ×
-                  </span>
-                </Badge>
-              );
-            })
-          : null}
+        {value && value.length > 0 ? (
+          (() => {
+            const firstVal = value[0];
+            const firstLabel = normalized.find(o => o.value === firstVal)?.label ?? firstVal;
+            const extra = value.length - 1;
+            return (
+              <Badge variant="secondary" className="flex items-center gap-1 shrink-0">
+                <span className="truncate max-w-[160px]" title={firstLabel}>
+                  {firstLabel}
+                  {extra > 0 ? ` +${extra}` : ''}
+                </span>
+                <span
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Clear all selections"
+                  className="cursor-pointer select-none opacity-80 hover:opacity-100"
+                  onClick={() => commit([])}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); commit([]); } }}
+                >
+                  ×
+                </span>
+              </Badge>
+            );
+          })()
+        ) : null}
 
         {/* Slim input inside the chip field */}
         <Input
@@ -178,7 +183,7 @@ export function InputMultiSelect({
           aria-label={ariaLabel}
           placeholder={value.length === 0 ? placeholder : ''}
           disabled={disabled}
-          className={cn('h-6 min-w-[4ch] flex-1 border-0 bg-transparent px-1 py-0 shadow-none focus-visible:ring-0', inputClassName)}
+          className={cn('h-6 min-w-0 flex-1 border-0 bg-transparent px-1 py-0 shadow-none focus-visible:ring-0', inputClassName)}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
