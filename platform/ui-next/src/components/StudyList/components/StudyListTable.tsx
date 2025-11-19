@@ -220,7 +220,7 @@ function Content({
                           onChange={(next) => setValue(next)}
                         >
                           <InputMultiSelect.Field>
-                            <InputMultiSelect.Summary />
+                            <InputMultiSelect.Summary variant="single" />
                             <InputMultiSelect.Input ariaLabel="Filter Modalities" placeholder="" />
                           </InputMultiSelect.Field>
                           <InputMultiSelect.Content fitToContent maxWidth={185}>

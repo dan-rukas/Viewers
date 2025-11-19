@@ -245,7 +245,7 @@ type SummaryProps = React.HTMLAttributes<HTMLDivElement> & {
   // For 'single' variant, allow custom formatting (first label + extra count)
   format?: (firstLabel: string, extra: number) => string;
 };
-const Summary = ({ className, format, variant = 'single', ...rest }: SummaryProps) => {
+const Summary = ({ className, format, variant = 'multi', ...rest }: SummaryProps) => {
   const { value, normalized, clear, remove } = useInputMultiSelect();
   if (!value || value.length === 0) return null;
 
@@ -255,7 +255,7 @@ const Summary = ({ className, format, variant = 'single', ...rest }: SummaryProp
         {value.map((val) => {
           const lab = normalized.find(o => o.value === val)?.label ?? val;
           return (
-            <Badge key={val} variant="secondary" className="flex h-5 items-center gap-1 shrink-0 px-2">
+            <Badge key={val} variant="secondary" className="inline-flex h-5 items-center gap-1 shrink-0 px-2">
               <span className="truncate max-w-[160px]" title={lab}>{lab}</span>
               <span
                 role="button"
@@ -280,7 +280,7 @@ const Summary = ({ className, format, variant = 'single', ...rest }: SummaryProp
   const count = value.length;
   const text = format ? format(firstLabel, Math.max(0, count - 1)) : (count > 1 ? String(count) : firstLabel);
   return (
-    <Badge variant="secondary" className={cn('flex h-5 items-center gap-1 shrink-0 px-2', className)} {...rest}>
+    <Badge variant="secondary" className={cn('inline-flex h-5 items-center gap-1 shrink-0 px-2', className)} {...rest}>
       <span className="truncate max-w-[160px]" title={firstLabel}>{text}</span>
       <span
         role="button"
