@@ -223,7 +223,7 @@ function Content({
                             <InputMultiSelect.Summary />
                             <InputMultiSelect.Input ariaLabel="Filter Modalities" placeholder="" />
                           </InputMultiSelect.Field>
-                          <InputMultiSelect.Content>
+                          <InputMultiSelect.Content fitToContent maxWidth={185}>
                             <InputMultiSelect.Options />
                           </InputMultiSelect.Content>
                         </InputMultiSelect>

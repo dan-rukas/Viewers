@@ -11,6 +11,7 @@ import {
   CommandEmpty,
 } from '../Command/Command';
 import { Badge } from '../Badge';
+import { Icons } from '../Icons';
 
 type Option = string | { value: string; label?: string };
 
@@ -301,15 +302,31 @@ const IMSInput = React.forwardRef<HTMLInputElement, InputPropsEx>(({ className, 
 });
 IMSInput.displayName = 'InputMultiSelect.Input';
 
-type ContentProps = React.HTMLAttributes<HTMLDivElement> & { children?: React.ReactNode };
-const Content = ({ className, children, ...rest }: ContentProps) => {
+type ContentProps = React.HTMLAttributes<HTMLDivElement> & {
+  children?: React.ReactNode;
+  fitToContent?: boolean;
+  maxWidth?: number; // only used when fitToContent is true
+};
+const Content = ({ className, children, fitToContent = false, maxWidth, ...rest }: ContentProps) => {
   const { open, disabled, coords, overlayRef, setOpen } = useInputMultiSelect();
   if (!(open && !disabled && coords)) return null;
+  const gutter = 8;
+  const viewportMaxWidth = Math.max(200, (typeof window !== 'undefined' ? window.innerWidth : 1200) - coords.left - gutter);
+  const computedMaxWidth = Math.min(maxWidth ?? 480, viewportMaxWidth);
   return createPortal(
     <div
       ref={overlayRef}
       className={cn('z-[1000] mt-1 rounded-md border border-input bg-popover shadow-md', className)}
-      style={{ position: 'fixed', left: coords.left, top: coords.top, width: coords.width, maxHeight: coords.maxHeight, overflow: 'auto' }}
+      style={{
+        position: 'fixed',
+        left: coords.left,
+        top: coords.top,
+        width: fitToContent ? 'auto' as any : coords.width,
+        minWidth: coords.width,
+        maxWidth: fitToContent ? computedMaxWidth : undefined,
+        maxHeight: coords.maxHeight,
+        overflow: 'auto',
+      }}
       onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false); }}
       {...rest}
     >
@@ -342,7 +359,7 @@ const Group = CommandGroup as unknown as typeof CommandGroup;
 Group.displayName = 'InputMultiSelect.Group';
 
 type ItemProps = React.ComponentPropsWithoutRef<typeof CommandItem> & { valueKey?: string };
-const Item = React.forwardRef<React.ElementRef<typeof CommandItem>, ItemProps>(({ children, value: itemValue, valueKey, ...props }, ref) => {
+const Item = React.forwardRef<React.ElementRef<typeof CommandItem>, ItemProps>(({ children, value: itemValue, valueKey, className, ...props }, ref) => {
   const { toggle, selectedSet } = useInputMultiSelect();
   const label = typeof itemValue === 'string' ? itemValue : String(itemValue ?? '');
   const val = (valueKey ?? label) as string;
@@ -352,10 +369,16 @@ const Item = React.forwardRef<React.ElementRef<typeof CommandItem>, ItemProps>((
       ref={ref}
       onSelect={() => toggle(val)}
       aria-selected={selected}
+      className={cn('min-w-0 leading-none', className)}
       {...props}
     >
-      {children ?? label}
-      {selected ? <span className="ml-auto text-xs opacity-70">selected</span> : null}
+      {children ?? (
+        <span className="truncate leading-none" title={label}>{label}</span>
+      )}
+      <Icons.Checked
+        className={cn('ml-auto block h-6 w-6 shrink-0', selected ? 'opacity-70' : 'invisible')}
+        aria-hidden="true"
+      />
     </CommandItem>
   );
 });
@@ -365,19 +388,24 @@ const Empty = CommandEmpty as unknown as typeof CommandEmpty;
 Empty.displayName = 'InputMultiSelect.Empty';
 
 // Convenience: render items for current filtered options
+// Selected items appear at the top, order otherwise preserved.
 const Options = () => {
   const { filtered, toggle, selectedSet } = useInputMultiSelect();
+  const selected = filtered.filter(o => selectedSet.has(o.value));
+  const unselected = filtered.filter(o => !selectedSet.has(o.value));
+  const ordered = [...selected, ...unselected];
   return (
     <Group>
       {filtered.length === 0 ? (
         <Empty>No options found.</Empty>
       ) : (
-        filtered.map(opt => (
-          <CommandItem key={opt.value} onSelect={() => toggle(opt.value)} aria-selected={selectedSet.has(opt.value)}>
-            {opt.label}
-            {selectedSet.has(opt.value) ? (
-              <span className="ml-auto text-xs opacity-70">selected</span>
-            ) : null}
+        ordered.map(opt => (
+          <CommandItem key={opt.value} onSelect={() => toggle(opt.value)} aria-selected={selectedSet.has(opt.value)} className="min-w-0 leading-none">
+            <span className="truncate leading-none" title={opt.label}>{opt.label}</span>
+            <Icons.Checked
+              className={cn('ml-auto block h-6 w-6 shrink-0', selectedSet.has(opt.value) ? 'opacity-70' : 'invisible')}
+              aria-hidden="true"
+            />
           </CommandItem>
         ))
       )}
