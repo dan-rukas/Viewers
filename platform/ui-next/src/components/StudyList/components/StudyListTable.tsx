@@ -220,9 +220,15 @@ function Content({
                           options={modalityOptions}
                           value={selected}
                           onChange={(next) => setValue(next)}
-                          placeholder="Filter modalities..."
-                          ariaLabel="Filter Modalities"
-                        />
+                        >
+                          <InputMultiSelect.Field>
+                            <InputMultiSelect.Summary />
+                            <InputMultiSelect.Input ariaLabel="Filter Modalities" placeholder="" />
+                          </InputMultiSelect.Field>
+                          <InputMultiSelect.Content>
+                            <InputMultiSelect.Options />
+                          </InputMultiSelect.Content>
+                        </InputMultiSelect>
                       );
                     }
                     return (
