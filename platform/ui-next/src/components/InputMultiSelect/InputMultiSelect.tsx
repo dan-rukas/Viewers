@@ -257,7 +257,7 @@ const Summary = ({ className, format, variant = 'multi', ...rest }: SummaryProps
         {value.map((val) => {
           const lab = normalized.find(o => o.value === val)?.label ?? val;
           return (
-            <Badge key={val} variant="secondary" className="inline-flex h-5 items-center gap-1 shrink-0 px-2">
+            <Badge key={val} variant="default" className="inline-flex h-5 items-center gap-1 shrink-0 px-2">
               <span className="truncate max-w-[160px]" title={lab}>{lab}</span>
               <span
                 role="button"
@@ -282,7 +282,7 @@ const Summary = ({ className, format, variant = 'multi', ...rest }: SummaryProps
   const count = value.length;
   const text = format ? format(firstLabel, Math.max(0, count - 1)) : (count > 1 ? String(count) : firstLabel);
   return (
-    <Badge variant="secondary" className={cn('inline-flex h-5 items-center gap-1 shrink-0 px-2', className)} {...rest}>
+    <Badge variant="default" className={cn('inline-flex h-5 items-center gap-1 shrink-0 px-2', className)} {...rest}>
       <span className="truncate max-w-[160px]" title={firstLabel}>{text}</span>
       <span
         role="button"
