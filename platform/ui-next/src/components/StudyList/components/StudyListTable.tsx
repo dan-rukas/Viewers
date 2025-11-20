@@ -134,7 +134,7 @@ function Content({
             undefined;
           const minWidth = meta?.minWidth;
           return minWidth ? (
-            <col key={col.id} style={{ minWidth: typeof minWidth === 'number' ? `${minWidth}px` : minWidth }} />
+            <col key={col.id} style={{ width: typeof minWidth === 'number' ? `${minWidth}px` : minWidth }} />
           ) : (
             <col key={col.id} />
           );
@@ -181,7 +181,7 @@ function Content({
       <div className="border-input/50 min-h-0 flex-1 rounded-md border">
         <div className="flex h-full flex-col">
           <div className="shrink-0 border-b border-input/50">
-            <Table className={cn('table-auto', tableClassName)} containerClassName="overflow-x-hidden" noScroll>
+            <Table className={cn('table-fixed', tableClassName)} containerClassName="overflow-x-hidden" noScroll>
               {renderColGroup()}
               <TableHeader>
                 {table.getHeaderGroups().map((hg) => (
@@ -244,7 +244,7 @@ function Content({
           </div>
           <div className="min-h-0 flex-1">
             <ScrollArea className="h-full">
-              <Table className={cn('table-auto', tableClassName)} containerClassName="h-full" noScroll>
+              <Table className={cn('table-fixed', tableClassName)} containerClassName="h-full" noScroll>
                 {renderColGroup()}
                 <TableBody>
                   {table.getPaginationRowModel().rows.length ? (

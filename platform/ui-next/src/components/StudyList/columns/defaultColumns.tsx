@@ -100,6 +100,7 @@ export function defaultColumns(): ColumnDef<StudyRow, unknown>[] {
         label: 'Description',
         headerClassName: 'min-w-[290px]',
         cellClassName: 'min-w-[290px]',
+        minWidth: 290,
       },
     },
     {
