@@ -2,14 +2,8 @@ import * as React from 'react';
 import { createPortal } from 'react-dom';
 
 import { cn } from '../../lib/utils';
-import { Input } from '../Input';
-import {
-  Command,
-  CommandList,
-  CommandGroup,
-  CommandItem,
-  CommandEmpty,
-} from '../Command/Command';
+import { Command as CommandPrimitive } from 'cmdk';
+import { CommandList, CommandGroup, CommandItem, CommandEmpty } from '../Command/Command';
 import { Badge } from '../Badge';
 import { Icons } from '../Icons';
 
@@ -209,7 +203,14 @@ const InputMultiSelectRoot = ({
 
   return (
     <InputMultiSelectContext.Provider value={ctx}>
-      <div ref={containerRef} className={cn('relative', className)}>{children}</div>
+      {/* Single Command root to unify input and list for keyboard navigation */}
+      <CommandPrimitive
+        className={cn('h-auto overflow-visible bg-transparent', className)}
+        // We control filtering via our own `filtered` state.
+        shouldFilter={false}
+      >
+        <div ref={containerRef} className={cn('relative')}>{children}</div>
+      </CommandPrimitive>
     </InputMultiSelectContext.Provider>
   );
 };
@@ -297,11 +298,11 @@ const Summary = ({ className, format, variant = 'multi', ...rest }: SummaryProps
 };
 Summary.displayName = 'InputMultiSelect.Summary';
 
-type InputPropsEx = React.ComponentPropsWithoutRef<typeof Input> & { ariaLabel?: string };
-const IMSInput = React.forwardRef<HTMLInputElement, InputPropsEx>(({ className, placeholder, ariaLabel, ...rest }, ref) => {
-  const { inputRef, value, query, setQuery, open, setOpen, overlayRef, containerRef, remove } = useInputMultiSelect();
+type InputPropsEx = Omit<React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>, 'value'> & { ariaLabel?: string };
+const IMSInput = React.forwardRef<HTMLInputElement, InputPropsEx>(({ className, placeholder, ariaLabel, onFocus, onKeyDown, onBlur, onValueChange, ...rest }, ref) => {
+  const { inputRef, value, query, setQuery, open, setOpen, remove } = useInputMultiSelect();
   return (
-    <Input
+    <CommandPrimitive.Input
       ref={(node) => {
         inputRef.current = node;
         if (typeof ref === 'function') ref(node);
@@ -309,26 +310,27 @@ const IMSInput = React.forwardRef<HTMLInputElement, InputPropsEx>(({ className, 
       }}
       aria-label={ariaLabel}
       placeholder={value.length === 0 ? placeholder : ''}
-      className={cn('h-5 min-w-0 flex-1 border-0 bg-transparent px-0 py-0 shadow-none focus-visible:ring-0 hover:bg-transparent', className)}
+      className={cn('h-5 min-w-0 flex-1 bg-transparent px-0 py-0 outline-none', className)}
       value={query}
-      onChange={(e) => {
-        setQuery(e.target.value);
+      onValueChange={(v) => {
+        setQuery(v);
         if (!open) setOpen(true);
+        onValueChange?.(v);
       }}
-      onFocus={() => setOpen(true)}
+      onFocus={(e) => {
+        setOpen(true);
+        onFocus?.(e);
+      }}
       onKeyDown={(e) => {
         if (e.key === 'Escape') setOpen(false);
         if (e.key === 'Backspace' && query === '' && value.length > 0) {
           remove(value[value.length - 1]);
         }
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          setOpen(true);
-          requestAnimationFrame(() => {
-            const first = (overlayRef.current?.querySelector('[cmdk-item]') || containerRef.current?.querySelector('[cmdk-item]')) as HTMLElement | null;
-            first?.focus();
-          });
-        }
+        // Arrow key handling is provided by cmdk when input and list share the same Command root.
+        onKeyDown?.(e);
+      }}
+      onBlur={(e) => {
+        onBlur?.(e);
       }}
       {...rest}
     />
@@ -364,9 +366,9 @@ const Content = ({ className, children, fitToContent = false, maxWidth, ...rest 
       onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false); }}
       {...rest}
     >
-      <Command className="w-full">
+      <CommandList role="listbox" aria-multiselectable={true}>
         {children}
-      </Command>
+      </CommandList>
     </div>,
     document.body
   );
