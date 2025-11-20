@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { cn } from '../../../lib/utils';
 import type { ColumnDef, SortingState, VisibilityState } from '@tanstack/react-table';
 import { flexRender } from '@tanstack/react-table';
 import {
@@ -180,7 +181,7 @@ function Content({
       <div className="border-input/50 min-h-0 flex-1 rounded-md border">
         <div className="flex h-full flex-col">
           <div className="shrink-0 border-b border-input/50">
-            <Table className={tableClassName} containerClassName="overflow-x-hidden" noScroll>
+            <Table className={cn('table-fixed', tableClassName)} containerClassName="overflow-x-hidden" noScroll>
               {renderColGroup()}
               <TableHeader>
                 {table.getHeaderGroups().map((hg) => (
@@ -243,7 +244,7 @@ function Content({
           </div>
           <div className="min-h-0 flex-1">
             <ScrollArea className="h-full">
-              <Table className={tableClassName} containerClassName="h-full" noScroll>
+              <Table className={cn('table-fixed', tableClassName)} containerClassName="h-full" noScroll>
                 {renderColGroup()}
                 <TableBody>
                   {table.getPaginationRowModel().rows.length ? (
