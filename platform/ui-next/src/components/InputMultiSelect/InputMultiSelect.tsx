@@ -78,8 +78,8 @@ const InputMultiSelectRoot = ({
   value,
   onChange,
   disabled,
-  closeOnSelect = true,
-  debounceMs = 150,
+  closeOnSelect = false,
+  debounceMs = 0,
   className,
   children,
 }: InputMultiSelectRootProps) => {
