@@ -6,6 +6,7 @@ import { Command as CommandPrimitive } from 'cmdk';
 import { CommandList, CommandGroup, CommandItem, CommandEmpty } from '../Command/Command';
 import { Badge } from '../Badge';
 import { Icons } from '../Icons';
+import { ScrollArea } from '../ScrollArea';
 
 type Option = string | { value: string; label?: string };
 
@@ -361,14 +362,16 @@ const Content = ({ className, children, fitToContent = false, maxWidth, ...rest 
         minWidth: coords.width,
         maxWidth: fitToContent ? computedMaxWidth : undefined,
         maxHeight: coords.maxHeight,
-        overflow: 'auto',
+        overflow: 'hidden',
       }}
       onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false); }}
       {...rest}
     >
-      <CommandList role="listbox" aria-multiselectable={true}>
-        {children}
-      </CommandList>
+      <ScrollArea className="h-auto min-h-0 max-h-[inherit]" type="auto">
+        <CommandList className="max-h-none overflow-visible" role="listbox" aria-multiselectable={true}>
+          {children}
+        </CommandList>
+      </ScrollArea>
     </div>,
     document.body
   );
