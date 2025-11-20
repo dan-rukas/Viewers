@@ -125,6 +125,42 @@ function Content({
   }, [table.options?.data]);
   // Access headless state for default workflow + launch
   const { defaultWorkflow, launch } = useStudyList<StudyRow, WorkflowId>();
+
+  // Responsive column visibility based on viewport width
+  React.useEffect(() => {
+    const updateVisibility = () => {
+      const width = window.innerWidth;
+      const isMobile = width < 768;
+      const isTablet = width >= 768 && width < 1024;
+
+      if (isMobile) {
+        // Mobile: Show only Patient, Description, Actions
+        table.getColumn('mrn')?.toggleVisibility(false);
+        table.getColumn('studyDateTime')?.toggleVisibility(false);
+        table.getColumn('modalities')?.toggleVisibility(false);
+        table.getColumn('accession')?.toggleVisibility(false);
+        table.getColumn('instances')?.toggleVisibility(false);
+      } else if (isTablet) {
+        // Tablet: Add Study Date, Modalities
+        table.getColumn('mrn')?.toggleVisibility(false);
+        table.getColumn('studyDateTime')?.toggleVisibility(true);
+        table.getColumn('modalities')?.toggleVisibility(true);
+        table.getColumn('accession')?.toggleVisibility(false);
+        table.getColumn('instances')?.toggleVisibility(false);
+      } else {
+        // Desktop: Show all
+        table.getColumn('mrn')?.toggleVisibility(true);
+        table.getColumn('studyDateTime')?.toggleVisibility(true);
+        table.getColumn('modalities')?.toggleVisibility(true);
+        table.getColumn('accession')?.toggleVisibility(true);
+        table.getColumn('instances')?.toggleVisibility(true);
+      }
+    };
+
+    updateVisibility();
+    window.addEventListener('resize', updateVisibility);
+    return () => window.removeEventListener('resize', updateVisibility);
+  }, [table]);
   const renderColGroup = React.useCallback(
     () => (
       <colgroup>

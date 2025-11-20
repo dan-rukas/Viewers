@@ -167,8 +167,8 @@ export function defaultColumns(): ColumnDef<StudyRow, unknown>[] {
       cell: ({ row }) => <StudyListActionsCell row={row as any} />,
       meta: {
         // No label so it never appears labeled in any UI; also non-hideable
-        headerClassName: 'min-w-[56px]',
-        cellClassName: 'min-w-[56px] overflow-visible',
+        headerClassName: 'w-[56px] min-w-[56px] max-w-[56px]',
+        cellClassName: 'w-[56px] min-w-[56px] max-w-[56px] overflow-visible',
         minWidth: 56,
       },
     },
