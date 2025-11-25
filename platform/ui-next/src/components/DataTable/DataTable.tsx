@@ -32,6 +32,7 @@ export type DataTableProps<TData> = {
   columns: ColumnDef<TData, unknown>[];
   getRowId?: (row: TData, index: number) => string;
   initialSorting?: SortingState;
+  initialVisibility?: VisibilityState;
   initialFilters?: ColumnFiltersState;
   enforceSingleSelection?: boolean;
   onSelectionChange?: (rows: TData[]) => void;
