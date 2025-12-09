@@ -26,7 +26,7 @@ export function DataTablePagination() {
   const canNext = table.getCanNextPage();
 
   return (
-    <div className="mr-2 flex items-center gap-0.5">
+    <div className="flex items-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -60,7 +60,6 @@ export function DataTablePagination() {
         aria-label="Previous page"
         onClick={() => table.previousPage()}
         disabled={!canPrev}
-        className="ml-1"
       >
         <Icons.ChevronLeft className="h-3 w-3" />
       </Button>

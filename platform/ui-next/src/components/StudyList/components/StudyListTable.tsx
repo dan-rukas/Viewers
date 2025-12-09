@@ -27,6 +27,7 @@ import type { StudyRow } from '../StudyListTypes';
 import { useStudyList } from '../headless/StudyListProvider';
 import { tokenizeModalities } from '../../../lib/filters';
 import type { WorkflowId } from '../WorkflowsInfer';
+import { Icons } from '../../Icons';
 
 type Props = {
   columns: ColumnDef<StudyRow, unknown>[];
@@ -189,7 +190,18 @@ function Content({
           <div className="absolute left-0">{toolbarLeft}</div>
           {title ? <DataTableTitle>{title}</DataTableTitle> : null}
           <div className="absolute right-0 flex items-center">
-            {/* Pagination appears to the left of the "View" button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mr-2 gap-1 text-sm"
+              onClick={() => {
+                // TODO: Implement upload functionality
+              }}
+            >
+              <Icons.Upload className="h-3.5 w-3.5" />
+              Upload
+            </Button>
+            <div className="mr-2 h-4 w-px bg-input" />
             <DataTablePagination />
             {showColumnVisibility && (
               <DataTableViewOptions
