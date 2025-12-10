@@ -238,6 +238,7 @@ import StatusAlert from './Sources/StatusAlert';
 import Undo from './Sources/Undo';
 import TabContours from './Sources/TabContours';
 import SettingsStudyList from './Sources/SettingsStudyList';
+import CloudSettings from './Sources/CloudSettings';
 //
 //
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -524,6 +525,7 @@ export const Icons = {
   Series,
   Settings,
   SettingsStudyList,
+  CloudSettings,
   Show,
   SidePanelCloseLeft,
   SidePanelCloseRight,

@@ -193,13 +193,24 @@ function Content({
             <Button
               variant="ghost"
               size="sm"
-              className="mr-2 gap-1 text-sm"
+              className="gap-1 text-sm"
               onClick={() => {
                 // TODO: Implement upload functionality
               }}
             >
-              <Icons.Upload className="h-3.5 w-3.5" />
+              <Icons.Upload className="h-4 w-4" />
               Upload
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mr-2 gap-1 text-sm"
+              onClick={() => {
+                // TODO: Implement cloud configuration functionality
+              }}
+            >
+              <Icons.CloudSettings className="h-5 w-5" />
+              Source
             </Button>
             <div className="mr-2 h-4 w-px bg-input" />
             <DataTablePagination />
