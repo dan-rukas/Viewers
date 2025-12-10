@@ -28,6 +28,9 @@ import { useStudyList } from '../headless/StudyListProvider';
 import { tokenizeModalities } from '../../../lib/filters';
 import type { WorkflowId } from '../WorkflowsInfer';
 import { Icons } from '../../Icons';
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '../../HoverCard';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../Card';
+import { Separator } from '../../Separator';
 
 type Props = {
   columns: ColumnDef<StudyRow, unknown>[];
@@ -201,17 +204,46 @@ function Content({
               <Icons.Upload className="h-4 w-4" />
               Upload
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mr-2 gap-1 text-sm"
-              onClick={() => {
-                // TODO: Implement cloud configuration functionality
-              }}
-            >
-              <Icons.CloudSettings className="h-5 w-5" />
-              Source
-            </Button>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="mr-2 gap-1 text-sm"
+                  onClick={() => {
+                    // TODO: Implement cloud configuration functionality
+                  }}
+                >
+                  <Icons.CloudSettings className="h-5 w-5" />
+                  Source
+                </Button>
+              </HoverCardTrigger>
+              <HoverCardContent
+                align="center"
+                className="w-72 p-0"
+              >
+                <Card className="border-0 shadow-none">
+                  <CardHeader className="p-3 pb-1">
+                    <CardDescription className="text-sm">
+                      <span className="text-foreground font-semibold">Data Source:</span> Configure the server connection and storage settings
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 p-3 pt-0 text-sm">
+                    <div className="col-span-2 my-2 h-px bg-input" />
+                    <span className="text-muted-foreground">Server</span>
+                    <span>Google Cloud</span>
+                    <span className="text-muted-foreground">Project</span>
+                    <span>OHIF Cloud Healthcare</span>
+                    <span className="text-muted-foreground">Location</span>
+                    <span>us-east4</span>
+                    <span className="text-muted-foreground">Data set</span>
+                    <span>ohif-qa-dataset</span>
+                    <span className="text-muted-foreground">DICOM store</span>
+                    <span>ohif-qa-1</span>
+                  </CardContent>
+                </Card>
+              </HoverCardContent>
+            </HoverCard>
             <div className="mr-2 h-4 w-px bg-input" />
             <DataTablePagination />
             {showColumnVisibility && (
