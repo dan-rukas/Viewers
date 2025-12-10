@@ -28,6 +28,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Clipboard } from './Clipboard';
 import { Combobox } from './Combobox';
 import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from './Popover';
+import { HoverCard, HoverCardTrigger, HoverCardContent } from './HoverCard';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from './Resizable';
 import { Calendar } from './Calendar';
 import CinePlayer from './CinePlayer';
@@ -178,6 +179,9 @@ export {
   PopoverContent,
   PopoverTrigger,
   PopoverAnchor,
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
