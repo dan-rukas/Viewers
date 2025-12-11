@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import LegacyButton from '../LegacyButton';
 import Typography from '../Typography';
 import InputGroup from '../InputGroup';
-import { Icons } from '@ohif/ui-next';
+import { Icons, Button } from '@ohif/ui-next';
 
 const StudyListFilter = ({
   filtersMeta,
@@ -43,13 +43,15 @@ const StudyListFilter = ({
                 </Typography>
                 {getDataSourceConfigurationComponent && getDataSourceConfigurationComponent()}
                 {onUploadClick && (
-                  <div
-                    className="text-primary-active flex cursor-pointer items-center gap-2 self-center text-lg font-semibold"
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-1 text-sm"
                     onClick={onUploadClick}
                   >
-                    <Icons.Upload />
-                    <span>{t('Upload')}</span>
-                  </div>
+                    <Icons.Upload className="h-4 w-4" />
+                    {t('Upload')}
+                  </Button>
                 )}
               </div>
               <div className="flex h-[34px] flex-row items-center">
