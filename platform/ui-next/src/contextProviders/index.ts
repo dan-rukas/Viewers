@@ -27,3 +27,4 @@ export {
   useUINextVersionControls,
   type UINextVersion,
 } from './UINextVersionProvider';
+export { ThemeProvider } from './ThemeProvider';

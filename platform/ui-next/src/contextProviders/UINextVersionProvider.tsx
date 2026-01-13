@@ -1,4 +1,5 @@
 import * as React from 'react';
+import '../tailwind-next.css';
 
 export type UINextVersion = 'old' | 'new';
 
@@ -77,7 +78,12 @@ export function UINextVersionProvider({
     [forcedVersion, version, setVersion]
   );
 
-  return <UINextVersionContext.Provider value={value}>{children}</UINextVersionContext.Provider>;
+  return (
+    <UINextVersionContext.Provider value={value}>
+      <VersionClassSync />
+      {children}
+    </UINextVersionContext.Provider>
+  );
 }
 
 /**
@@ -95,4 +101,39 @@ export function useUINextVersion(): UINextVersion {
 export function useUINextVersionControls() {
   const ctx = React.useContext(UINextVersionContext);
   return { version: ctx.version, setVersion: ctx.setVersion };
+}
+
+/**
+ * Syncs the UI version to 'ui-next-new' class on document.documentElement.
+ * Renders nothing to the DOM.
+ *
+ * Note: The 'dark' class is managed by ThemeProvider (next-themes), not here.
+ * This component only handles the version-specific class.
+ *
+ * When version is 'new', adds 'ui-next-new' class to <html>.
+ * When version is 'old', removes the class.
+ */
+function VersionClassSync() {
+  const version = useUINextVersion();
+
+  React.useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const root = document.documentElement;
+
+    if (version === 'new') {
+      root.classList.add('ui-next-new');
+    } else {
+      root.classList.remove('ui-next-new');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      root.classList.remove('ui-next-new');
+    };
+  }, [version]);
+
+  return null;
 }

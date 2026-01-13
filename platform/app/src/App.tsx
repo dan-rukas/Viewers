@@ -17,6 +17,7 @@ import {
 } from '@ohif/core';
 import {
   ThemeWrapper as ThemeWrapperNext,
+  ThemeProvider,
   NotificationProvider,
   ViewportGridProvider,
   DialogProvider,
@@ -119,6 +120,7 @@ function App({
     [UserAuthenticationProvider, { service: userAuthenticationService }],
     [I18nextProvider, { i18n }],
     [ThemeWrapperNext],
+    [ThemeProvider],
     [UINextVersionProvider],
     [SystemContextProvider, { commandsManager, extensionManager, hotkeysManager, servicesManager }],
     [ViewportRefsProvider],

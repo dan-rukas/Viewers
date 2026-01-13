@@ -1,0 +1,177 @@
+/**
+ * OHIF UI-Next Theme - New Version
+ *
+ * This file defines theme variables for the "new" UI version.
+ * Applied when .ui-next-new class is present on <html>.
+ *
+ * Color format: HSL (same as tailwind.css for now - OKLCH requires PostCSS plugin)
+ * Structure follows shadcn convention:
+ * - .ui-next-new = light mode base (duplicated dark for now)
+ * - .ui-next-new.dark = dark mode
+ */
+
+/* Light mode (duplicated dark colors for now - enables future light mode) */
+.ui-next-new {
+  /* Custom OHIF colors */
+  --highlight: 191 74% 63%;
+  --neutral: 213 22% 59%;
+  --neutral-light: 214 69% 81%;
+  --neutral-dark: 214 16% 21%;
+
+  /* Core theme */
+  --background: 236 62% 5%;
+  --foreground: 0 0% 98%;
+
+  /* Card */
+  --card: 234 64% 10%;
+  --card-foreground: 0 0% 98%;
+
+  /* Popover */
+  --popover: 219 90% 15%;
+  --popover-foreground: 0 0% 98%;
+
+  /* Primary - OHIF blue */
+  --primary: 214 98% 60%;
+  --primary-foreground: 0 0% 98%;
+
+  /* Secondary */
+  --secondary: 214 65% 36%;
+  --secondary-foreground: 200 50% 84%;
+
+  /* Muted */
+  --muted: 234 64% 10%;
+  --muted-foreground: 200 46% 65%;
+
+  /* Accent */
+  --accent: 217 79% 24%;
+  --accent-foreground: 0 0% 98%;
+
+  /* Destructive */
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+
+  /* Borders & inputs */
+  --border: 0 0% 14.9%;
+  --input: 236 52% 30%;
+  --ring: 214 98% 60%;
+
+  /* Charts */
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+
+  /* Border radius */
+  --radius: 0.5rem;
+
+  /* Toast/notification colors */
+  --success-bg: hsl(143, 85%, 96%);
+  --success-border: hsl(145, 92%, 91%);
+  --success-text: hsl(140, 100%, 27%);
+
+  --info-bg: hsl(208, 100%, 97%);
+  --info-border: hsl(221, 91%, 91%);
+  --info-text: hsl(210, 92%, 45%);
+
+  --warning-bg: hsl(49, 100%, 97%);
+  --warning-border: hsl(49, 91%, 91%);
+  --warning-text: hsl(31, 92%, 45%);
+
+  --error-bg: hsl(359, 100%, 97%);
+  --error-border: hsl(359, 100%, 94%);
+  --error-text: hsl(360, 100%, 45%);
+
+  /* Sidebar (new shadcn v4 tokens) */
+  --sidebar: 234 64% 8%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 214 98% 60%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 217 79% 24%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 0 0% 14.9%;
+  --sidebar-ring: 214 98% 60%;
+}
+
+/* Dark mode */
+.ui-next-new.dark {
+  /* Custom OHIF colors */
+  --highlight: 191 74% 63%;
+  --neutral: 213 22% 59%;
+  --neutral-light: 214 69% 81%;
+  --neutral-dark: 214 16% 21%;
+
+  /* Core theme */
+  --background: 236 62% 5%;
+  --foreground: 0 0% 98%;
+
+  /* Card */
+  --card: 234 64% 10%;
+  --card-foreground: 0 0% 98%;
+
+  /* Popover */
+  --popover: 219 90% 15%;
+  --popover-foreground: 0 0% 98%;
+
+  /* Primary - DEBUG: Yellow for testing */
+  --primary: 50 100% 50%;  /* Bright yellow */
+  --primary-foreground: 0 0% 10%;  /* Dark text */
+
+  /* Secondary */
+  --secondary: 214 65% 36%;
+  --secondary-foreground: 200 50% 84%;
+
+  /* Muted */
+  --muted: 234 64% 10%;
+  --muted-foreground: 200 46% 65%;
+
+  /* Accent */
+  --accent: 217 79% 24%;
+  --accent-foreground: 0 0% 98%;
+
+  /* Destructive */
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+
+  /* Borders & inputs */
+  --border: 0 0% 14.9%;
+  --input: 236 52% 30%;
+  --ring: 214 98% 60%;
+
+  /* Charts */
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+
+  /* Border radius */
+  --radius: 0.5rem;
+
+  /* Toast/notification colors */
+  --success-bg: hsl(143, 85%, 96%);
+  --success-border: hsl(145, 92%, 91%);
+  --success-text: hsl(140, 100%, 27%);
+
+  --info-bg: hsl(208, 100%, 97%);
+  --info-border: hsl(221, 91%, 91%);
+  --info-text: hsl(210, 92%, 45%);
+
+  --warning-bg: hsl(49, 100%, 97%);
+  --warning-border: hsl(49, 91%, 91%);
+  --warning-text: hsl(31, 92%, 45%);
+
+  --error-bg: hsl(359, 100%, 97%);
+  --error-border: hsl(359, 100%, 94%);
+  --error-text: hsl(360, 100%, 45%);
+
+  /* Sidebar (new shadcn v4 tokens) */
+  --sidebar: 234 64% 8%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 214 98% 60%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 217 79% 24%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 0 0% 14.9%;
+  --sidebar-ring: 214 98% 60%;
+}
