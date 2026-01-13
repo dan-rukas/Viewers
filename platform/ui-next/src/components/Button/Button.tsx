@@ -1,58 +1,41 @@
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import { Button as OldButton, buttonVariants as oldButtonVariants } from './Button.old';
+import { Button as NewButton, buttonVariants as newButtonVariants } from './Button.new';
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded text-base font-normal leading-tight transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary/85 text-primary-foreground hover:bg-primary/100',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline:
-          'border border-primary/25 bg-background hover:bg-primary/25 text-primary hover:text-primary',
-        secondary: 'bg-secondary/85 text-secondary-foreground hover:bg-secondary/100',
-        ghost: 'font-normal text-primary hover:bg-primary/25',
-        link: 'font-normal text-primary underline-offset-4 hover:underline',
-      },
-      size: {
-        default: 'h-7 px-2 py-2',
-        sm: 'h-6 rounded px-2',
-        lg: 'h-9 rounded px-2',
-        icon: 'h-6 w-6',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
-    },
-  }
-);
+import type { ButtonProps } from './Button.old';
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-  dataCY?: string;
-}
+export type { ButtonProps };
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, dataCY, ...props }, forwardRef) => {
-    const Comp = asChild ? Slot : 'button';
-    const testId = dataCY || `${props.name}-btn`;
+/**
+ * Button proxy component that renders old or new implementation based on UINextVersion context.
+ */
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewButton : OldButton;
 
-    return (
-      <Comp
-        data-cy={testId}
-        className={cn(buttonVariants({ variant, size }), className)}
-        ref={forwardRef}
-        {...props}
-      />
-    );
-  }
-);
+  return (
+    <Comp
+      {...props}
+      ref={ref}
+    />
+  );
+});
 Button.displayName = 'Button';
 
-export { Button, buttonVariants };
+/**
+ * Default buttonVariants export - uses old implementation for backwards compatibility.
+ * Use buttonVariantsOld or buttonVariantsNew for explicit version selection.
+ */
+export const buttonVariants = oldButtonVariants;
+
+/**
+ * Explicit old buttonVariants export.
+ */
+export const buttonVariantsOld = oldButtonVariants;
+
+/**
+ * Explicit new buttonVariants export.
+ */
+export const buttonVariantsNew = newButtonVariants;

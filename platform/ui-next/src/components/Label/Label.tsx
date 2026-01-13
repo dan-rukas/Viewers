@@ -1,23 +1,18 @@
 import * as React from 'react';
-import * as LabelPrimitive from '@radix-ui/react-label';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import { Label as OldLabel } from './Label.old';
+import { Label as NewLabel } from './Label.new';
 
-const labelVariants = cva(
-  'text-base text-foreground font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-);
-
-const Label = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & VariantProps<typeof labelVariants>
->(({ className, ...props }, ref) => (
-  <LabelPrimitive.Root
-    ref={ref}
-    className={cn(labelVariants(), className)}
-    {...props}
-  />
-));
-Label.displayName = LabelPrimitive.Root.displayName;
-
-export { Label };
+/**
+ * Label proxy component that renders old or new implementation based on UINextVersion context.
+ */
+export const Label = React.forwardRef<
+  React.ElementRef<typeof OldLabel>,
+  React.ComponentPropsWithoutRef<typeof OldLabel>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewLabel : OldLabel;
+  return <Comp {...props} ref={ref} />;
+});
+Label.displayName = 'Label';

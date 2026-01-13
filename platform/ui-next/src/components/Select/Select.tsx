@@ -1,146 +1,123 @@
 import * as React from 'react';
-import { CaretSortIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
-import * as SelectPrimitive from '@radix-ui/react-select';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import {
+  Select as OldSelect,
+  SelectGroup as OldSelectGroup,
+  SelectValue as OldSelectValue,
+  SelectTrigger as OldSelectTrigger,
+  SelectContent as OldSelectContent,
+  SelectLabel as OldSelectLabel,
+  SelectItem as OldSelectItem,
+  SelectSeparator as OldSelectSeparator,
+  SelectScrollUpButton as OldSelectScrollUpButton,
+  SelectScrollDownButton as OldSelectScrollDownButton,
+} from './Select.old';
 
-const Select = SelectPrimitive.Root;
+import {
+  Select as NewSelect,
+  SelectGroup as NewSelectGroup,
+  SelectValue as NewSelectValue,
+  SelectTrigger as NewSelectTrigger,
+  SelectContent as NewSelectContent,
+  SelectLabel as NewSelectLabel,
+  SelectItem as NewSelectItem,
+  SelectSeparator as NewSelectSeparator,
+  SelectScrollUpButton as NewSelectScrollUpButton,
+  SelectScrollDownButton as NewSelectScrollDownButton,
+} from './Select.new';
 
-const SelectGroup = SelectPrimitive.Group;
+/**
+ * Select proxy - renders old or new based on UINextVersion context.
+ * Note: All Select parts must use the same version to work correctly together.
+ */
+const Select: typeof OldSelect = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelect : OldSelect;
+  return <Comp {...props} />;
+};
 
-const SelectValue = SelectPrimitive.Value;
+const SelectGroup: typeof OldSelectGroup = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectGroup : OldSelectGroup;
+  return <Comp {...props} />;
+};
+
+const SelectValue: typeof OldSelectValue = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectValue : OldSelectValue;
+  return <Comp {...props} />;
+};
 
 const SelectTrigger = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      'border-input text-foreground ring-offset-background placeholder:text-muted-foreground focus:ring-ring hover:bg-primary/10 flex h-7 w-full min-w-0 items-center justify-between rounded border bg-transparent px-2 py-2 text-base shadow-sm focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:truncate',
-      className
-    )}
-    {...props}
-  >
-    {children}
-    <SelectPrimitive.Icon asChild>
-      <CaretSortIcon className="h-4 w-4 opacity-50" />
-    </SelectPrimitive.Icon>
-  </SelectPrimitive.Trigger>
-));
-SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
-
-const SelectScrollUpButton = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.ScrollUpButton
-    ref={ref}
-    className={cn('flex cursor-default items-center justify-center py-1', className)}
-    {...props}
-  >
-    <ChevronUpIcon />
-  </SelectPrimitive.ScrollUpButton>
-));
-SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
-
-const SelectScrollDownButton = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.ScrollDownButton
-    ref={ref}
-    className={cn('flex cursor-default items-center justify-center py-1', className)}
-    {...props}
-  >
-    <ChevronDownIcon />
-  </SelectPrimitive.ScrollDownButton>
-));
-SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName;
+  React.ElementRef<typeof OldSelectTrigger>,
+  React.ComponentPropsWithoutRef<typeof OldSelectTrigger>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectTrigger : OldSelectTrigger;
+  return <Comp {...props} ref={ref} />;
+});
+SelectTrigger.displayName = 'SelectTrigger';
 
 const SelectContent = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = 'popper', ...props }, ref) => (
-  <SelectPrimitive.Portal>
-    <SelectPrimitive.Content
-      ref={ref}
-      className={cn(
-        'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 border-input relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded border shadow-md',
-        position === 'popper' &&
-          'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
-        className
-      )}
-      position={position}
-      {...props}
-    >
-      <SelectScrollUpButton />
-      <SelectPrimitive.Viewport
-        className={cn(
-          'p-1',
-          position === 'popper' &&
-            'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
-        )}
-      >
-        {children}
-      </SelectPrimitive.Viewport>
-      <SelectScrollDownButton />
-    </SelectPrimitive.Content>
-  </SelectPrimitive.Portal>
-));
-SelectContent.displayName = SelectPrimitive.Content.displayName;
+  React.ElementRef<typeof OldSelectContent>,
+  React.ComponentPropsWithoutRef<typeof OldSelectContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectContent : OldSelectContent;
+  return <Comp {...props} ref={ref} />;
+});
+SelectContent.displayName = 'SelectContent';
 
 const SelectLabel = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.Label
-    ref={ref}
-    className={cn('px-2 py-1 text-base font-semibold', className)}
-    {...props}
-  />
-));
-SelectLabel.displayName = SelectPrimitive.Label.displayName;
+  React.ElementRef<typeof OldSelectLabel>,
+  React.ComponentPropsWithoutRef<typeof OldSelectLabel>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectLabel : OldSelectLabel;
+  return <Comp {...props} ref={ref} />;
+});
+SelectLabel.displayName = 'SelectLabel';
 
 const SelectItem = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Item
-    ref={ref}
-    className={cn(
-      'focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default select-none items-center rounded py-1 pl-2 pr-8 text-base outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className
-    )}
-    {...props}
-  >
-    <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
-      <SelectPrimitive.ItemIndicator>
-        <CheckIcon className="h-4 w-4" />
-      </SelectPrimitive.ItemIndicator>
-    </span>
-    {typeof children === 'string' ? (
-      <SelectPrimitive.ItemText>
-        <span className="truncate">{children}</span>
-      </SelectPrimitive.ItemText>
-    ) : (
-      children
-    )}
-  </SelectPrimitive.Item>
-));
-SelectItem.displayName = SelectPrimitive.Item.displayName;
+  React.ElementRef<typeof OldSelectItem>,
+  React.ComponentPropsWithoutRef<typeof OldSelectItem>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectItem : OldSelectItem;
+  return <Comp {...props} ref={ref} />;
+});
+SelectItem.displayName = 'SelectItem';
 
 const SelectSeparator = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.Separator
-    ref={ref}
-    className={cn('bg-muted -mx-1 my-1 h-px', className)}
-    {...props}
-  />
-));
-SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
+  React.ElementRef<typeof OldSelectSeparator>,
+  React.ComponentPropsWithoutRef<typeof OldSelectSeparator>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectSeparator : OldSelectSeparator;
+  return <Comp {...props} ref={ref} />;
+});
+SelectSeparator.displayName = 'SelectSeparator';
+
+const SelectScrollUpButton = React.forwardRef<
+  React.ElementRef<typeof OldSelectScrollUpButton>,
+  React.ComponentPropsWithoutRef<typeof OldSelectScrollUpButton>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectScrollUpButton : OldSelectScrollUpButton;
+  return <Comp {...props} ref={ref} />;
+});
+SelectScrollUpButton.displayName = 'SelectScrollUpButton';
+
+const SelectScrollDownButton = React.forwardRef<
+  React.ElementRef<typeof OldSelectScrollDownButton>,
+  React.ComponentPropsWithoutRef<typeof OldSelectScrollDownButton>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewSelectScrollDownButton : OldSelectScrollDownButton;
+  return <Comp {...props} ref={ref} />;
+});
+SelectScrollDownButton.displayName = 'SelectScrollDownButton';
 
 export {
   Select,

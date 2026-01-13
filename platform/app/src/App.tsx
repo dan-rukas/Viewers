@@ -27,6 +27,7 @@ import {
   ModalProvider,
   ViewportDialogProvider,
   UserAuthenticationProvider,
+  UINextVersionProvider,
 } from '@ohif/ui-next';
 // Viewer Project
 // TODO: Should this influence study list?
@@ -118,6 +119,7 @@ function App({
     [UserAuthenticationProvider, { service: userAuthenticationService }],
     [I18nextProvider, { i18n }],
     [ThemeWrapperNext],
+    [UINextVersionProvider],
     [SystemContextProvider, { commandsManager, extensionManager, hotkeysManager, servicesManager }],
     [ViewportRefsProvider],
     [ViewportGridProvider, { service: viewportGridService }],

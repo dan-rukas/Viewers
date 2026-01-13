@@ -1,53 +1,54 @@
 import * as React from 'react';
-import * as TabsPrimitive from '@radix-ui/react-tabs';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import {
+  Tabs as OldTabs,
+  TabsList as OldTabsList,
+  TabsTrigger as OldTabsTrigger,
+  TabsContent as OldTabsContent,
+} from './Tabs.old';
 
-const Tabs = TabsPrimitive.Root;
+import {
+  Tabs as NewTabs,
+  TabsList as NewTabsList,
+  TabsTrigger as NewTabsTrigger,
+  TabsContent as NewTabsContent,
+} from './Tabs.new';
+
+const Tabs: typeof OldTabs = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewTabs : OldTabs;
+  return <Comp {...props} />;
+};
 
 const TabsList = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.List
-    ref={ref}
-    className={cn(
-      'bg-primary/20 hover:bg-primary/30 primary-foreground inline-flex h-7 items-center justify-center rounded-md py-1',
-      className
-    )}
-    {...props}
-  />
-));
-TabsList.displayName = TabsPrimitive.List.displayName;
+  React.ElementRef<typeof OldTabsList>,
+  React.ComponentPropsWithoutRef<typeof OldTabsList>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewTabsList : OldTabsList;
+  return <Comp {...props} ref={ref} />;
+});
+TabsList.displayName = 'TabsList';
 
 const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Trigger
-    ref={ref}
-    className={cn(
-      'ring-offset-background focus-visible:ring-ring data-[state=active]:bg-primary/30 data-[state=active]:primary text-foreground inline-flex items-center justify-center whitespace-nowrap rounded px-2 py-1 text-base transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow',
-      className
-    )}
-    {...props}
-  />
-));
-TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+  React.ElementRef<typeof OldTabsTrigger>,
+  React.ComponentPropsWithoutRef<typeof OldTabsTrigger>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewTabsTrigger : OldTabsTrigger;
+  return <Comp {...props} ref={ref} />;
+});
+TabsTrigger.displayName = 'TabsTrigger';
 
 const TabsContent = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content
-    ref={ref}
-    className={cn(
-      'ring-offset-background focus-visible:ring-ring mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-      className
-    )}
-    {...props}
-  />
-));
-TabsContent.displayName = TabsPrimitive.Content.displayName;
+  React.ElementRef<typeof OldTabsContent>,
+  React.ComponentPropsWithoutRef<typeof OldTabsContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewTabsContent : OldTabsContent;
+  return <Comp {...props} ref={ref} />;
+});
+TabsContent.displayName = 'TabsContent';
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };

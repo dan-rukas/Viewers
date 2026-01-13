@@ -1,181 +1,164 @@
 import * as React from 'react';
-import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-import { CheckIcon, ChevronRightIcon, DotFilledIcon } from '@radix-ui/react-icons';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import {
+  DropdownMenu as OldDropdownMenu,
+  DropdownMenuTrigger as OldDropdownMenuTrigger,
+  DropdownMenuContent as OldDropdownMenuContent,
+  DropdownMenuItem as OldDropdownMenuItem,
+  DropdownMenuCheckboxItem as OldDropdownMenuCheckboxItem,
+  DropdownMenuRadioItem as OldDropdownMenuRadioItem,
+  DropdownMenuLabel as OldDropdownMenuLabel,
+  DropdownMenuSeparator as OldDropdownMenuSeparator,
+  DropdownMenuShortcut as OldDropdownMenuShortcut,
+  DropdownMenuGroup as OldDropdownMenuGroup,
+  DropdownMenuPortal as OldDropdownMenuPortal,
+  DropdownMenuSub as OldDropdownMenuSub,
+  DropdownMenuSubContent as OldDropdownMenuSubContent,
+  DropdownMenuSubTrigger as OldDropdownMenuSubTrigger,
+  DropdownMenuRadioGroup as OldDropdownMenuRadioGroup,
+} from './DropdownMenu.old';
 
-const DropdownMenu = DropdownMenuPrimitive.Root;
+import {
+  DropdownMenu as NewDropdownMenu,
+  DropdownMenuTrigger as NewDropdownMenuTrigger,
+  DropdownMenuContent as NewDropdownMenuContent,
+  DropdownMenuItem as NewDropdownMenuItem,
+  DropdownMenuCheckboxItem as NewDropdownMenuCheckboxItem,
+  DropdownMenuRadioItem as NewDropdownMenuRadioItem,
+  DropdownMenuLabel as NewDropdownMenuLabel,
+  DropdownMenuSeparator as NewDropdownMenuSeparator,
+  DropdownMenuShortcut as NewDropdownMenuShortcut,
+  DropdownMenuGroup as NewDropdownMenuGroup,
+  DropdownMenuPortal as NewDropdownMenuPortal,
+  DropdownMenuSub as NewDropdownMenuSub,
+  DropdownMenuSubContent as NewDropdownMenuSubContent,
+  DropdownMenuSubTrigger as NewDropdownMenuSubTrigger,
+  DropdownMenuRadioGroup as NewDropdownMenuRadioGroup,
+} from './DropdownMenu.new';
 
-const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
+const DropdownMenu: typeof OldDropdownMenu = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenu : OldDropdownMenu;
+  return <Comp {...props} />;
+};
 
-const DropdownMenuGroup = DropdownMenuPrimitive.Group;
+const DropdownMenuTrigger: typeof OldDropdownMenuTrigger = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuTrigger : OldDropdownMenuTrigger;
+  return <Comp {...props} />;
+};
 
-const DropdownMenuPortal = DropdownMenuPrimitive.Portal;
+const DropdownMenuGroup: typeof OldDropdownMenuGroup = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuGroup : OldDropdownMenuGroup;
+  return <Comp {...props} />;
+};
 
-const DropdownMenuSub = DropdownMenuPrimitive.Sub;
+const DropdownMenuPortal: typeof OldDropdownMenuPortal = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuPortal : OldDropdownMenuPortal;
+  return <Comp {...props} />;
+};
 
-const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
+const DropdownMenuSub: typeof OldDropdownMenuSub = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuSub : OldDropdownMenuSub;
+  return <Comp {...props} />;
+};
 
-const DropdownMenuSubTrigger = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
-    inset?: boolean;
-    disabled?: boolean;
-  }
->(({ className, inset, children, disabled, ...props }, ref) => (
-  <DropdownMenuPrimitive.SubTrigger
-    ref={ref}
-    className={cn(
-      'focus:bg-accent data-[state=open]:bg-accent flex cursor-default select-none items-center rounded px-2 py-1 text-base outline-none',
-      inset && 'pl-8',
-      disabled && 'pointer-events-none opacity-50',
-      className
-    )}
-    {...props}
-  >
-    {children}
-    <ChevronRightIcon className="ml-auto h-4 w-4" />
-  </DropdownMenuPrimitive.SubTrigger>
-));
-DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName;
-
-const DropdownMenuSubContent = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
->(({ className, ...props }, ref) => (
-  <DropdownMenuPrimitive.SubContent
-    ref={ref}
-    className={cn(
-      'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 border-input/50 z-50 min-w-[8rem] overflow-hidden rounded border p-1 shadow-lg',
-      className
-    )}
-    {...props}
-  />
-));
-DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayName;
+const DropdownMenuRadioGroup: typeof OldDropdownMenuRadioGroup = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuRadioGroup : OldDropdownMenuRadioGroup;
+  return <Comp {...props} />;
+};
 
 const DropdownMenuContent = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
-  <DropdownMenuPrimitive.Portal>
-    <DropdownMenuPrimitive.Content
-      ref={ref}
-      sideOffset={sideOffset}
-      onKeyDown={e => {
-        // Todo: or maybe we just want to prevent arrows?
-        e.stopPropagation();
-        props.onKeyDown?.(e);
-      }}
-      className={cn(
-        'bg-popover text-popover-foreground border-input/50 z-50 min-w-[8rem] overflow-hidden rounded border p-1 shadow-md',
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
-        className
-      )}
-      {...props}
-    />
-  </DropdownMenuPrimitive.Portal>
-));
-DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName;
+  React.ElementRef<typeof OldDropdownMenuContent>,
+  React.ComponentPropsWithoutRef<typeof OldDropdownMenuContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuContent : OldDropdownMenuContent;
+  return <Comp {...props} ref={ref} />;
+});
+DropdownMenuContent.displayName = 'DropdownMenuContent';
 
 const DropdownMenuItem = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
-    inset?: boolean;
-  }
->(({ className, inset, ...props }, ref) => (
-  <DropdownMenuPrimitive.Item
-    ref={ref}
-    className={cn(
-      'focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded px-1 py-1 text-base outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      inset && 'pl-8',
-      className
-    )}
-    {...props}
-  />
-));
-DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName;
+  React.ElementRef<typeof OldDropdownMenuItem>,
+  React.ComponentPropsWithoutRef<typeof OldDropdownMenuItem>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuItem : OldDropdownMenuItem;
+  return <Comp {...props} ref={ref} />;
+});
+DropdownMenuItem.displayName = 'DropdownMenuItem';
 
 const DropdownMenuCheckboxItem = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
->(({ className, children, checked, ...props }, ref) => (
-  <DropdownMenuPrimitive.CheckboxItem
-    ref={ref}
-    className={cn(
-      'focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded py-1 pl-8 pr-2 text-base outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className
-    )}
-    checked={checked}
-    {...props}
-  >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-      <DropdownMenuPrimitive.ItemIndicator>
-        <CheckIcon className="h-4 w-4" />
-      </DropdownMenuPrimitive.ItemIndicator>
-    </span>
-    {children}
-  </DropdownMenuPrimitive.CheckboxItem>
-));
-DropdownMenuCheckboxItem.displayName = DropdownMenuPrimitive.CheckboxItem.displayName;
+  React.ElementRef<typeof OldDropdownMenuCheckboxItem>,
+  React.ComponentPropsWithoutRef<typeof OldDropdownMenuCheckboxItem>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuCheckboxItem : OldDropdownMenuCheckboxItem;
+  return <Comp {...props} ref={ref} />;
+});
+DropdownMenuCheckboxItem.displayName = 'DropdownMenuCheckboxItem';
 
 const DropdownMenuRadioItem = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>
->(({ className, children, ...props }, ref) => (
-  <DropdownMenuPrimitive.RadioItem
-    ref={ref}
-    className={cn(
-      'focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded py-1 pl-8 pr-2 text-base outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className
-    )}
-    {...props}
-  >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-      <DropdownMenuPrimitive.ItemIndicator>
-        <DotFilledIcon className="h-4 w-4 fill-current" />
-      </DropdownMenuPrimitive.ItemIndicator>
-    </span>
-    {children}
-  </DropdownMenuPrimitive.RadioItem>
-));
-DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName;
+  React.ElementRef<typeof OldDropdownMenuRadioItem>,
+  React.ComponentPropsWithoutRef<typeof OldDropdownMenuRadioItem>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuRadioItem : OldDropdownMenuRadioItem;
+  return <Comp {...props} ref={ref} />;
+});
+DropdownMenuRadioItem.displayName = 'DropdownMenuRadioItem';
 
 const DropdownMenuLabel = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
-    inset?: boolean;
-  }
->(({ className, inset, ...props }, ref) => (
-  <DropdownMenuPrimitive.Label
-    ref={ref}
-    className={cn('text-muted-foreground px-2 py-1 text-sm', inset && 'pl-8', className)}
-    {...props}
-  />
-));
-DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName;
+  React.ElementRef<typeof OldDropdownMenuLabel>,
+  React.ComponentPropsWithoutRef<typeof OldDropdownMenuLabel>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuLabel : OldDropdownMenuLabel;
+  return <Comp {...props} ref={ref} />;
+});
+DropdownMenuLabel.displayName = 'DropdownMenuLabel';
 
 const DropdownMenuSeparator = React.forwardRef<
-  React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
->(({ className, ...props }, ref) => (
-  <DropdownMenuPrimitive.Separator
-    ref={ref}
-    className={cn('bg-muted my-1 mx-2 h-px', className)}
-    {...props}
-  />
-));
-DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
+  React.ElementRef<typeof OldDropdownMenuSeparator>,
+  React.ComponentPropsWithoutRef<typeof OldDropdownMenuSeparator>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuSeparator : OldDropdownMenuSeparator;
+  return <Comp {...props} ref={ref} />;
+});
+DropdownMenuSeparator.displayName = 'DropdownMenuSeparator';
 
-const DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => {
-  return (
-    <span
-      className={cn('ml-auto text-sm tracking-widest opacity-60', className)}
-      {...props}
-    />
-  );
+const DropdownMenuShortcut: typeof OldDropdownMenuShortcut = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuShortcut : OldDropdownMenuShortcut;
+  return <Comp {...props} />;
 };
 DropdownMenuShortcut.displayName = 'DropdownMenuShortcut';
+
+const DropdownMenuSubContent = React.forwardRef<
+  React.ElementRef<typeof OldDropdownMenuSubContent>,
+  React.ComponentPropsWithoutRef<typeof OldDropdownMenuSubContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuSubContent : OldDropdownMenuSubContent;
+  return <Comp {...props} ref={ref} />;
+});
+DropdownMenuSubContent.displayName = 'DropdownMenuSubContent';
+
+const DropdownMenuSubTrigger = React.forwardRef<
+  React.ElementRef<typeof OldDropdownMenuSubTrigger>,
+  React.ComponentPropsWithoutRef<typeof OldDropdownMenuSubTrigger>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewDropdownMenuSubTrigger : OldDropdownMenuSubTrigger;
+  return <Comp {...props} ref={ref} />;
+});
+DropdownMenuSubTrigger.displayName = 'DropdownMenuSubTrigger';
 
 export {
   DropdownMenu,

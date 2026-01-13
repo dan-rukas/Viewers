@@ -1,32 +1,46 @@
 import * as React from 'react';
-import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import {
+  Tooltip as OldTooltip,
+  TooltipTrigger as OldTooltipTrigger,
+  TooltipContent as OldTooltipContent,
+  TooltipProvider as OldTooltipProvider,
+} from './Tooltip.old';
 
-const TooltipProvider = TooltipPrimitive.Provider;
+import {
+  Tooltip as NewTooltip,
+  TooltipTrigger as NewTooltipTrigger,
+  TooltipContent as NewTooltipContent,
+  TooltipProvider as NewTooltipProvider,
+} from './Tooltip.new';
 
-const Tooltip = TooltipPrimitive.Root;
+const TooltipProvider: typeof OldTooltipProvider = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewTooltipProvider : OldTooltipProvider;
+  return <Comp {...props} />;
+};
 
-const TooltipTrigger = TooltipPrimitive.Trigger;
+const Tooltip: typeof OldTooltip = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewTooltip : OldTooltip;
+  return <Comp {...props} />;
+};
 
-const TooltipPortal = TooltipPrimitive.Portal;
+const TooltipTrigger: typeof OldTooltipTrigger = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewTooltipTrigger : OldTooltipTrigger;
+  return <Comp {...props} />;
+};
 
 const TooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
-  <TooltipPortal>
-    <TooltipPrimitive.Content
-      ref={ref}
-      sideOffset={sideOffset}
-      className={cn(
-        'bg-muted border-input text-primary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 overflow-hidden rounded border px-2 py-1.5 text-sm',
-        className
-      )}
-      {...props}
-    />
-  </TooltipPortal>
-));
-TooltipContent.displayName = TooltipPrimitive.Content.displayName;
+  React.ElementRef<typeof OldTooltipContent>,
+  React.ComponentPropsWithoutRef<typeof OldTooltipContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewTooltipContent : OldTooltipContent;
+  return <Comp {...props} ref={ref} />;
+});
+TooltipContent.displayName = 'TooltipContent';
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };

@@ -1,31 +1,46 @@
 import * as React from 'react';
-import * as PopoverPrimitive from '@radix-ui/react-popover';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import {
+  Popover as OldPopover,
+  PopoverTrigger as OldPopoverTrigger,
+  PopoverContent as OldPopoverContent,
+  PopoverAnchor as OldPopoverAnchor,
+} from './Popover.old';
 
-const Popover = PopoverPrimitive.Root;
+import {
+  Popover as NewPopover,
+  PopoverTrigger as NewPopoverTrigger,
+  PopoverContent as NewPopoverContent,
+  PopoverAnchor as NewPopoverAnchor,
+} from './Popover.new';
 
-const PopoverTrigger = PopoverPrimitive.Trigger;
+const Popover: typeof OldPopover = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewPopover : OldPopover;
+  return <Comp {...props} />;
+};
 
-const PopoverAnchor = PopoverPrimitive.Anchor;
+const PopoverTrigger: typeof OldPopoverTrigger = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewPopoverTrigger : OldPopoverTrigger;
+  return <Comp {...props} />;
+};
+
+const PopoverAnchor: typeof OldPopoverAnchor = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewPopoverAnchor : OldPopoverAnchor;
+  return <Comp {...props} />;
+};
 
 const PopoverContent = React.forwardRef<
-  React.ElementRef<typeof PopoverPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
->(({ className, align = 'center', sideOffset = 4, ...props }, ref) => (
-  <PopoverPrimitive.Portal>
-    <PopoverPrimitive.Content
-      ref={ref}
-      align={align}
-      sideOffset={sideOffset}
-      className={cn(
-        'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 border-input z-50 w-72 rounded-md border p-4 shadow-md outline-none',
-        className
-      )}
-      {...props}
-    />
-  </PopoverPrimitive.Portal>
-));
-PopoverContent.displayName = PopoverPrimitive.Content.displayName;
+  React.ElementRef<typeof OldPopoverContent>,
+  React.ComponentPropsWithoutRef<typeof OldPopoverContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewPopoverContent : OldPopoverContent;
+  return <Comp {...props} ref={ref} />;
+});
+PopoverContent.displayName = 'PopoverContent';
 
 export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor };

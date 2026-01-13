@@ -1,25 +1,25 @@
 import * as React from 'react';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import { Input as OldInput } from './Input.old';
+import { Input as NewInput } from './Input.new';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+import type { InputProps } from './Input.old';
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn(
-          'border-input text-foreground bg-background hover:bg-primary/10 placeholder:text-muted-foreground focus-visible:ring-ring flex h-7 w-full rounded border px-2 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-base file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50',
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
-);
+export type { InputProps };
 
+/**
+ * Input proxy component that renders old or new implementation based on UINextVersion context.
+ */
+export const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewInput : OldInput;
+
+  return (
+    <Comp
+      {...props}
+      ref={ref}
+    />
+  );
+});
 Input.displayName = 'Input';
-
-export { Input };

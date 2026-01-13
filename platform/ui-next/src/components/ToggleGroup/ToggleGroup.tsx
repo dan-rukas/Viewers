@@ -1,55 +1,27 @@
 import * as React from 'react';
-import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
-import { VariantProps } from 'class-variance-authority';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
-import { toggleVariants } from '../Toggle';
-
-const ToggleGroupContext = React.createContext<VariantProps<typeof toggleVariants>>({
-  size: 'default',
-  variant: 'default',
-});
+import { ToggleGroup as OldToggleGroup, ToggleGroupItem as OldToggleGroupItem } from './ToggleGroup.old';
+import { ToggleGroup as NewToggleGroup, ToggleGroupItem as NewToggleGroupItem } from './ToggleGroup.new';
 
 const ToggleGroup = React.forwardRef<
-  React.ElementRef<typeof ToggleGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Root> &
-    VariantProps<typeof toggleVariants>
->(({ className, variant, size, children, ...props }, ref) => (
-  <ToggleGroupPrimitive.Root
-    ref={ref}
-    className={cn('bg-primary/10 flex items-center justify-center rounded-md', className)}
-    {...props}
-  >
-    <ToggleGroupContext.Provider value={{ variant, size }}>{children}</ToggleGroupContext.Provider>
-  </ToggleGroupPrimitive.Root>
-));
-
-ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName;
+  React.ElementRef<typeof OldToggleGroup>,
+  React.ComponentPropsWithoutRef<typeof OldToggleGroup>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewToggleGroup : OldToggleGroup;
+  return <Comp {...props} ref={ref} />;
+});
+ToggleGroup.displayName = 'ToggleGroup';
 
 const ToggleGroupItem = React.forwardRef<
-  React.ElementRef<typeof ToggleGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item> &
-    VariantProps<typeof toggleVariants>
->(({ className, children, variant, size, ...props }, ref) => {
-  const context = React.useContext(ToggleGroupContext);
-
-  return (
-    <ToggleGroupPrimitive.Item
-      ref={ref}
-      className={cn(
-        toggleVariants({
-          variant: context.variant || variant,
-          size: context.size || size,
-        }),
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </ToggleGroupPrimitive.Item>
-  );
+  React.ElementRef<typeof OldToggleGroupItem>,
+  React.ComponentPropsWithoutRef<typeof OldToggleGroupItem>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewToggleGroupItem : OldToggleGroupItem;
+  return <Comp {...props} ref={ref} />;
 });
-
-ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName;
+ToggleGroupItem.displayName = 'ToggleGroupItem';
 
 export { ToggleGroup, ToggleGroupItem };

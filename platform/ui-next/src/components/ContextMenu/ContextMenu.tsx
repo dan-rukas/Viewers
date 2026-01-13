@@ -1,172 +1,164 @@
 import * as React from 'react';
-import * as ContextMenuPrimitive from '@radix-ui/react-context-menu';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
-import { CheckIcon, ChevronRightIcon, DotFilledIcon } from '@radix-ui/react-icons';
+import {
+  ContextMenu as OldContextMenu,
+  ContextMenuTrigger as OldContextMenuTrigger,
+  ContextMenuContent as OldContextMenuContent,
+  ContextMenuItem as OldContextMenuItem,
+  ContextMenuCheckboxItem as OldContextMenuCheckboxItem,
+  ContextMenuRadioItem as OldContextMenuRadioItem,
+  ContextMenuLabel as OldContextMenuLabel,
+  ContextMenuSeparator as OldContextMenuSeparator,
+  ContextMenuShortcut as OldContextMenuShortcut,
+  ContextMenuGroup as OldContextMenuGroup,
+  ContextMenuPortal as OldContextMenuPortal,
+  ContextMenuSub as OldContextMenuSub,
+  ContextMenuSubContent as OldContextMenuSubContent,
+  ContextMenuSubTrigger as OldContextMenuSubTrigger,
+  ContextMenuRadioGroup as OldContextMenuRadioGroup,
+} from './ContextMenu.old';
 
-const ContextMenu = ContextMenuPrimitive.Root;
+import {
+  ContextMenu as NewContextMenu,
+  ContextMenuTrigger as NewContextMenuTrigger,
+  ContextMenuContent as NewContextMenuContent,
+  ContextMenuItem as NewContextMenuItem,
+  ContextMenuCheckboxItem as NewContextMenuCheckboxItem,
+  ContextMenuRadioItem as NewContextMenuRadioItem,
+  ContextMenuLabel as NewContextMenuLabel,
+  ContextMenuSeparator as NewContextMenuSeparator,
+  ContextMenuShortcut as NewContextMenuShortcut,
+  ContextMenuGroup as NewContextMenuGroup,
+  ContextMenuPortal as NewContextMenuPortal,
+  ContextMenuSub as NewContextMenuSub,
+  ContextMenuSubContent as NewContextMenuSubContent,
+  ContextMenuSubTrigger as NewContextMenuSubTrigger,
+  ContextMenuRadioGroup as NewContextMenuRadioGroup,
+} from './ContextMenu.new';
 
-const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
+const ContextMenu: typeof OldContextMenu = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenu : OldContextMenu;
+  return <Comp {...props} />;
+};
 
-const ContextMenuGroup = ContextMenuPrimitive.Group;
+const ContextMenuTrigger: typeof OldContextMenuTrigger = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuTrigger : OldContextMenuTrigger;
+  return <Comp {...props} />;
+};
 
-const ContextMenuPortal = ContextMenuPrimitive.Portal;
+const ContextMenuGroup: typeof OldContextMenuGroup = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuGroup : OldContextMenuGroup;
+  return <Comp {...props} />;
+};
 
-const ContextMenuSub = ContextMenuPrimitive.Sub;
+const ContextMenuPortal: typeof OldContextMenuPortal = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuPortal : OldContextMenuPortal;
+  return <Comp {...props} />;
+};
 
-const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
+const ContextMenuSub: typeof OldContextMenuSub = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuSub : OldContextMenuSub;
+  return <Comp {...props} />;
+};
 
-const ContextMenuSubTrigger = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.SubTrigger>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubTrigger> & {
-    inset?: boolean;
-  }
->(({ className, inset, children, ...props }, ref) => (
-  <ContextMenuPrimitive.SubTrigger
-    ref={ref}
-    className={cn(
-      'focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none',
-      inset && 'pl-8',
-      className
-    )}
-    {...props}
-  >
-    {children}
-    <ChevronRightIcon className="ml-auto h-4 w-4" />
-  </ContextMenuPrimitive.SubTrigger>
-));
-ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName;
-
-const ContextMenuSubContent = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.SubContent>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.SubContent>
->(({ className, ...props }, ref) => (
-  <ContextMenuPrimitive.SubContent
-    ref={ref}
-    className={cn(
-      'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-lg',
-      className
-    )}
-    {...props}
-  />
-));
-ContextMenuSubContent.displayName = ContextMenuPrimitive.SubContent.displayName;
+const ContextMenuRadioGroup: typeof OldContextMenuRadioGroup = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuRadioGroup : OldContextMenuRadioGroup;
+  return <Comp {...props} />;
+};
 
 const ContextMenuContent = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <ContextMenuPrimitive.Portal>
-    <ContextMenuPrimitive.Content
-      ref={ref}
-      className={cn(
-        'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-md',
-        className
-      )}
-      {...props}
-    />
-  </ContextMenuPrimitive.Portal>
-));
-ContextMenuContent.displayName = ContextMenuPrimitive.Content.displayName;
+  React.ElementRef<typeof OldContextMenuContent>,
+  React.ComponentPropsWithoutRef<typeof OldContextMenuContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuContent : OldContextMenuContent;
+  return <Comp {...props} ref={ref} />;
+});
+ContextMenuContent.displayName = 'ContextMenuContent';
 
 const ContextMenuItem = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Item> & {
-    inset?: boolean;
-  }
->(({ className, inset, ...props }, ref) => (
-  <ContextMenuPrimitive.Item
-    ref={ref}
-    className={cn(
-      'focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      inset && 'pl-8',
-      className
-    )}
-    {...props}
-  />
-));
-ContextMenuItem.displayName = ContextMenuPrimitive.Item.displayName;
+  React.ElementRef<typeof OldContextMenuItem>,
+  React.ComponentPropsWithoutRef<typeof OldContextMenuItem>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuItem : OldContextMenuItem;
+  return <Comp {...props} ref={ref} />;
+});
+ContextMenuItem.displayName = 'ContextMenuItem';
 
 const ContextMenuCheckboxItem = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.CheckboxItem>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.CheckboxItem>
->(({ className, children, checked, ...props }, ref) => (
-  <ContextMenuPrimitive.CheckboxItem
-    ref={ref}
-    className={cn(
-      'focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className
-    )}
-    checked={checked}
-    {...props}
-  >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-      <ContextMenuPrimitive.ItemIndicator>
-        <CheckIcon className="h-4 w-4" />
-      </ContextMenuPrimitive.ItemIndicator>
-    </span>
-    {children}
-  </ContextMenuPrimitive.CheckboxItem>
-));
-ContextMenuCheckboxItem.displayName = ContextMenuPrimitive.CheckboxItem.displayName;
+  React.ElementRef<typeof OldContextMenuCheckboxItem>,
+  React.ComponentPropsWithoutRef<typeof OldContextMenuCheckboxItem>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuCheckboxItem : OldContextMenuCheckboxItem;
+  return <Comp {...props} ref={ref} />;
+});
+ContextMenuCheckboxItem.displayName = 'ContextMenuCheckboxItem';
 
 const ContextMenuRadioItem = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.RadioItem>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.RadioItem>
->(({ className, children, ...props }, ref) => (
-  <ContextMenuPrimitive.RadioItem
-    ref={ref}
-    className={cn(
-      'focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-      className
-    )}
-    {...props}
-  >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-      <ContextMenuPrimitive.ItemIndicator>
-        <DotFilledIcon className="h-4 w-4 fill-current" />
-      </ContextMenuPrimitive.ItemIndicator>
-    </span>
-    {children}
-  </ContextMenuPrimitive.RadioItem>
-));
-ContextMenuRadioItem.displayName = ContextMenuPrimitive.RadioItem.displayName;
+  React.ElementRef<typeof OldContextMenuRadioItem>,
+  React.ComponentPropsWithoutRef<typeof OldContextMenuRadioItem>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuRadioItem : OldContextMenuRadioItem;
+  return <Comp {...props} ref={ref} />;
+});
+ContextMenuRadioItem.displayName = 'ContextMenuRadioItem';
 
 const ContextMenuLabel = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.Label>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Label> & {
-    inset?: boolean;
-  }
->(({ className, inset, ...props }, ref) => (
-  <ContextMenuPrimitive.Label
-    ref={ref}
-    className={cn('text-foreground px-2 py-1.5 text-sm font-semibold', inset && 'pl-8', className)}
-    {...props}
-  />
-));
-ContextMenuLabel.displayName = ContextMenuPrimitive.Label.displayName;
+  React.ElementRef<typeof OldContextMenuLabel>,
+  React.ComponentPropsWithoutRef<typeof OldContextMenuLabel>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuLabel : OldContextMenuLabel;
+  return <Comp {...props} ref={ref} />;
+});
+ContextMenuLabel.displayName = 'ContextMenuLabel';
 
 const ContextMenuSeparator = React.forwardRef<
-  React.ElementRef<typeof ContextMenuPrimitive.Separator>,
-  React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Separator>
->(({ className, ...props }, ref) => (
-  <ContextMenuPrimitive.Separator
-    ref={ref}
-    className={cn('bg-border -mx-1 my-1 h-px', className)}
-    {...props}
-  />
-));
-ContextMenuSeparator.displayName = ContextMenuPrimitive.Separator.displayName;
+  React.ElementRef<typeof OldContextMenuSeparator>,
+  React.ComponentPropsWithoutRef<typeof OldContextMenuSeparator>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuSeparator : OldContextMenuSeparator;
+  return <Comp {...props} ref={ref} />;
+});
+ContextMenuSeparator.displayName = 'ContextMenuSeparator';
 
-const ContextMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => {
-  return (
-    <span
-      className={cn('text-muted-foreground ml-auto text-xs tracking-widest', className)}
-      {...props}
-    />
-  );
+const ContextMenuShortcut: typeof OldContextMenuShortcut = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuShortcut : OldContextMenuShortcut;
+  return <Comp {...props} />;
 };
 ContextMenuShortcut.displayName = 'ContextMenuShortcut';
+
+const ContextMenuSubContent = React.forwardRef<
+  React.ElementRef<typeof OldContextMenuSubContent>,
+  React.ComponentPropsWithoutRef<typeof OldContextMenuSubContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuSubContent : OldContextMenuSubContent;
+  return <Comp {...props} ref={ref} />;
+});
+ContextMenuSubContent.displayName = 'ContextMenuSubContent';
+
+const ContextMenuSubTrigger = React.forwardRef<
+  React.ElementRef<typeof OldContextMenuSubTrigger>,
+  React.ComponentPropsWithoutRef<typeof OldContextMenuSubTrigger>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewContextMenuSubTrigger : OldContextMenuSubTrigger;
+  return <Comp {...props} ref={ref} />;
+});
+ContextMenuSubTrigger.displayName = 'ContextMenuSubTrigger';
 
 export {
   ContextMenu,

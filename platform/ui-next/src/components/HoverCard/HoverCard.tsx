@@ -1,27 +1,38 @@
 import * as React from 'react';
-import * as HoverCardPrimitive from '@radix-ui/react-hover-card';
+import { useUINextVersion } from '../../contextProviders/UINextVersionProvider';
 
-import { cn } from '../../lib/utils';
+import {
+  HoverCard as OldHoverCard,
+  HoverCardTrigger as OldHoverCardTrigger,
+  HoverCardContent as OldHoverCardContent,
+} from './HoverCard.old';
 
-const HoverCard = HoverCardPrimitive.Root;
+import {
+  HoverCard as NewHoverCard,
+  HoverCardTrigger as NewHoverCardTrigger,
+  HoverCardContent as NewHoverCardContent,
+} from './HoverCard.new';
 
-const HoverCardTrigger = HoverCardPrimitive.Trigger;
+const HoverCard: typeof OldHoverCard = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewHoverCard : OldHoverCard;
+  return <Comp {...props} />;
+};
+
+const HoverCardTrigger: typeof OldHoverCardTrigger = props => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewHoverCardTrigger : OldHoverCardTrigger;
+  return <Comp {...props} />;
+};
 
 const HoverCardContent = React.forwardRef<
-  React.ElementRef<typeof HoverCardPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
->(({ className, align = 'center', sideOffset = 4, ...props }, ref) => (
-  <HoverCardPrimitive.Content
-    ref={ref}
-    align={align}
-    sideOffset={sideOffset}
-    className={cn(
-      'bg-muted text-muted-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 border-input z-50 w-64 rounded-md border p-4 shadow-md outline-none',
-      className
-    )}
-    {...props}
-  />
-));
-HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
+  React.ElementRef<typeof OldHoverCardContent>,
+  React.ComponentPropsWithoutRef<typeof OldHoverCardContent>
+>((props, ref) => {
+  const version = useUINextVersion();
+  const Comp = version === 'new' ? NewHoverCardContent : OldHoverCardContent;
+  return <Comp {...props} ref={ref} />;
+});
+HoverCardContent.displayName = 'HoverCardContent';
 
 export { HoverCard, HoverCardTrigger, HoverCardContent };
