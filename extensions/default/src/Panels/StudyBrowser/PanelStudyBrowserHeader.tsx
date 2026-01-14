@@ -18,7 +18,7 @@ function PanelStudyBrowserHeader({
   return (
     <>
       <div className="bg-muted flex h-[40px] select-none rounded-t p-2">
-        <div className={'flex h-[24px] w-full select-none justify-center self-center text-[14px]'}>
+        <div className={'flex h-[24px] w-full select-none justify-center self-center text-base'}>
           <div className="flex w-full items-center gap-[10px]">
             <div className="flex items-center justify-center">
               <div className="text-primary flex items-center space-x-1">

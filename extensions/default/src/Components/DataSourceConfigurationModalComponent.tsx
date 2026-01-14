@@ -121,7 +121,7 @@ function DataSourceConfigurationModalComponent({
         <div className="text-highlight text-[20px]">
           {t(`Error fetching ${itemLabels[selectedItems.length]} list`)}
         </div>
-        <div className="grow bg-black p-4 text-[14px]">{errorMessage}</div>
+        <div className="grow bg-black p-4 text-base">{errorMessage}</div>
       </div>
     );
   };
@@ -161,7 +161,7 @@ function DataSourceConfigurationModalComponent({
               {itemLabelIndex < selectedItems.length ? (
                 <div
                   className={classNames(
-                    'text-foreground text-[14px]',
+                    'text-foreground text-base',
                     NO_WRAP_ELLIPSIS_CLASS_NAMES
                   )}
                 >

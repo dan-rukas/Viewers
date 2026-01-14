@@ -73,7 +73,7 @@ const InvestigationalUseDialog = ({
               OHIF Viewer is{' '}
               <span className="text-highlight">{t('for investigational use only')}</span>
             </div>
-            <div className="text-foreground text-[13px]">
+            <div className="text-foreground text-base">
               <span
                 className="text-primary cursor-pointer"
                 onClick={() => window.open('https://ohif.org/', '_blank')}

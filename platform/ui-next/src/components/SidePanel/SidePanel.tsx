@@ -428,7 +428,7 @@ const SidePanel = ({
     return (
       <div
         className={classnames(
-          'text-primary flex grow cursor-pointer select-none justify-center self-center text-[13px]'
+          'text-primary flex grow cursor-pointer select-none justify-center self-center text-base'
         )}
         data-cy={`${tabs[0].name}-btn`}
         onClick={() => updatePanelOpen(!panelOpen)}

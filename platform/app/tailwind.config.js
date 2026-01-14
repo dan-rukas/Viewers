@@ -42,9 +42,9 @@ module.exports = {
       xxs: '0.625rem', // 10px
       xs: '0.6875rem', // 11px
       sm: '0.75rem', // 12px
-      base: '0.8125rem', // 13px
-      lg: '0.875rem', // 14px
-      xl: '1rem', // 16px
+      base: '0.875rem', // 14px
+      lg: '1rem', // 16px
+      xl: '1.125rem', // 18px
       // 2xl and above will be updated in an upcoming version
       '2xl': '1.5rem',
       '3xl': '1.875rem',

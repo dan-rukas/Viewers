@@ -37,7 +37,7 @@ export const RowSegmentedControl: React.FC<RowSegmentedControlProps> = ({
 
   return (
     <div
-      className={cn('flex items-center justify-between text-[13px]', className)}
+      className={cn('flex items-center justify-between text-base', className)}
       key={option.id}
     >
       <Label className="mr-2">

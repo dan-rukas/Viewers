@@ -87,7 +87,7 @@ const renderRangeSetting = option => {
       className="flex items-center"
       key={option.id}
     >
-      <div className="w-1/3 text-[13px]">{renderLabelWithTooltip(option.name, option.tooltip)}</div>
+      <div className="w-1/3 text-base">{renderLabelWithTooltip(option.name, option.tooltip)}</div>
       <div
         className="w-2/3"
         data-cy={option.id}
@@ -122,7 +122,7 @@ function renderDoubleRangeSetting(option) {
       className="flex items-center"
       key={option.id}
     >
-      <div className="w-1/3 text-[13px]">
+      <div className="w-1/3 text-base">
         {renderLabelWithTooltip(option.name, option.tooltip)}
       </div>
       <div className="w-2/3">
@@ -225,7 +225,7 @@ const renderSelectSetting = option => {
       className="flex items-center"
       key={option.id}
     >
-      <div className="w-1/3 text-[13px]">
+      <div className="w-1/3 text-base">
         {renderLabelWithTooltip(option.name, option.tooltip)}
       </div>
       <div className="w-2/3">

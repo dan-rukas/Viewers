@@ -189,7 +189,7 @@ const Thumbnail = ({
           <div className="flex h-full w-[calc(100%-12px)] flex-col justify-start">
             <div className="flex items-center gap-[7px]">
               <div
-                className="text-foreground text-[13px] font-semibold"
+                className="text-foreground text-base font-semibold"
                 data-cy="series-modality-label"
               >
                 {modality}
@@ -198,7 +198,7 @@ const Thumbnail = ({
                 <TooltipContent>{description}</TooltipContent>
                 <TooltipTrigger className="w-full overflow-hidden">
                   <div
-                    className="text-foreground max-w-[160px] overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-[13px] font-normal"
+                    className="text-foreground max-w-[160px] overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-base font-normal"
                     data-cy="series-description-label"
                   >
                     {description}
