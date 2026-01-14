@@ -54,15 +54,35 @@ export default defineConfig({
       },
       module: {
         rules: [
+          // Legacy UI package CSS - process WITHOUT Tailwind (will be removed after WorkList migration)
           {
             test: /\.css$/,
+            include: [/platform\/ui\//, /node_modules/],
             use: [
               {
                 loader: 'postcss-loader',
                 options: {
                   postcssOptions: {
                     plugins: {
-                      tailwindcss: {},
+                      autoprefixer: {},
+                    },
+                  },
+                },
+              },
+            ],
+            type: 'javascript/auto',
+          },
+          // UI-next and app CSS - process with Tailwind v4
+          {
+            test: /\.css$/,
+            exclude: [/platform\/ui\//, /node_modules/],
+            use: [
+              {
+                loader: 'postcss-loader',
+                options: {
+                  postcssOptions: {
+                    plugins: {
+                      '@tailwindcss/postcss': {},
                       autoprefixer: {},
                     },
                   },

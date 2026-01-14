@@ -99,7 +99,7 @@ const ToolButtonListDropDown = React.forwardRef<HTMLDivElement, ToolButtonListDr
           className={cn(
             'text-foreground/80 hover:bg-background hover:text-highlight border-primary',
             'inline-flex h-10 w-5 items-center justify-center',
-            '!rounded-tr-lg !rounded-br-lg !rounded-tl-none !rounded-bl-none',
+            'rounded-tr-lg! rounded-br-lg! rounded-tl-none! rounded-bl-none!',
             'bg-transparent',
             className
           )}

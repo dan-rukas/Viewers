@@ -44,7 +44,7 @@ interface PresetFilterProps {
 }
 function PresetFilter({ children, className }: PresetFilterProps) {
   return (
-    <div className={cn('mb-2 flex w-full flex-shrink-0 items-center space-x-2', className)}>
+    <div className={cn('mb-2 flex w-full shrink-0 items-center space-x-2', className)}>
       {children}
     </div>
   );

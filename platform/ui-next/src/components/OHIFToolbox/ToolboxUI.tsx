@@ -92,7 +92,7 @@ function ToolboxUI(props: ToolboxProps) {
           <PanelSection.Header>
             <span>{title}</span>
           </PanelSection.Header>
-          <PanelSection.Content className="flex-shrink-0">{render()}</PanelSection.Content>
+          <PanelSection.Content className="shrink-0">{render()}</PanelSection.Content>
         </PanelSection>
       ) : (
         render()

@@ -413,7 +413,7 @@ function NumberStepper({ className, children, direction, inputWidth }: NumberSte
           inputWidth ? inputWidth : 'max-w-12 min-w-0'
         )}
       />
-      <div className="ml-1 flex flex-shrink-0 flex-col">
+      <div className="ml-1 flex shrink-0 flex-col">
         <Button
           variant="ghost"
           size="icon"

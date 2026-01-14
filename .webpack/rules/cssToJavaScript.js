@@ -1,9 +1,9 @@
 const autoprefixer = require('autoprefixer');
-const path = require('path');
-const tailwindcss = require('tailwindcss');
-const tailwindConfigPath = path.resolve('../../platform/app/tailwind.config.js');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
+
+// Tailwind v4 uses CSS-first configuration via @tailwindcss/postcss
+const tailwindcss = require('@tailwindcss/postcss');
 
 const cssToJavaScript = {
   test: /\.css$/,
@@ -16,10 +16,7 @@ const cssToJavaScript = {
       options: {
         postcssOptions: {
           verbose: true,
-          plugins: [
-            [tailwindcss(tailwindConfigPath)],
-            [autoprefixer('last 2 version', 'ie >= 11')],
-          ],
+          plugins: [tailwindcss, autoprefixer],
         },
       },
     },

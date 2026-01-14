@@ -129,7 +129,7 @@ const Trigger = ({
   const button = (
     <Button
       className={cn(
-        'inline-flex h-10 w-10 items-center justify-center !rounded-lg',
+        'inline-flex h-10 w-10 items-center justify-center rounded-lg!',
         disabled
           ? 'text-foreground/80 hover:bg-muted hover:text-highlight cursor-not-allowed opacity-40'
           : isOpen
@@ -264,7 +264,7 @@ const Preset = ({
       onClick={handleClick}
       data-cy={title}
     >
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         <Icons.ByName
           name={icon}
           className={cn('group-hover:text-primary', iconSize)}

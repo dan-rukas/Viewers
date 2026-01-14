@@ -442,7 +442,7 @@ const SidePanel = ({
   const getOpenStateComponent = () => {
     return (
       <>
-        <div className="bg-muted flex h-[40px] flex-shrink-0 select-none rounded-t p-2">
+        <div className="bg-muted flex h-[40px] shrink-0 select-none rounded-t p-2">
           {tabs.length === 1 ? getOneTabComponent() : getTabGridComponent()}
         </div>
         <Separator

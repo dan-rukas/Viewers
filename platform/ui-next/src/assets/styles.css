@@ -1,3 +1,6 @@
+/* Import theme variables for @apply usage in Tailwind v4 */
+@reference '../tailwind.css';
+
 /* CUSTOM OHIF SCROLLBAR */
 .ohif-scrollbar {
   scrollbar-color: #173239 transparent;

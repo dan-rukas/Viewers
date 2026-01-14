@@ -121,7 +121,7 @@ const CinePlayer: React.FC<CinePlayerProps> = ({
                     inputWidth="w-7 max-w-7"
                   >
                     <div className="flex items-center justify-center gap-1">
-                      <div className="text-foreground flex-shrink-0 text-center text-sm leading-[22px]">
+                      <div className="text-foreground shrink-0 text-center text-sm leading-[22px]">
                         <span className="text-muted-foreground whitespace-nowrap text-xs">
                           {' FPS'}
                         </span>
