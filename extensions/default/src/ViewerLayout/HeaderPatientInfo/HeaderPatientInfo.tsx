@@ -51,17 +51,17 @@ function HeaderPatientInfo({ servicesManager, appConfig }: withAppTypes) {
       <div className="flex flex-col justify-center">
         {expanded ? (
           <>
-            <div className="text-foreground self-start text-base font-bold">
+            <div className="text-foreground self-start text-sm font-bold">
               {formattedPatientName}
             </div>
-            <div className="text-muted-foreground flex gap-2 text-[11px]">
+            <div className="text-muted-foreground flex gap-2 text-xxs">
               <div>{formattedPatientID}</div>
               <div>{patientInfo.PatientSex}</div>
               <div>{patientInfo.PatientDOB}</div>
             </div>
           </>
         ) : (
-          <div className="text-primary self-center text-base">
+          <div className="text-primary self-center text-sm">
             {isMixedPatients ? 'Multiple Patients' : 'Patient'}
           </div>
         )}

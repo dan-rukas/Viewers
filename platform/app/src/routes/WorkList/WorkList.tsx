@@ -441,7 +441,7 @@ function WorkList({
                       disabled={!isValidMode}
                       startIconTooltip={
                         !isValidMode ? (
-                          <div className="font-inter flex w-[206px] whitespace-normal text-left text-xs font-normal text-white">
+                          <div className="font-inter flex w-[206px] whitespace-normal text-left text-xxs font-normal text-white">
                             {invalidModeDescription}
                           </div>
                         ) : null

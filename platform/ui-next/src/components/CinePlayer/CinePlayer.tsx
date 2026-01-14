@@ -89,11 +89,11 @@ const CinePlayer: React.FC<CinePlayerProps> = ({
 
         {isDynamic && dynamicInfo && (
           <div className="min-w-16 max-w-44 text-foreground flex flex-col">
-            <div className="text-xs">
+            <div className="text-xxs">
               <span className="text-foreground w-2">{dynamicInfo.dimensionGroupNumber}</span>{' '}
               <span className="text-muted-foreground">{`/${dynamicInfo.numDimensionGroups}`}</span>
             </div>
-            <div className="text-muted-foreground text-xs">{dynamicInfo.label}</div>
+            <div className="text-muted-foreground text-xxs">{dynamicInfo.label}</div>
           </div>
         )}
 
@@ -121,8 +121,8 @@ const CinePlayer: React.FC<CinePlayerProps> = ({
                     inputWidth="w-7 max-w-7"
                   >
                     <div className="flex items-center justify-center gap-1">
-                      <div className="text-foreground flex-shrink-0 text-center text-sm leading-[22px]">
-                        <span className="text-muted-foreground whitespace-nowrap text-xs">
+                      <div className="text-foreground flex-shrink-0 text-center text-xs leading-[22px]">
+                        <span className="text-muted-foreground whitespace-nowrap text-xxs">
                           {' FPS'}
                         </span>
                       </div>

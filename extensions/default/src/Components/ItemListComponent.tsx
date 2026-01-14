@@ -31,7 +31,7 @@ function ItemListComponent({
   return (
     <div className="flex min-h-[1px] grow flex-col gap-4">
       <div className="flex items-center justify-between">
-        <div className="text-highlight text-xl">{t(`Select ${itemLabel}`)}</div>
+        <div className="text-highlight text-lg">{t(`Select ${itemLabel}`)}</div>
         <InputFilter
           className="max-w-[40%] grow"
           onChange={setFilterValue}
@@ -44,7 +44,7 @@ function ItemListComponent({
           <InputFilter.ClearButton className="text-primary mr-0.5 p-0.5" />
         </InputFilter>
       </div>
-      <div className="relative flex min-h-[1px] grow flex-col bg-black text-base">
+      <div className="relative flex min-h-[1px] grow flex-col bg-black text-sm">
         {itemList == null ? (
           <LoadingIndicatorProgress className={'h-full w-full'} />
         ) : itemList.length === 0 ? (

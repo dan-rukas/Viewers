@@ -45,7 +45,7 @@ export function WindowLevel({ viewportId }: { viewportId?: string } = {}): React
   return (
     <>
       {viewportDisplaySets && viewportDisplaySets.length > 1 && (
-        <div className="flex h-8 w-full flex-shrink-0 items-center justify-center px-2 text-base">
+        <div className="flex h-8 w-full flex-shrink-0 items-center justify-center px-2 text-sm">
           <Tabs
             value={activeDisplaySetUID}
             onValueChange={displaySetUID => {
@@ -67,7 +67,7 @@ export function WindowLevel({ viewportId }: { viewportId?: string } = {}): React
       )}
 
       <div
-        className="hover:bg-accent flex h-8 w-full flex-shrink-0 cursor-pointer items-center px-2 text-base hover:rounded"
+        className="hover:bg-accent flex h-8 w-full flex-shrink-0 cursor-pointer items-center px-2 text-sm hover:rounded"
         onClick={() => setShowPreview(!showPreview)}
       >
         <span className="flex-shrink-0">{t('Preview in viewport')}</span>

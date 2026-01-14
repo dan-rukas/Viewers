@@ -96,11 +96,11 @@ const WindowLevel = ({
 
   return (
     <div className={`text-foreground max-w-sm p-1 ${containerClassName || ''}`}>
-      {title && <div className="text-muted-foreground mb-1 text-sm">{title}</div>}
+      {title && <div className="text-muted-foreground mb-1 text-xs">{title}</div>}
 
       <div className="space-y-2 px-2">
         {/* Range Labels */}
-        <div className="text-muted-foreground flex h-4 text-sm">
+        <div className="text-muted-foreground flex h-4 text-xs">
           <div className="relative h-fit grow">
             <span className="absolute left-0 bottom-px leading-3">{range.min}</span>
           </div>
@@ -137,8 +137,8 @@ const WindowLevel = ({
         {/* Opacity Slider (optional) */}
         {showOpacitySlider && (
           <div className="mt-2">
-            <div className="flex items-center justify-between gap-2 text-base">
-              <div className="text-foreground text-xs">Opacity</div>
+            <div className="flex items-center justify-between gap-2 text-sm">
+              <div className="text-foreground text-xxs">Opacity</div>
               <div className="flex-1">
                 <Numeric.Container
                   mode="singleRange"

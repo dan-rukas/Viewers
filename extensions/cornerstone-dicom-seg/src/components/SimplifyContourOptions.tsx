@@ -10,8 +10,8 @@ function SimplifyContourOptions() {
   const { t } = useTranslation('SegmentationPanel');
 
   return (
-    <div className="flex w-auto w-[252px] flex-col gap-[8px] text-base font-normal leading-none">
-      <div className="flex w-auto flex-col gap-[10px] text-base font-normal leading-none">
+    <div className="flex w-auto w-[252px] flex-col gap-[8px] text-sm font-normal leading-none">
+      <div className="flex w-auto flex-col gap-[10px] text-sm font-normal leading-none">
         <div>{t('Fill contour holes')}</div>
         <Button
           className="border-primary/60 border"
@@ -24,7 +24,7 @@ function SimplifyContourOptions() {
         </Button>
         <Separator className="bg-input mt-[20px] h-[1px]" />
       </div>
-      <div className="flex w-auto flex-col gap-[10px] text-base font-normal leading-none">
+      <div className="flex w-auto flex-col gap-[10px] text-sm font-normal leading-none">
         <div>{t('Remove Small Contours')}</div>
         <div className="flex items-center gap-2 self-end">
           <Label
@@ -54,7 +54,7 @@ function SimplifyContourOptions() {
         </Button>
         <Separator className="bg-input mt-[20px] h-[1px]" />
       </div>
-      <div className="flex w-auto flex-col gap-[10px] text-base font-normal leading-none">
+      <div className="flex w-auto flex-col gap-[10px] text-sm font-normal leading-none">
         <div>{t('Create New Segment from Holes')}</div>
         <Button
           className="border-primary/60 border"

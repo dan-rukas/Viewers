@@ -118,10 +118,10 @@ function DataSourceConfigurationModalComponent({
   const getErrorComponent = (): ReactElement => {
     return (
       <div className="flex min-h-[1px] grow flex-col gap-4">
-        <div className="text-highlight text-[20px]">
+        <div className="text-highlight text-xl">
           {t(`Error fetching ${itemLabels[selectedItems.length]} list`)}
         </div>
-        <div className="grow bg-black p-4 text-base">{errorMessage}</div>
+        <div className="grow bg-black p-4 text-sm">{errorMessage}</div>
       </div>
     );
   };
@@ -161,7 +161,7 @@ function DataSourceConfigurationModalComponent({
               {itemLabelIndex < selectedItems.length ? (
                 <div
                   className={classNames(
-                    'text-foreground text-base',
+                    'text-foreground text-sm',
                     NO_WRAP_ELLIPSIS_CLASS_NAMES
                   )}
                 >

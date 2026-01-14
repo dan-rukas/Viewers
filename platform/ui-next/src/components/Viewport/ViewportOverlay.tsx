@@ -21,7 +21,7 @@ function ViewportOverlay({ topLeft, topRight, bottomRight, bottomLeft, color = '
   const overlay = 'absolute pointer-events-none viewport-overlay';
 
   return (
-    <div className={classNames(color, 'overlay-text', shadowClass, 'text-base leading-5')}>
+    <div className={classNames(color, 'overlay-text', shadowClass, 'text-sm leading-5')}>
       <div
         data-cy="viewport-overlay-top-left"
         className={classNames(overlay, classes.topLeft)}

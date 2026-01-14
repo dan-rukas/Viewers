@@ -45,7 +45,7 @@ interface ProductBetaProps {
 }
 function ProductBeta({ children, className }: ProductBetaProps) {
   return (
-    <div className={cn('text-muted-foreground text-xl font-light', className)}>{children}</div>
+    <div className={cn('text-muted-foreground text-lg font-light', className)}>{children}</div>
   );
 }
 
@@ -69,8 +69,8 @@ interface DetailItemProps {
 function DetailItem({ label, value, className }: DetailItemProps) {
   return (
     <div className={cn('flex flex-col items-center', className)}>
-      <div className="text-muted-foreground pt-2 text-sm font-semibold tracking-wide">{label}</div>
-      <div className="text-muted-foreground text-sm">{value}</div>
+      <div className="text-muted-foreground pt-2 text-xs font-semibold tracking-wide">{label}</div>
+      <div className="text-muted-foreground text-xs">{value}</div>
     </div>
   );
 }
@@ -91,7 +91,7 @@ function SocialItem({ icon, url, text, className }: SocialItemProps) {
       <Button
         asChild
         variant="link"
-        className="py-6 text-lg"
+        className="py-6 text-base"
       >
         <a
           href={`https://github.com/${url}`}

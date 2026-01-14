@@ -516,7 +516,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
             />
             <label
               htmlFor="threshold-opacity-switch"
-              className="text-muted-foreground cursor-pointer text-sm"
+              className="text-muted-foreground cursor-pointer text-xs"
               onClick={() => setThresholdOpacityEnabled(!thresholdOpacityEnabled)}
             >
               Control threshold & opacity

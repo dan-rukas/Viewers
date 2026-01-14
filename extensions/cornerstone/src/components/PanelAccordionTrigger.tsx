@@ -25,7 +25,7 @@ export default function PanelAccordionTrigger(props) {
       style={{ marginLeft: `${marginLeft}px`, padding: 0 }}
       asChild={true}
     >
-      <div className={`inline-flex text-base ${isActive ? 'bg-popover' : 'bg-muted'} flex-grow`}>
+      <div className={`inline-flex text-sm ${isActive ? 'bg-popover' : 'bg-muted'} flex-grow`}>
         <button onClick={onClickDefault.bind(props)}>
           <span
             className={`inline-flex rounded-l border-r border-black ${isActive ? 'bg-highlight' : 'bg-muted'}`}

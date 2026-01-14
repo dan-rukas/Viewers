@@ -18,8 +18,8 @@ const StudySummary: React.FC<StudySummaryProps> = ({ date, description }) => {
       className="mx-2 my-0"
       style={{ textAlign: 'left' }}
     >
-      <div className="text-foreground text-sm">{date}</div>
-      <div className="text-muted-foreground pb-1 text-sm">{description}</div>
+      <div className="text-foreground text-xs">{date}</div>
+      <div className="text-muted-foreground pb-1 text-xs">{description}</div>
     </div>
   );
 };

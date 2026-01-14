@@ -24,7 +24,7 @@ function OpacityMenu({ viewportId, className }: OpacityMenuProps) {
     <div className={className}>
       <div className="bg-popover w-72 rounded-lg p-3">
         <div className="mb-2 flex items-center justify-center">
-          <span className="text-muted-foreground text-base">Opacity</span>
+          <span className="text-muted-foreground text-sm">Opacity</span>
         </div>
         <div className="">
           <Numeric.Container
@@ -40,9 +40,9 @@ function OpacityMenu({ viewportId, className }: OpacityMenuProps) {
             step={0.0001}
           >
             <div className="flex items-center">
-              <span className="text-foreground mr-2 text-sm">{backgroundModality}</span>
+              <span className="text-foreground mr-2 text-xs">{backgroundModality}</span>
               <Numeric.SingleRange showNumberInput={false} />
-              <span className="text-foreground ml-2 text-sm">{foregroundModality}</span>
+              <span className="text-foreground ml-2 text-xs">{foregroundModality}</span>
             </div>
           </Numeric.Container>
         </div>

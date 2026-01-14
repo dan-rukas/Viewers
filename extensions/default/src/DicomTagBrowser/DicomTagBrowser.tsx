@@ -128,7 +128,7 @@ const DicomTagBrowser = ({
       <div className="mb-6 flex flex-row items-start pl-1">
         <div className="flex w-full flex-row items-start gap-6">
           <div className="flex w-1/3 flex-col">
-            <span className="text-muted-foreground flex h-6 items-center pb-2 text-base">
+            <span className="text-muted-foreground flex h-6 items-center pb-2 text-sm">
               Series
             </span>
             <Select
@@ -147,7 +147,7 @@ const DicomTagBrowser = ({
                       value={item.value}
                     >
                       {item.label}
-                      <span className="text-muted-foreground ml-1 text-xs">{item.description}</span>
+                      <span className="text-muted-foreground ml-1 text-xxs">{item.description}</span>
                     </SelectItem>
                   );
                 })}
@@ -156,7 +156,7 @@ const DicomTagBrowser = ({
           </div>
           {shouldShowInstanceList && (
             <div className="mx-auto mt-0.5 flex w-1/4 flex-col">
-              <span className="text-muted-foreground flex h-6 items-center pb-2 text-base">
+              <span className="text-muted-foreground flex h-6 items-center pb-2 text-sm">
                 Instance Number ({instanceNumber} of {activeDisplaySet?.images?.length})
               </span>
               <Slider
@@ -172,7 +172,7 @@ const DicomTagBrowser = ({
             </div>
           )}
           <div className="ml-auto mr-1 flex w-1/3 flex-col">
-            <span className="text-muted-foreground flex h-6 items-center pb-2 text-base">
+            <span className="text-muted-foreground flex h-6 items-center pb-2 text-sm">
               Search metadata
             </span>
             <InputFilter

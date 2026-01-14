@@ -54,7 +54,7 @@ export default function MeasurementAccordion(props) {
             />
             <AccordionContent key={`measurementContent:${item.uid}`}>
               <div className="ml-7 px-2 py-2">
-                <div className="text-secondary-foreground flex items-center gap-1 text-base leading-normal">
+                <div className="text-secondary-foreground flex items-center gap-1 text-sm leading-normal">
                   {details.primary?.length > 0 &&
                     details.primary.map((detail, index) => (
                       <span key={`details:${item.uid}:${index}`}>{detail}</span>

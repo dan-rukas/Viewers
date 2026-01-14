@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { Icons, Tooltip, TooltipTrigger, TooltipContent } from '../../components';
 
 const classes = {
-  infoHeader: 'text-base text-highlight',
-  infoText: 'text-base text-white max-w-24 truncate',
+  infoHeader: 'text-sm text-highlight',
+  infoText: 'text-sm text-white max-w-24 truncate',
   firstRow: 'flex flex-col',
   row: 'flex flex-col ml-4',
 };
@@ -50,7 +50,7 @@ function PatientInfo({
               </div>
               <div className="ml-2 flex flex-col">
                 <span
-                  className="text-base font-bold text-white"
+                  className="text-sm font-bold text-white"
                   title={patientName}
                 >
                   {patientName}

@@ -39,7 +39,7 @@ const RowComponent = ({
     <div
       style={{ ...style, ...rowStyle }}
       className={classNames(
-        'hover:bg-primary/25 border-input text-foreground flex w-full flex-row items-center break-all bg-black text-base',
+        'hover:bg-primary/25 border-input text-foreground flex w-full flex-row items-center break-all bg-black text-sm',
         lineHeightClassName
       )}
       key={keyPrefix}
@@ -80,7 +80,7 @@ function ColumnHeaders({ tagRef, vrRef, keywordRef, valueRef }) {
       <div className="w-4/24 px-3">
         <label
           ref={tagRef}
-          className="text-foreground flex flex-1 select-none flex-col pl-1 text-lg"
+          className="text-foreground flex flex-1 select-none flex-col pl-1 text-base"
         >
           <span className="flex flex-row items-center focus:outline-none">Tag</span>
         </label>
@@ -88,7 +88,7 @@ function ColumnHeaders({ tagRef, vrRef, keywordRef, valueRef }) {
       <div className="w-2/24 px-3">
         <label
           ref={vrRef}
-          className="text-foreground flex flex-1 select-none flex-col pl-1 text-lg"
+          className="text-foreground flex flex-1 select-none flex-col pl-1 text-base"
         >
           <span className="flex flex-row items-center focus:outline-none">VR</span>
         </label>
@@ -96,7 +96,7 @@ function ColumnHeaders({ tagRef, vrRef, keywordRef, valueRef }) {
       <div className="w-6/24 px-3">
         <label
           ref={keywordRef}
-          className="text-foreground flex flex-1 select-none flex-col pl-1 text-lg"
+          className="text-foreground flex flex-1 select-none flex-col pl-1 text-base"
         >
           <span className="flex flex-row items-center focus:outline-none">Keyword</span>
         </label>
@@ -104,7 +104,7 @@ function ColumnHeaders({ tagRef, vrRef, keywordRef, valueRef }) {
       <div className="w-5/24 grow px-3">
         <label
           ref={valueRef}
-          className="text-foreground flex flex-1 select-none flex-col pl-1 text-lg"
+          className="text-foreground flex flex-1 select-none flex-col pl-1 text-base"
         >
           <span className="flex flex-row items-center focus:outline-none">Value</span>
         </label>
@@ -271,7 +271,7 @@ function DicomTagTable({ rows }: { rows: Row[] }) {
     <div>
       <canvas
         style={{ visibility: 'hidden', position: 'absolute' }}
-        className="text-base"
+        className="text-sm"
         ref={canvasRef}
       />
       <ColumnHeaders

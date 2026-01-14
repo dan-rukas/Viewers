@@ -89,7 +89,7 @@ const Thumbnail = ({
                 )}
               ></div>
               <div
-                className="text-foreground text-[11px] font-semibold"
+                className="text-foreground text-xxs font-semibold"
                 data-cy="series-modality-label"
               >
                 {modality}
@@ -145,7 +145,7 @@ const Thumbnail = ({
             <TooltipContent>{description}</TooltipContent>
             <TooltipTrigger>
               <div
-                className="text-foreground min-h-[18px] w-[128px] overflow-hidden text-ellipsis whitespace-nowrap pb-0.5 pl-1 text-left text-[12px] font-normal leading-4"
+                className="text-foreground min-h-[18px] w-[128px] overflow-hidden text-ellipsis whitespace-nowrap pb-0.5 pl-1 text-left text-xs font-normal leading-4"
                 data-cy="series-description-label"
               >
                 {description}
@@ -153,8 +153,8 @@ const Thumbnail = ({
             </TooltipTrigger>
           </Tooltip>
           <div className="flex h-[12px] items-center gap-[7px] overflow-hidden">
-            <div className="text-muted-foreground pl-1 text-[11px]"> S:{seriesNumber}</div>
-            <div className="text-muted-foreground text-[11px]">
+            <div className="text-muted-foreground pl-1 text-xxs"> S:{seriesNumber}</div>
+            <div className="text-muted-foreground text-xxs">
               <div className="flex items-center gap-[4px]">
                 {countIcon ? (
                   React.createElement(Icons[countIcon] || Icons.MissingIcon, { className: 'w-3' })
@@ -189,7 +189,7 @@ const Thumbnail = ({
           <div className="flex h-full w-[calc(100%-12px)] flex-col justify-start">
             <div className="flex items-center gap-[7px]">
               <div
-                className="text-foreground text-base font-semibold"
+                className="text-foreground text-sm font-semibold"
                 data-cy="series-modality-label"
               >
                 {modality}
@@ -198,7 +198,7 @@ const Thumbnail = ({
                 <TooltipContent>{description}</TooltipContent>
                 <TooltipTrigger className="w-full overflow-hidden">
                   <div
-                    className="text-foreground max-w-[160px] overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-base font-normal"
+                    className="text-foreground max-w-[160px] overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-sm font-normal"
                     data-cy="series-description-label"
                   >
                     {description}
@@ -208,8 +208,8 @@ const Thumbnail = ({
             </div>
 
             <div className="flex h-[12px] items-center gap-[7px] overflow-hidden">
-              <div className="text-muted-foreground text-[12px]"> S:{seriesNumber}</div>
-              <div className="text-muted-foreground text-[12px]">
+              <div className="text-muted-foreground text-xs"> S:{seriesNumber}</div>
+              <div className="text-muted-foreground text-xs">
                 <div className="flex items-center gap-[4px]">
                   {' '}
                   {countIcon ? (

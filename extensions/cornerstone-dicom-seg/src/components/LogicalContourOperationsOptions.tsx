@@ -170,7 +170,7 @@ function LogicalContourOperationOptions() {
   return (
     <div className="flex w-[245px] flex-col gap-4">
       <div className="flex items-start justify-between">
-        <div className="flex w-auto flex-col items-center gap-2 text-base font-normal leading-none">
+        <div className="flex w-auto flex-col items-center gap-2 text-sm font-normal leading-none">
           <Tabs value={operation.value}>
             <TabsList className="inline-flex space-x-1">
               {options.map(option => {

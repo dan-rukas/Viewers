@@ -3,7 +3,7 @@
 }
 
 .shepherd-title {
-  @apply !text-highlight !w-[100%] !break-words !text-xl !leading-[1.5];
+  @apply !text-highlight !w-[100%] !break-words !text-lg !leading-[1.5];
 }
 
 .shepherd-content {
@@ -15,7 +15,7 @@
 }
 
 .shepherd-text {
-  @apply text-foreground !w-[100%] p-0 text-lg leading-normal;
+  @apply text-foreground !w-[100%] p-0 text-base leading-normal;
 }
 
 .shepherd-footer {
@@ -23,7 +23,7 @@
 }
 
 .shepherd-button {
-  @apply !text-foreground !inline-flex !h-[36px] !min-w-[62px] !flex-row !items-center !justify-center !gap-[5px] !whitespace-nowrap !rounded !bg-[#348cfd] !px-[10px] !text-center !font-sans !text-base !leading-[1.2] !outline-none !transition !duration-300 !ease-in-out focus:!outline-none;
+  @apply !text-foreground !inline-flex !h-[36px] !min-w-[62px] !flex-row !items-center !justify-center !gap-[5px] !whitespace-nowrap !rounded !bg-[#348cfd] !px-[10px] !text-center !font-sans !text-sm !leading-[1.2] !outline-none !transition !duration-300 !ease-in-out focus:!outline-none;
 }
 
 .shepherd-button.shepherd-button-secondary {

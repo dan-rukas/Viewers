@@ -21,10 +21,10 @@ const NotFound = ({
         <div className="bg-input h-px" />
         <div className="bg-muted flex flex-col items-center justify-center rounded-b-2xl p-8 text-center">
           <h1 className="text-foreground text-[22px] font-light">Error (404)</h1>
-          <p className="text-muted-foreground mt-1 text-[16px] font-light">{message}</p>
+          <p className="text-muted-foreground mt-1 text-base font-light">{message}</p>
           {showGoBackButton && showStudyList && (
             <Button
-              className="mt-8 px-3 text-lg"
+              className="mt-8 px-3 text-base"
               onClick={() => navigate('/')}
             >
               Return to Study List

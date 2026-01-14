@@ -196,7 +196,7 @@ const InputNumberLabel = React.forwardRef<HTMLLabelElement, InputNumberLabelProp
     return (
       <label
         ref={ref}
-        className={cn('text-muted-foreground text-xs', positionClasses[position], className)}
+        className={cn('text-muted-foreground text-xxs', positionClasses[position], className)}
         {...props}
       >
         {children}

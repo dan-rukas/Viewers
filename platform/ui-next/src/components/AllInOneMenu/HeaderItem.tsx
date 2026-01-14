@@ -6,7 +6,7 @@ type HeaderItemProps = {
 
 const HeaderItem = ({ children }: HeaderItemProps) => {
   return (
-    <div className="text-muted-foreground mx-2 flex h-6 shrink-0 items-center text-sm">
+    <div className="text-muted-foreground mx-2 flex h-6 shrink-0 items-center text-xs">
       {children}
     </div>
   );

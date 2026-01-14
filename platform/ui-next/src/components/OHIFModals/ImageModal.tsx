@@ -75,7 +75,7 @@ interface FilenameProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
 function Filename({ children, className, value, onChange, ...props }: FilenameProps) {
   return (
     <div className={cn('text-foreground space-y-1', className)}>
-      <label className="block text-base">{children}</label>
+      <label className="block text-sm">{children}</label>
       <Input
         {...props}
         className={cn('w-full', className)}
@@ -177,13 +177,13 @@ function ImageSize({
   const finalHeightPlaceholder = heightPlaceholder ?? t('Height', { defaultValue: 'Height' });
   return (
     <div className={cn('text-foreground space-y-1', className)}>
-      <label className="block text-base">{children}</label>
+      <label className="block text-sm">{children}</label>
 
       {/* Flex container for width/height inputs */}
       <div className="flex items-center space-x-4">
         {/* Width group */}
         <div className="flex items-center space-x-2">
-          <span className="text-foreground text-base">{finalWidthLabel}</span>
+          <span className="text-foreground text-sm">{finalWidthLabel}</span>
           <Input
             value={width}
             onChange={onWidthChange ?? (() => {})}
@@ -194,8 +194,8 @@ function ImageSize({
         </div>
 
         {/* Height/Length group */}
-        <div className="text-foreground flex items-center space-x-2 text-base">
-          <span className="text-foreground text-base">{finalHeightLabel}</span>
+        <div className="text-foreground flex items-center space-x-2 text-sm">
+          <span className="text-foreground text-sm">{finalHeightLabel}</span>
           <Input
             value={height}
             onChange={onHeightChange ?? (() => {})}
@@ -234,7 +234,7 @@ function SwitchOption({
         defaultChecked={defaultChecked}
         onCheckedChange={val => onCheckedChange?.(val)}
       />
-      <span className="text-base">{children}</span>
+      <span className="text-sm">{children}</span>
     </div>
   );
 }

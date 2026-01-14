@@ -211,7 +211,7 @@ const DataRowComponent = React.forwardRef<HTMLDivElement, DataRowProps>(
                 )}
               </div>
               {hiddenLines.length > 0 && (
-                <div className="text-muted-foreground mt-1 flex items-center text-sm">
+                <div className="text-muted-foreground mt-1 flex items-center text-xs">
                   <span>...</span>
                   <Icons.Info className="mr-1 h-5 w-5" />
                 </div>
@@ -223,7 +223,7 @@ const DataRowComponent = React.forwardRef<HTMLDivElement, DataRowProps>(
             align="start"
             className="max-w-md"
           >
-            <div className="text-secondary-foreground flex flex-col space-y-1 text-sm leading-normal">
+            <div className="text-secondary-foreground flex flex-col space-y-1 text-xs leading-normal">
               {details.map((line, lineIndex) =>
                 renderDetailText(line, line.startsWith('  ') ? 1 : 0)
               )}
@@ -255,7 +255,7 @@ const DataRowComponent = React.forwardRef<HTMLDivElement, DataRowProps>(
           {/* Number Box */}
           {number !== null && (
             <div
-              className={`flex h-7 max-h-7 w-7 flex-shrink-0 items-center justify-center rounded-l border-r border-black text-base ${
+              className={`flex h-7 max-h-7 w-7 flex-shrink-0 items-center justify-center rounded-l border-r border-black text-sm ${
                 isSelected ? 'bg-highlight text-black' : 'bg-muted text-muted-foreground'
               } overflow-hidden`}
             >
@@ -280,7 +280,7 @@ const DataRowComponent = React.forwardRef<HTMLDivElement, DataRowProps>(
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span
-                    className={`cursor-default text-base ${
+                    className={`cursor-default text-sm ${
                       isSelected ? 'text-highlight' : 'text-muted-foreground'
                     } [overflow:hidden] [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]`}
                   >
@@ -296,7 +296,7 @@ const DataRowComponent = React.forwardRef<HTMLDivElement, DataRowProps>(
               </Tooltip>
             ) : (
               <span
-                className={`text-base ${
+                className={`text-sm ${
                   isSelected ? 'text-highlight' : 'text-muted-foreground'
                 } [overflow:hidden] [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical]`}
               >
@@ -417,10 +417,10 @@ const DataRowComponent = React.forwardRef<HTMLDivElement, DataRowProps>(
         {/* Details Section */}
         {details && (details.primary?.length > 0 || details.secondary?.length > 0) && (
           <div className="ml-7 px-2 py-2">
-            <div className="text-secondary-foreground flex items-center gap-1 text-base leading-normal">
+            <div className="text-secondary-foreground flex items-center gap-1 text-sm leading-normal">
               {details.primary?.length > 0 && renderDetails(details.primary)}
               {details.secondary?.length > 0 && (
-                <div className="text-muted-foreground ml-auto text-sm">
+                <div className="text-muted-foreground ml-auto text-xs">
                   {renderDetails(details.secondary)}
                 </div>
               )}

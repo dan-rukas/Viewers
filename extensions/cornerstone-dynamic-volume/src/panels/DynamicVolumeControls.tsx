@@ -39,7 +39,7 @@ const Header = ({ title, tooltip }) => (
         <div>{tooltip}</div>
       </TooltipContent>
     </Tooltip>
-    <span className="text-muted-foreground text-xs uppercase tracking-wide">{title}</span>
+    <span className="text-muted-foreground text-xxs uppercase tracking-wide">{title}</span>
   </div>
 );
 
@@ -260,7 +260,7 @@ function DimensionGroupControls({
               className="h-[28px] w-[58px]"
               direction="horizontal"
             />
-            <Numeric.Label className="text-muted-foreground mt-1 text-sm">Frame</Numeric.Label>
+            <Numeric.Label className="text-muted-foreground mt-1 text-xs">Frame</Numeric.Label>
           </div>
         </Numeric.Container>
 
@@ -277,7 +277,7 @@ function DimensionGroupControls({
               className="h-[28px] w-[58px]"
               direction="horizontal"
             />
-            <Numeric.Label className="text-muted-foreground mt-1 text-sm">FPS</Numeric.Label>
+            <Numeric.Label className="text-muted-foreground mt-1 text-xs">FPS</Numeric.Label>
           </div>
         </Numeric.Container>
       </div>

@@ -155,7 +155,7 @@ export default function USAnnotationPanel() {
    * Render helpers so the JSX doesn’t become spaghetti.     */
   const renderWorkflowToggles = () => (
     <PanelSection.Content>
-      <div className="text-foreground space-y-3 p-2 text-sm">
+      <div className="text-foreground space-y-3 p-2 text-xs">
         <div className="flex items-center">
           <Switch
             id="depth-guide-switch"
@@ -294,7 +294,7 @@ export default function USAnnotationPanel() {
           </Button>
         </div>
         <div className="w-full overflow-hidden">
-          <table className="w-full border-collapse text-sm">
+          <table className="w-full border-collapse text-xs">
             <thead>
               <tr className="text-muted-foreground border-input/50 border-b">
                 <th></th>

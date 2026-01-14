@@ -201,7 +201,7 @@ const DefaultFallback = ({
       >
         <div className="p-5 pb-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-highlight text-xl font-normal">
+            <h2 className="text-highlight text-lg font-normal">
               {errorTitle || error.message || title}
             </h2>
           </div>
@@ -212,7 +212,7 @@ const DefaultFallback = ({
           <>
             <ScrollArea className="bg-background text-foreground mx-6 h-[321px] rounded-b-md">
               <div className="bg-background border-input flex items-center justify-between rounded-t-md border-b px-4 py-2">
-                <div className="text-muted-foreground text-base">
+                <div className="text-muted-foreground text-sm">
                   {firstFilename || 'Error Stack'}
                 </div>
                 <Button
@@ -223,7 +223,7 @@ const DefaultFallback = ({
                   Copy
                 </Button>
               </div>
-              <div className="p-4 font-mono text-sm">
+              <div className="p-4 font-mono text-xs">
                 {code.split('\n').map((line, index) => (
                   <div
                     key={index}

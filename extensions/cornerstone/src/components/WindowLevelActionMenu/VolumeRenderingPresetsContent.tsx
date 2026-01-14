@@ -64,7 +64,7 @@ export function VolumeRenderingPresetsContent({ presets, viewportId, hide }: Pro
                     : 'hover:border-highlight h-[75px] w-[95px] max-w-none rounded border-2 border-black'
                 }
               />
-              <label className="text-muted-foreground mt-1 text-left text-xs">
+              <label className="text-muted-foreground mt-1 text-left text-xxs">
                 {formatLabel(preset.name, 11)}
               </label>
             </div>

@@ -38,7 +38,7 @@ const StudyItem = ({
         <AccordionTrigger className={classnames('hover:bg-accent bg-popover group w-full rounded')}>
           <div className="flex h-[40px] w-full flex-row overflow-hidden">
             <div className="flex w-full flex-row items-center justify-between">
-              <div className="flex min-w-0 flex-col items-start text-base">
+              <div className="flex min-w-0 flex-col items-start text-sm">
                 <Tooltip>
                   <TooltipContent>{date}</TooltipContent>
                   <TooltipTrigger
@@ -62,7 +62,7 @@ const StudyItem = ({
                   </TooltipTrigger>
                 </Tooltip>
               </div>
-              <div className="text-muted-foreground flex flex-col items-end pl-[10px] text-[12px]">
+              <div className="text-muted-foreground flex flex-col items-end pl-[10px] text-xs">
                 <div className="max-w-[150px] overflow-hidden text-ellipsis">{modalities}</div>
                 <div>{numInstances}</div>
               </div>

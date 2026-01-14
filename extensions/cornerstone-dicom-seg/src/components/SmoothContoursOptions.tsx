@@ -8,8 +8,8 @@ function SmoothContoursOptions() {
   const { t } = useTranslation('SegmentationPanel');
 
   return (
-    <div className="flex w-auto w-[245px] flex-col gap-[8px] text-base font-normal leading-none">
-      <div className="flex w-auto flex-col gap-[10px] text-base font-normal leading-none">
+    <div className="flex w-auto w-[245px] flex-col gap-[8px] text-sm font-normal leading-none">
+      <div className="flex w-auto flex-col gap-[10px] text-sm font-normal leading-none">
         <div>{t('Smooth all edges')}</div>
         <Button
           className="border-primary/60 border"
@@ -22,7 +22,7 @@ function SmoothContoursOptions() {
         </Button>
         <Separator className="bg-input mt-[20px] h-[1px]" />
       </div>
-      <div className="flex w-auto flex-col gap-[10px] text-base font-normal leading-none">
+      <div className="flex w-auto flex-col gap-[10px] text-sm font-normal leading-none">
         <div>{t('Remove extra points')}</div>
         <Button
           className="border-primary/60 border"

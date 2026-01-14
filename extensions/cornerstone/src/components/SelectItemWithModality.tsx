@@ -14,9 +14,9 @@ const SelectItemWithModality = ({
     className="flex w-[90%] items-center justify-between"
     data-cy={dataCY}
   >
-    <span className="text-foreground truncate text-base">{displaySet.label}</span>
+    <span className="text-foreground truncate text-sm">{displaySet.label}</span>
     {showModality && displaySet.Modality && (
-      <span className="text-muted-foreground flex-shrink-0 whitespace-nowrap text-xs">
+      <span className="text-muted-foreground flex-shrink-0 whitespace-nowrap text-xxs">
         {displaySet.Modality}
       </span>
     )}

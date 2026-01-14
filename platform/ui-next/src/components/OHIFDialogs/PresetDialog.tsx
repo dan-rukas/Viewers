@@ -93,7 +93,7 @@ function PresetOption({ label = 'Label', className }: PresetOptionProps) {
     <div className={cn('flex flex-col items-start space-y-1', className)}>
       {/* Default dark placeholder box (swap in an <img> if you like) */}
       <div className="bg-popover h-16 w-24 rounded" />
-      <div className="text-muted-foreground text-left text-base">{label}</div>
+      <div className="text-muted-foreground text-left text-sm">{label}</div>
     </div>
   );
 }

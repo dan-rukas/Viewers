@@ -145,7 +145,7 @@ interface SubHeadingProps {
   className?: string;
 }
 function SubHeading({ children, className }: SubHeadingProps) {
-  return <span className={cn('text-muted-foreground text-lg', className)}>{children}</span>;
+  return <span className={cn('text-muted-foreground text-base', className)}>{children}</span>;
 }
 
 /** Responsive 3-column grid for hotkeys, etc. */
@@ -208,7 +208,7 @@ function Hotkey({ label, placeholder, className, value, onChange, hotkeys }: Hot
 
   return (
     <div className={cn('flex items-start justify-between gap-2', className)}>
-      <Label className="flex-1 whitespace-normal break-words text-sm">{label}</Label>
+      <Label className="flex-1 whitespace-normal break-words text-xs">{label}</Label>
       <Input
         className={cn(
           'w-16 text-center transition-colors',

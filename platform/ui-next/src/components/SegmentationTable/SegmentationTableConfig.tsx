@@ -36,7 +36,7 @@ export const SegmentationTableConfig: React.FC<{ children?: React.ReactNode }> =
   return (
     <div className="bg-muted mb-0.5 space-y-2 rounded-b px-1.5 pt-0.5 pb-3">
       <div className="my-1 flex items-center justify-between">
-        <span className="text-muted-foreground text-xs">
+        <span className="text-muted-foreground text-xxs">
           {t('Show')}:{' '}
           {renderFill && renderOutline
             ? t('Fill & Outline')
@@ -83,7 +83,7 @@ export const SegmentationTableConfig: React.FC<{ children?: React.ReactNode }> =
 
       <div className="space-y-2">
         <div className="my-2 flex items-center">
-          <Label className="text-muted-foreground w-14 flex-none whitespace-nowrap text-xs">
+          <Label className="text-muted-foreground w-14 flex-none whitespace-nowrap text-xxs">
             {t('Opacity')}
           </Label>
           <Slider
@@ -106,7 +106,7 @@ export const SegmentationTableConfig: React.FC<{ children?: React.ReactNode }> =
         </div>
 
         <div className="my-2 flex items-center">
-          <Label className="text-muted-foreground w-14 flex-none whitespace-nowrap text-xs">
+          <Label className="text-muted-foreground w-14 flex-none whitespace-nowrap text-xxs">
             {t('Border')}
           </Label>
           <Slider
@@ -136,13 +136,13 @@ export const SegmentationTableConfig: React.FC<{ children?: React.ReactNode }> =
           checked={renderInactiveSegmentations}
           onCheckedChange={toggleRenderInactiveSegmentations}
         />
-        <Label className="text-muted-foreground mx-2 text-xs">
+        <Label className="text-muted-foreground mx-2 text-xxs">
           {t('Display inactive segmentations')}
         </Label>
       </div>
       {renderInactiveSegmentations && (
         <div className="my-2 flex items-center">
-          <Label className="text-muted-foreground w-14 flex-none whitespace-nowrap text-xs">
+          <Label className="text-muted-foreground w-14 flex-none whitespace-nowrap text-xxs">
             {t('Opacity')}
           </Label>
           <Slider

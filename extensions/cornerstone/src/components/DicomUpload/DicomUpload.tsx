@@ -84,8 +84,8 @@ function DicomUpload({ dataSource, onComplete, onStarted }: DicomUploadProps): R
                 )}
               </Dropzone>
             </div>
-            <div className="text-foreground pt-6 text-base">or drag images or folders here</div>
-            <div className="text-muted-foreground pt-1 text-base">(DICOM files supported)</div>
+            <div className="text-foreground pt-6 text-sm">or drag images or folders here</div>
+            <div className="text-muted-foreground pt-1 text-sm">(DICOM files supported)</div>
           </div>
         )}
       </Dropzone>

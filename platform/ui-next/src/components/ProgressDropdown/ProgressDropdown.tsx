@@ -106,12 +106,12 @@ const ProgressDropdown = ({
             <div className="flex grow">
               {selectedOption && <ProgressItemDetail option={selectedOption} />}
 
-              {!selectedOption && <div className="ml-1 grow text-base leading-6">{children}</div>}
+              {!selectedOption && <div className="ml-1 grow text-sm leading-6">{children}</div>}
             </div>
             <Icons.ChevronDown className="text-primary mt-1.5 ml-1 mr-2" />
           </div>
           <button
-            className={classnames('ml-1.5 w-[26px] rounded text-base', {
+            className={classnames('ml-1.5 w-[26px] rounded text-sm', {
               'bg-primary/60 hover:bg-primary/80': canMoveNext,
               'bg-popover pointer-events-none': !canMoveNext,
             })}

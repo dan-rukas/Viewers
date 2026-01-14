@@ -3,7 +3,7 @@ import { FooterAction } from '@ohif/ui-next';
 
 export function UntrackSeriesModal({ hide, onConfirm, message }) {
   return (
-    <div className="text-foreground text-base">
+    <div className="text-foreground text-sm">
       <div>
         <p>{message}</p>
         <p className="mt-2">

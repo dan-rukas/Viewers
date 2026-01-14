@@ -82,7 +82,7 @@ function ViewportOrientationMarkers({
           `${m}-mid orientation-marker`,
           isLight ? 'text-neutral-dark/70' : 'text-neutral-light/70',
           isLight ? 'shadow-light' : 'shadow-dark',
-          'text-base',
+          'text-sm',
           'leading-5'
         )}
         key={`${m}-mid orientation-marker`}

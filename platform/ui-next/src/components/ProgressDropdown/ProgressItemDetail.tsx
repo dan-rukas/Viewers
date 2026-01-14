@@ -80,7 +80,7 @@ const ProgressItemDetail = ({ option }: { option: ProgressDropdownOption }): Rea
       )}
       {!info && iconContent}
 
-      <div className="grow overflow-hidden text-ellipsis whitespace-nowrap text-base leading-6">
+      <div className="grow overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-6">
         {label}
       </div>
     </>

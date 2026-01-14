@@ -60,7 +60,7 @@ function ViewportActionBar({
 
   return (
     <div
-      className="pointer-events-auto flex h-8 shrink-0 select-none items-center overflow-visible whitespace-nowrap px-2 text-base"
+      className="pointer-events-auto flex h-8 shrink-0 select-none items-center overflow-visible whitespace-nowrap px-2 text-sm"
       onDoubleClick={onDoubleClick}
     >
       {getStatusComponent()}

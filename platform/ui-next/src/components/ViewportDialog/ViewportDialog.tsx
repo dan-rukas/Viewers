@@ -101,7 +101,7 @@ const ViewportDialog: React.FC<ViewportDialogProps> = ({
           name={icon}
           className={classnames('h-5 w-5', color)}
         />
-        <span className="text-foreground ml-2 text-base">{message}</span>
+        <span className="text-foreground ml-2 text-sm">{message}</span>
       </div>
       <div className="mt-2 flex flex-wrap justify-end gap-2">
         {actions?.map((action, index) => {

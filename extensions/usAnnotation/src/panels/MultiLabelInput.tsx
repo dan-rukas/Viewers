@@ -98,7 +98,7 @@ const MultiLabelInput: React.FC<MultiLabelInputProps> = ({
           >
             {label}
             <button
-              className="text-foreground ml-2.5 cursor-pointer rounded-full bg-blue-800 px-2 py-0.5 text-xs transition-colors hover:bg-blue-600"
+              className="text-foreground ml-2.5 cursor-pointer rounded-full bg-blue-800 px-2 py-0.5 text-xxs transition-colors hover:bg-blue-600"
               onClick={() => handleRemoveLabel(label)}
             >
               ×

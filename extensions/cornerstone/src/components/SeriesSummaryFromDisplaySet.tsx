@@ -12,10 +12,10 @@ export function SeriesSummaryFromDisplaySet({ displaySet }) {
 
   return (
     <div className="mx-2 my-0">
-      <div className="text-foreground pb-1 text-sm">
+      <div className="text-foreground pb-1 text-xs">
         Series #{SeriesNumber} {SeriesDescription}
       </div>
-      <div className="text-muted-foreground text-sm">{formatDate(SeriesDate)}</div>
+      <div className="text-muted-foreground text-xs">{formatDate(SeriesDate)}</div>
     </div>
   );
 }

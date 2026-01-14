@@ -95,7 +95,7 @@ function ReportDialog({
           {showDataSourceSelect && (
             <>
               <div className="mt-1 w-1/2">
-                <div className="mb-1 pl-1 text-base">Data source</div>
+                <div className="mb-1 pl-1 text-sm">Data source</div>
                 <Select
                   value={selectedDataSource}
                   onValueChange={setSelectedDataSource}
@@ -116,7 +116,7 @@ function ReportDialog({
                 </Select>
               </div>
               <div className={showDataSourceSelect ? 'mt-1 w-1/2' : 'mt-1 w-full'}>
-                <div className="mb-1 pl-1 text-base">Series</div>
+                <div className="mb-1 pl-1 text-sm">Series</div>
                 <Select
                   value={selectedSeries}
                   onValueChange={setSelectedSeries}
@@ -142,7 +142,7 @@ function ReportDialog({
         <div className="flex items-end gap-4">
           {!showDataSourceSelect && (
             <div className="w-1/3">
-              <div className="mb-1 pl-1 text-base">Series</div>
+              <div className="mb-1 pl-1 text-sm">Series</div>
               <Select
                 value={selectedSeries}
                 onValueChange={setSelectedSeries}

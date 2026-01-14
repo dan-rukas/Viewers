@@ -226,7 +226,7 @@ const ViewportWindowLevel = ({
           );
         })}
         {windowLevels.length === 0 && !isLoading && (
-          <div className="text-muted-foreground py-2 text-center text-sm">
+          <div className="text-muted-foreground py-2 text-center text-xs">
             No window level data available
           </div>
         )}

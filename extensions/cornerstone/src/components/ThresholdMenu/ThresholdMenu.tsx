@@ -45,7 +45,7 @@ function ThresholdMenu({ viewportId, className }: ThresholdMenuProps) {
       <div className="bg-popover w-72 rounded-lg p-4 shadow-md">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="text-muted-foreground text-base">Threshold</span>
+            <span className="text-muted-foreground text-sm">Threshold</span>
             {viewportDisplaySets.length > 1 && (
               <div className="w-32">
                 <Select
@@ -73,7 +73,7 @@ function ThresholdMenu({ viewportId, className }: ThresholdMenuProps) {
             size="sm"
             variant="ghost"
             onClick={() => setThreshold(min)}
-            className="text-sm"
+            className="text-xs"
           >
             Reset
           </Button>
@@ -92,8 +92,8 @@ function ThresholdMenu({ viewportId, className }: ThresholdMenuProps) {
         >
           <Numeric.SingleRange />
           <div className="mt-1 flex justify-between">
-            <span className="text-muted-foreground text-sm">{min.toFixed(0)}</span>
-            <span className="text-muted-foreground text-sm">{max.toFixed(0)}</span>
+            <span className="text-muted-foreground text-xs">{min.toFixed(0)}</span>
+            <span className="text-muted-foreground text-xs">{max.toFixed(0)}</span>
           </div>
         </Numeric.Container>
       </div>

@@ -98,7 +98,7 @@ function ROIThresholdConfiguration({ config, dispatch, runCommand }) {
         </div>
       )}
       {config.strategy !== ROI_STAT && (
-        <div className="mr-2 text-sm">
+        <div className="mr-2 text-xs">
           <div className="flex flex-col space-y-2">
             {/* Header */}
             <Label>{t('Lower & Upper Ranges')}</Label>
