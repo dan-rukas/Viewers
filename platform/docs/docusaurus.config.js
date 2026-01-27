@@ -36,6 +36,7 @@ const baseUrl = process.env.BASE_URL || '/';
 module.exports = {
   future: {
     experimental_faster: true,
+    v4: true,
   },
   title: 'OHIF',
   tagline: 'Open-source web-based medical imaging platform',
@@ -49,7 +50,11 @@ module.exports = {
     locales: ['en'],
   },
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw',
+    },
+  },
   favicon: 'img/favicon.ico',
   themes: ['@docusaurus/theme-live-codeblock'],
   plugins: [
