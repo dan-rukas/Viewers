@@ -132,6 +132,7 @@ function ModalityLoadBadge({ viewportId }: { viewportId: string }) {
           via the tracked measurement context that works with state machine, this is not a regression right now  */}
           {statusInfo.type !== 'SR' && (
             <ViewportActionButton
+              className="bg-primary/60 hover:bg-primary/80 px-1.5"
               onInteraction={() => {
                 commandsManager.runCommand('hydrateSecondaryDisplaySet', {
                   displaySet: statusInfo.displaySet,

@@ -99,8 +99,6 @@ import { Header } from './Header';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from './Card';
 import {
   ViewportActionButton,
-  PatientInfo,
-  ViewportActionBar,
   ViewportActionArrows,
   ViewportPane,
   ViewportActionCorners,
@@ -236,8 +234,6 @@ export {
   CardDescription,
   CardContent,
   ViewportActionButton,
-  PatientInfo,
-  ViewportActionBar,
   ViewportActionArrows,
   ViewportPane,
   ViewportActionCorners,
