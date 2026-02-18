@@ -1,11 +1,11 @@
 import React from 'react';
 import type { IconProps } from '../types';
 
-export const LoadingSpinner = (props: IconProps) => (
+export const LoadingSpinner = ({ className, ...props }: IconProps) => (
   <svg
     role="status"
     aria-label="Loading"
-    className={`h-5 w-5 animate-spin ${props.className}`}
+    className={`h-5 w-5 animate-spin ${className ?? ''}`}
     width="24px"
     height="24px"
     viewBox="0 0 24 24"
