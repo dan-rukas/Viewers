@@ -12,7 +12,7 @@ const Magnifier = (props: IconProps) => (
     <g
       fill="none"
       fillRule="evenodd"
-      stroke="currentColor"
+      stroke="#3A3F99"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="3"
@@ -22,7 +22,7 @@ const Magnifier = (props: IconProps) => (
         cx="53.419"
         cy="53.419"
         r="53.419"
-        fill="transparent"
+        fill="#06081D"
       />
       <circle
         cx="49.411"
