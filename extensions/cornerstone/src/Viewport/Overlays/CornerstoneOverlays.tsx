@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import ViewportImageScrollbar from './ViewportImageScrollbar';
+import ViewportSmartScrollbar from './ViewportSmartScrollbar';
 import CustomizableViewportOverlay from './CustomizableViewportOverlay';
 import ViewportOrientationMarkers from './ViewportOrientationMarkers';
 import ViewportImageSliceLoadingIndicator from './ViewportImageSliceLoadingIndicator';
@@ -45,15 +46,25 @@ function CornerstoneOverlays(props: withAppTypes) {
 
   return (
     <div className="noselect">
-      <ViewportImageScrollbar
+      <ViewportSmartScrollbar
         viewportId={viewportId}
         viewportData={viewportData}
         element={element}
-        imageSliceData={imageSliceData}
-        setImageSliceData={setImageSliceData}
-        scrollbarHeight={scrollbarHeight}
         servicesManager={servicesManager}
       />
+
+      {/* Hidden: keeps imageSliceData updated for other overlays */}
+      <div className="hidden">
+        <ViewportImageScrollbar
+          viewportId={viewportId}
+          viewportData={viewportData}
+          element={element}
+          imageSliceData={imageSliceData}
+          setImageSliceData={setImageSliceData}
+          scrollbarHeight={scrollbarHeight}
+          servicesManager={servicesManager}
+        />
+      </div>
 
       <CustomizableViewportOverlay
         imageSliceData={imageSliceData}

@@ -119,6 +119,13 @@ import {
 } from './ToolButton';
 import { LayoutSelector } from './LayoutSelector';
 import { ToolSettings } from './OHIFToolSettings';
+import {
+  SmartScrollbar,
+  SmartScrollbarTrack,
+  SmartScrollbarFill,
+  SmartScrollbarIndicator,
+  SmartScrollbarEndpoints,
+} from './SmartScrollbar';
 export { DataRow } from './DataRow';
 export { MeasurementTable } from './MeasurementTable';
 export * from './ColorCircle';
@@ -269,5 +276,10 @@ export {
   ProgressLoadingBar,
   ViewportDialog,
   CinePlayer,
-  LayoutSelector
+  LayoutSelector,
+  SmartScrollbar,
+  SmartScrollbarTrack,
+  SmartScrollbarFill,
+  SmartScrollbarIndicator,
+  SmartScrollbarEndpoints,
 };
