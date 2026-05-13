@@ -1,10 +1,20 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useSystem, hotkeys as hotkeysModule } from '@ohif/core';
-import { UserPreferencesModal, FooterAction } from '@ohif/ui-next';
+import {
+  UserPreferencesModal,
+  FooterAction,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from '@ohif/ui-next';
 import { useTranslation } from 'react-i18next';
 import i18n from '@ohif/i18n';
-
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@ohif/ui-next';
 
 const { availableLanguages, defaultLanguage, currentLanguage: currentLanguageFn } = i18n;
 
@@ -23,6 +33,39 @@ const MODIFIER_OPTIONS = [
   { value: '18', label: 'Alt' },
   { value: '91', label: 'Meta' },
 ];
+
+const HOTKEY_CATEGORIES = {
+  viewport: new Set([
+    'Zoom', 'Zoom In', 'Zoom Out', 'Zoom to Fit',
+    'Rotate Right', 'Rotate Left',
+    'Flip Horizontally', 'Flip Vertically',
+    'Invert', 'Reset',
+  ]),
+  imageNavigation: new Set([
+    'Next Image Viewport', 'Previous Image Viewport',
+    'Next Series', 'Previous Series',
+    'Next Stage', 'Previous Stage',
+    'Next Image', 'Previous Image',
+    'First Image', 'Last Image',
+  ]),
+  toolsAndActions: new Set([
+    'W/L Preset 1', 'W/L Preset 2', 'W/L Preset 3', 'W/L Preset 4',
+    'Cancel Measurement', 'Delete Annotation',
+    'Undo', 'Redo', 'Cine',
+  ]),
+  segmentation: new Set([
+    'Interpolate Scroll', 'Increase Brush Size', 'Decrease Brush Size',
+    'Eraser', 'Brush', 'Add New Segment',
+    'Accept Preview', 'Reject Preview',
+  ]),
+};
+
+function filterHotkeysByCategory(
+  definitions: HotkeyDefinitions,
+  labels: Set<string>
+): [string, HotkeyDefinition][] {
+  return Object.entries(definitions).filter(([, def]) => labels.has(def.label));
+}
 
 const DEFAULT_TOOL_BINDINGS_STORAGE_KEY = 'user-preferred-tool-bindings';
 
@@ -221,57 +264,159 @@ function UserPreferencesModalDefault({ hide }: { hide: () => void }) {
           </Select>
         </div>
 
-        <UserPreferencesModal.SubHeading>{t('Hotkeys')}</UserPreferencesModal.SubHeading>
-        <UserPreferencesModal.HotkeysGrid>
-          {Object.entries(state.hotkeyDefinitions).map(([id, definition]) => (
-            <UserPreferencesModal.Hotkey
-              key={id}
-              label={t(definition.label)}
-              value={definition.keys}
-              onChange={newKeys => onHotkeyChangeHandler(id, newKeys)}
-              placeholder={definition.keys}
-              hotkeys={hotkeysModule}
-            />
-          ))}
-        </UserPreferencesModal.HotkeysGrid>
-
-        {state.crosshairModifier != null && (
-          <>
+        <Tabs defaultValue="viewport">
+          <div className="flex items-center space-x-14">
             <UserPreferencesModal.SubHeading>
-              {t('ModifierKeys', { defaultValue: 'Modifier Keys' })}
+              {t('Shortcuts', { defaultValue: 'Shortcuts' })}
             </UserPreferencesModal.SubHeading>
-            <UserPreferencesModal.HotkeysGrid>
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-foreground text-base">
-                  {t('CrosshairsModifier', { defaultValue: 'Crosshairs' })}
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-muted-foreground text-sm">
-                    {t('PlusLeftClick', { defaultValue: 'Left Click +' })}
-                  </span>
-                  <Select
-                    value={state.crosshairModifier}
-                    onValueChange={val => setState(s => ({ ...s, crosshairModifier: val }))}
+            <TabsList>
+              <TabsTrigger value="viewport">
+                {t('Viewport', { defaultValue: 'Viewport' })}
+              </TabsTrigger>
+              <TabsTrigger value="toolsAndActions">
+                {t('ToolsAndActions', { defaultValue: 'Tools & Actions' })}
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          <UserPreferencesModal.TabContentGrid>
+            <TabsContent
+              value="viewport"
+              forceMount
+              className="col-start-1 row-start-1 data-[state=inactive]:invisible"
+            >
+              <UserPreferencesModal.Well>
+                <div className="flex flex-col gap-1.5">
+                  <UserPreferencesModal.HotkeySection
+                    title={t('ViewControls', { defaultValue: 'View Controls' })}
                   >
-                    <SelectTrigger className="w-16">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {MODIFIER_OPTIONS.map(opt => (
-                        <SelectItem
-                          key={opt.value}
-                          value={opt.value}
-                        >
-                          {opt.label}
-                        </SelectItem>
+                    <UserPreferencesModal.HotkeysGrid>
+                      {filterHotkeysByCategory(
+                        state.hotkeyDefinitions,
+                        HOTKEY_CATEGORIES.viewport
+                      ).map(([id, definition]) => (
+                        <UserPreferencesModal.Hotkey
+                          key={id}
+                          label={t(definition.label)}
+                          value={definition.keys}
+                          onChange={newKeys => onHotkeyChangeHandler(id, newKeys)}
+                          placeholder={definition.keys}
+                          hotkeys={hotkeysModule}
+                        />
                       ))}
-                    </SelectContent>
-                  </Select>
+                    </UserPreferencesModal.HotkeysGrid>
+                  </UserPreferencesModal.HotkeySection>
+                  <UserPreferencesModal.HotkeySection
+                    title={t('Navigation', { defaultValue: 'Navigation' })}
+                    showDivider
+                  >
+                    <UserPreferencesModal.HotkeysGrid>
+                      {filterHotkeysByCategory(
+                        state.hotkeyDefinitions,
+                        HOTKEY_CATEGORIES.imageNavigation
+                      ).map(([id, definition]) => (
+                        <UserPreferencesModal.Hotkey
+                          key={id}
+                          label={t(definition.label)}
+                          value={definition.keys}
+                          onChange={newKeys => onHotkeyChangeHandler(id, newKeys)}
+                          placeholder={definition.keys}
+                          hotkeys={hotkeysModule}
+                        />
+                      ))}
+                    </UserPreferencesModal.HotkeysGrid>
+                  </UserPreferencesModal.HotkeySection>
                 </div>
-              </div>
-            </UserPreferencesModal.HotkeysGrid>
-          </>
-        )}
+              </UserPreferencesModal.Well>
+            </TabsContent>
+
+            <TabsContent
+              value="toolsAndActions"
+              forceMount
+              className="col-start-1 row-start-1 data-[state=inactive]:invisible"
+            >
+              <UserPreferencesModal.Well>
+                <div className="flex flex-col gap-1.5">
+                  <UserPreferencesModal.HotkeySection
+                    title={t('ToolsAndActions', { defaultValue: 'Tools & Actions' })}
+                  >
+                    <UserPreferencesModal.HotkeysGrid>
+                      {filterHotkeysByCategory(
+                        state.hotkeyDefinitions,
+                        HOTKEY_CATEGORIES.toolsAndActions
+                      ).map(([id, definition]) => (
+                        <UserPreferencesModal.Hotkey
+                          key={id}
+                          label={t(definition.label)}
+                          value={definition.keys}
+                          onChange={newKeys => onHotkeyChangeHandler(id, newKeys)}
+                          placeholder={definition.keys}
+                          hotkeys={hotkeysModule}
+                        />
+                      ))}
+                    </UserPreferencesModal.HotkeysGrid>
+                  </UserPreferencesModal.HotkeySection>
+                  <UserPreferencesModal.HotkeySection
+                    title={t('Segmentation', { defaultValue: 'Segmentation' })}
+                    showDivider
+                  >
+                    <UserPreferencesModal.HotkeysGrid>
+                      {filterHotkeysByCategory(
+                        state.hotkeyDefinitions,
+                        HOTKEY_CATEGORIES.segmentation
+                      ).map(([id, definition]) => (
+                        <UserPreferencesModal.Hotkey
+                          key={id}
+                          label={t(definition.label)}
+                          value={definition.keys}
+                          onChange={newKeys => onHotkeyChangeHandler(id, newKeys)}
+                          placeholder={definition.keys}
+                          hotkeys={hotkeysModule}
+                        />
+                      ))}
+                    </UserPreferencesModal.HotkeysGrid>
+                  </UserPreferencesModal.HotkeySection>
+                  <UserPreferencesModal.SectionDivider />
+                  <UserPreferencesModal.SectionHeading>
+                    {t('MouseAndModifiers', { defaultValue: 'Mouse & Modifiers' })}
+                  </UserPreferencesModal.SectionHeading>
+                  {state.crosshairModifier != null && (
+                    <UserPreferencesModal.HotkeysGrid>
+                      <div className="mb-2 flex break-inside-avoid items-center justify-between gap-2">
+                        <span className="text-foreground text-base">
+                          {t('CrosshairsModifier', { defaultValue: 'Crosshairs' })}
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-muted-foreground text-sm">
+                            {t('PlusLeftClick', { defaultValue: 'Left Click +' })}
+                          </span>
+                          <Select
+                            value={state.crosshairModifier}
+                            onValueChange={val => setState(s => ({ ...s, crosshairModifier: val }))}
+                          >
+                            <SelectTrigger className="w-16">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {MODIFIER_OPTIONS.map(opt => (
+                                <SelectItem
+                                  key={opt.value}
+                                  value={opt.value}
+                                >
+                                  {opt.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </UserPreferencesModal.HotkeysGrid>
+                  )}
+                </div>
+              </UserPreferencesModal.Well>
+            </TabsContent>
+          </UserPreferencesModal.TabContentGrid>
+        </Tabs>
       </UserPreferencesModal.Body>
       <FooterAction>
         <FooterAction.Left>

@@ -155,7 +155,7 @@ interface HotkeysGridProps {
 }
 function HotkeysGrid({ children, className }: HotkeysGridProps) {
   return (
-    <div className={cn('grid grid-cols-1 gap-3 gap-x-16 md:grid-cols-2 lg:grid-cols-3', className)}>
+    <div className={cn('columns-1 gap-x-10 md:columns-2 lg:columns-3', className)}>
       {children}
     </div>
   );
@@ -207,8 +207,8 @@ function Hotkey({ label, placeholder, className, value, onChange, hotkeys }: Hot
   };
 
   return (
-    <div className={cn('flex items-start justify-between gap-2', className)}>
-      <Label className="flex-1 whitespace-normal break-words text-sm">{label}</Label>
+    <div className={cn('mb-2 flex break-inside-avoid items-center justify-between gap-2', className)}>
+      <Label className="text-base">{label}</Label>
       <Input
         className={cn(
           'w-16 text-center transition-colors',
@@ -225,8 +225,69 @@ function Hotkey({ label, placeholder, className, value, onChange, hotkeys }: Hot
   );
 }
 
+/** Well container for grouped content sections */
+interface WellProps {
+  children: React.ReactNode;
+  className?: string;
+}
+function Well({ children, className }: WellProps) {
+  return (
+    <div className={cn('rounded-lg border border-input/75 bg-background/15 px-5 py-3', className)}>
+      {children}
+    </div>
+  );
+}
+
+/** Sub-section label inside tabs */
+interface SectionHeadingProps {
+  children: React.ReactNode;
+  className?: string;
+}
+function SectionHeading({ children, className }: SectionHeadingProps) {
+  return <span className={cn('mb-1.5 text-base font-bold text-muted-foreground', className)}>{children}</span>;
+}
+
+/** Divider between sections within a tab */
+interface SectionDividerProps {
+  className?: string;
+}
+function SectionDivider({ className }: SectionDividerProps) {
+  return <div className={cn('my-1.5 border-t border-input/75', className)} />;
+}
+
+/** A hotkey section: optional divider + heading + content */
+interface HotkeySectionProps {
+  title: string;
+  children: React.ReactNode;
+  showDivider?: boolean;
+  className?: string;
+}
+function HotkeySection({ title, children, showDivider = false }: HotkeySectionProps) {
+  return (
+    <>
+      {showDivider && <SectionDivider />}
+      <SectionHeading>{title}</SectionHeading>
+      {children}
+    </>
+  );
+}
+
+/** Grid overlay for force-mounted tabs — prevents height shift when switching */
+interface TabContentGridProps {
+  children: React.ReactNode;
+  className?: string;
+}
+function TabContentGrid({ children, className }: TabContentGridProps) {
+  return <div className={cn('mt-2 grid', className)}>{children}</div>;
+}
+
 /** Attach subcomponents as static properties for a nicer API */
 UserPreferencesModal.Body = Body;
 UserPreferencesModal.HotkeysGrid = HotkeysGrid;
 UserPreferencesModal.Hotkey = Hotkey;
 UserPreferencesModal.SubHeading = SubHeading;
+UserPreferencesModal.Well = Well;
+UserPreferencesModal.SectionHeading = SectionHeading;
+UserPreferencesModal.SectionDivider = SectionDivider;
+UserPreferencesModal.HotkeySection = HotkeySection;
+UserPreferencesModal.TabContentGrid = TabContentGrid;
