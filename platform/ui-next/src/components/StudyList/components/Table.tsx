@@ -1,4 +1,4 @@
-import React, { type ReactNode, useMemo } from 'react';
+import React, { type ReactNode, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DataTable, useDataTable } from '../../DataTable';
 import type { DataTableProps } from '../../DataTable/DataTable';
@@ -94,6 +94,7 @@ function TableContent({
 }) {
   const { t } = useTranslation('StudyList');
   const { table } = useDataTable<StudyRow>();
+  const tableContainerRef = useRef<HTMLDivElement>(null);
   const modalityOptions = useMemo(() => {
     const rows = (table.options?.data as StudyRow[]) ?? [];
     // Build a flat list of modality tokens across all rows.
@@ -104,8 +105,68 @@ function TableContent({
   // Access workflow provider for default workflow + launch
   const { getDefaultWorkflowForStudy } = useWorkflows();
 
+  // Responsive column visibility based on the available table width.
+  useEffect(() => {
+    const container = tableContainerRef.current;
+    if (!container) {
+      return;
+    }
+
+    const updateVisibility = (width: number) => {
+      if (width < 520) {
+        // Very narrow panel: keep the row identity and actions visible.
+        table.getColumn(COLUMN_IDS.MRN)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.STUDY_DATE_TIME)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.MODALITIES)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.DESCRIPTION)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.ACCESSION)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.INSTANCES)?.toggleVisibility(false);
+      } else if (width < 768) {
+        // Narrow panel: show Patient, Description, Actions
+        table.getColumn(COLUMN_IDS.MRN)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.STUDY_DATE_TIME)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.MODALITIES)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.DESCRIPTION)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.ACCESSION)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.INSTANCES)?.toggleVisibility(false);
+      } else if (width < 1100) {
+        // Medium panel: add Study Date and Modalities.
+        table.getColumn(COLUMN_IDS.MRN)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.STUDY_DATE_TIME)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.MODALITIES)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.DESCRIPTION)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.ACCESSION)?.toggleVisibility(false);
+        table.getColumn(COLUMN_IDS.INSTANCES)?.toggleVisibility(false);
+      } else {
+        // Wide panel: show all.
+        table.getColumn(COLUMN_IDS.MRN)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.STUDY_DATE_TIME)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.MODALITIES)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.DESCRIPTION)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.ACCESSION)?.toggleVisibility(true);
+        table.getColumn(COLUMN_IDS.INSTANCES)?.toggleVisibility(true);
+      }
+    };
+
+    updateVisibility(container.getBoundingClientRect().width);
+
+    const resizeObserver = new ResizeObserver(entries => {
+      const entry = entries[0];
+      if (!entry) {
+        return;
+      }
+      updateVisibility(entry.contentRect.width);
+    });
+
+    resizeObserver.observe(container);
+    return () => resizeObserver.disconnect();
+  }, [table]);
+
   return (
-    <div className="flex h-full flex-col">
+    <div
+      ref={tableContainerRef}
+      className="flex h-full flex-col"
+    >
       {(showColumnVisibility || title) && (
         <DataTable.Toolbar>
           <div className="absolute left-0">{toolbarLeftComponent}</div>
@@ -141,9 +202,7 @@ function TableContent({
             }
             if (columnId === COLUMN_IDS.STUDY_DATE_TIME) {
               const dateRange =
-                value && typeof value === 'object'
-                  ? (value as StudyDateRangeFilter)
-                  : {};
+                value && typeof value === 'object' ? (value as StudyDateRangeFilter) : {};
               const startDate = dateRange.startDate ?? '';
               const endDate = dateRange.endDate ?? '';
 
