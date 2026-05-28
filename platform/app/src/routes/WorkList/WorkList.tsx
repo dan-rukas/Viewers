@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
@@ -95,7 +95,7 @@ function WorkList({
   const sortModifier = sortDirection === 'descending' ? 1 : -1;
   const defaultSortValues =
     shouldUseDefaultSort && canSort ? { sortBy: 'studyDate', sortDirection: 'ascending' } : {};
-  const { customizationService } = servicesManager.services;
+  const { customizationService, uiNotificationService } = servicesManager.services;
 
   const sortedStudies = useMemo(() => {
     if (!canSort) {
@@ -131,6 +131,28 @@ function WorkList({
   const [expandedRows, setExpandedRows] = useState([]);
   const [studiesWithSeriesData, setStudiesWithSeriesData] = useState([]);
   const numOfStudies = studiesTotal;
+
+  // ~ CSV Export of the currently loaded result set (respects active filters & sort).
+  // The data layer caps the query at STUDIES_LIMIT (101) so the export is bounded
+  // by the same window; we surface a toast when that cap was hit.
+  const onExportClick = useCallback(() => {
+    const csv = _studiesToCsv(sortedStudies, t);
+    const filename = `ohif-study-list-${moment().format('YYYY-MM-DD')}.csv`;
+    utils.downloadCsv(csv, { filename });
+
+    if (numOfStudies >= STUDIES_LIMIT) {
+      uiNotificationService.show({
+        title: t('StudyList:Export'),
+        message: t(
+          'StudyList:ExportCapNotice',
+          'Only the first 101 studies were exported. Refine filters to export the rest.'
+        ),
+        type: 'warning',
+        duration: 5000,
+      });
+    }
+  }, [sortedStudies, numOfStudies, t, uiNotificationService]);
+
   const querying = useMemo(() => {
     return isLoadingData || expandedRows.length > 0;
   }, [isLoadingData, expandedRows]);
@@ -573,6 +595,7 @@ function WorkList({
               clearFilters={() => setFilterValues(defaultFilterValues)}
               isFiltering={isFiltering(filterValues, defaultFilterValues)}
               onUploadClick={uploadProps ? () => show(uploadProps) : undefined}
+              onExportClick={hasStudies ? onExportClick : undefined}
               getDataSourceConfigurationComponent={
                 dataSourceConfigurationComponent
                   ? () => dataSourceConfigurationComponent()
@@ -680,6 +703,63 @@ function _getQueryFilterValues(params) {
   );
 
   return queryFilterValues;
+}
+
+// RFC 4180 minimal escape: wrap in double quotes when the cell contains
+// ", , \r, or \n; double any embedded quotes.
+function _csvEscape(value) {
+  if (value === undefined || value === null) {
+    return '';
+  }
+  const s = String(value);
+  if (/[",\r\n]/.test(s)) {
+    return `"${s.replace(/"/g, '""')}"`;
+  }
+  return s;
+}
+
+function _formatDicomDateForCsv(date) {
+  if (!date) {
+    return '';
+  }
+  const m = moment(date, ['YYYYMMDD', 'YYYY.MM.DD'], true);
+  return m.isValid() ? m.format('YYYY-MM-DD') : '';
+}
+
+function _formatDicomTimeForCsv(time) {
+  if (!time) {
+    return '';
+  }
+  const m = moment(time, ['HH', 'HHmm', 'HHmmss', 'HHmmss.SSS']);
+  return m.isValid() ? m.format('HH:mm:ss') : '';
+}
+
+function _studiesToCsv(studies, t) {
+  const headers = [
+    t('StudyList:PatientName'),
+    t('StudyList:MRN'),
+    t('StudyList:StudyDate'),
+    t('StudyList:StudyTime'),
+    t('StudyList:Description'),
+    t('StudyList:Modality'),
+    t('StudyList:AccessionNumber'),
+    t('StudyList:Instances'),
+    t('StudyList:StudyInstanceUID'),
+  ];
+
+  const rows = studies.map(study => [
+    study.patientName ?? '',
+    study.mrn ?? '',
+    _formatDicomDateForCsv(study.date),
+    _formatDicomTimeForCsv(study.time),
+    study.description ?? '',
+    study.modalities ?? '',
+    study.accession ?? '',
+    study.instances ?? '',
+    study.studyInstanceUid ?? '',
+  ]);
+
+  return [headers, ...rows].map(row => row.map(_csvEscape).join(',')).join('\r\n');
 }
 
 function _sortStringDates(s1, s2, sortModifier) {

@@ -3,6 +3,8 @@
   "ClearFilters": "Clear Filters",
   "Description": "Description",
   "Empty": "Empty",
+  "Export": "Export",
+  "ExportCapNotice": "Only the first 101 studies were exported. Refine filters to export the rest.",
   "Filter list to 100 studies or less to enable sorting": "Filter the list to 100 studies or less to enable sorting",
   "Instances": "Instances",
   "Modality": "Modality",
@@ -16,6 +18,8 @@
   "Results per page": "Results per page",
   "Studies": "Studies",
   "StudyDate": "Study Date",
+  "StudyInstanceUID": "Study Instance UID",
   "StudyList": "Study List",
+  "StudyTime": "Study Time",
   "Upload": "Upload"
 }

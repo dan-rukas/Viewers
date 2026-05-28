@@ -15,6 +15,7 @@ const StudyListFilter = ({
   isFiltering,
   numOfStudies,
   onUploadClick,
+  onExportClick,
   getDataSourceConfigurationComponent,
 }) => {
   const { t } = useTranslation('StudyList');
@@ -49,6 +50,16 @@ const StudyListFilter = ({
                   >
                     <Icons.Upload />
                     <span>{t('Upload')}</span>
+                  </div>
+                )}
+                {onExportClick && (
+                  <div
+                    className="text-primary-active flex cursor-pointer items-center gap-2 self-center text-lg font-semibold"
+                    onClick={onExportClick}
+                    data-cy="export-csv-button"
+                  >
+                    <Icons.Download />
+                    <span>{t('Export')}</span>
                   </div>
                 )}
               </div>
@@ -138,6 +149,7 @@ StudyListFilter.propTypes = {
   clearFilters: PropTypes.func.isRequired,
   isFiltering: PropTypes.bool.isRequired,
   onUploadClick: PropTypes.func,
+  onExportClick: PropTypes.func,
   getDataSourceConfigurationComponent: PropTypes.func,
 };
 
