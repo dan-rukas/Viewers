@@ -224,7 +224,7 @@ const Thumbnail = ({
                 <TooltipContent>{description}</TooltipContent>
                 <TooltipTrigger className="w-full overflow-hidden">
                   <div
-                    className="text-foreground max-w-[160px] overflow-hidden overflow-ellipsis whitespace-nowrap text-left text-[13px] font-normal"
+                    className="text-foreground max-w-[160px] overflow-hidden text-ellipsis whitespace-nowrap text-left text-[13px] font-normal"
                     data-cy="series-description-label"
                   >
                     {description}

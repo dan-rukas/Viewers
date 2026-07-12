@@ -24,7 +24,7 @@ function ToolRowWrapper({ buttonSection, className = '', show = true }: ToolRowW
         return (
           <div
             key={id || index}
-            className="flex-shrink-0"
+            className="shrink-0"
           >
             <Component
               {...componentProps}

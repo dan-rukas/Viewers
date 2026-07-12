@@ -16,7 +16,7 @@ const SelectItemWithModality = ({
   >
     <span className="text-foreground truncate text-base">{displaySet.label}</span>
     {showModality && displaySet.Modality && (
-      <span className="text-muted-foreground flex-shrink-0 whitespace-nowrap text-xs">
+      <span className="text-muted-foreground shrink-0 whitespace-nowrap text-xs">
         {displaySet.Modality}
       </span>
     )}

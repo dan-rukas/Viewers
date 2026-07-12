@@ -160,7 +160,7 @@ function HoverCardPageContent() {
                         <CardHeader className="p-3 pb-1">
                           <div className="flex items-center space-x-2">
                             <div
-                              className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
+                              className="h-2.5 w-2.5 shrink-0 rounded-full"
                               style={{ backgroundColor: seg.color }}
                             />
                             <CardTitle className="text-muted-foreground text-base">{seg.title}</CardTitle>

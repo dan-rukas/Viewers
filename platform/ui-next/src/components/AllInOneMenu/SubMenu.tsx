@@ -21,12 +21,12 @@ const SubMenu = (props: SubMenuProps) => {
       onClick={onClickHandler}
     >
       {props.itemIcon && (
-        <div className="flex w-7 flex-shrink-0 items-center justify-center">
+        <div className="flex w-7 shrink-0 items-center justify-center">
           <Icons.ByName name={props.itemIcon}></Icons.ByName>
         </div>
       )}
       <span className="flex-grow">{props.itemLabel}</span>
-      <div className="ml-2 flex-shrink-0">
+      <div className="ml-2 shrink-0">
         <Icons.ByName name="content-next"></Icons.ByName>
       </div>
     </div>

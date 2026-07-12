@@ -39,7 +39,7 @@ const InputRow = ({ children, className, ...props }) => {
 // InputRow sub-components
 InputRow.Label = ({ children, unit, className, ...props }) => (
   <Label
-    className={`min-w-32 flex-shrink-0 ${className || ''}`}
+    className={`min-w-32 shrink-0 ${className || ''}`}
     {...props}
   >
     {children}

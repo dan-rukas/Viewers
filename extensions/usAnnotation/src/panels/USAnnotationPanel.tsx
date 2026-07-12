@@ -309,7 +309,7 @@ export default function USAnnotationPanel() {
                 <tr
                   key={item.frame}
                   className={`border-input/50 border-b ${
-                    item.frame === 5 ? 'bg-cyan-800 bg-opacity-30' : ''
+                    item.frame === 5 ? 'bg-primary/30' : ''
                   }`}
                   onClick={() => handleRowClick(item)}
                   style={{ cursor: 'pointer' }}

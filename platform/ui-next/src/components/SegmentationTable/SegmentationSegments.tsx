@@ -188,7 +188,7 @@ export const SegmentationSegments = ({ children = null }: { children?: React.Rea
                 >
                   <div className="mb-4 flex items-center space-x-2">
                     <div
-                      className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
+                      className="h-2.5 w-2.5 shrink-0 rounded-full"
                       style={{ backgroundColor: cssColor }}
                     ></div>
                     <h3 className="text-muted-foreground break-words font-semibold">{label}</h3>

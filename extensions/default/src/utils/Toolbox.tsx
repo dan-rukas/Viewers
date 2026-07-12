@@ -76,7 +76,7 @@ export function Toolbox({ buttonSectionId, title }: ToolboxProps) {
         )}
       </PanelSection.Header>
 
-      <PanelSection.Content className="bg-muted flex-shrink-0 border-none">
+      <PanelSection.Content className="bg-muted shrink-0 border-none">
         {showConfig && <CustomConfigComponent />}
         {toolboxSections.map(section => {
           const sectionId = section.componentProps.buttonSection;

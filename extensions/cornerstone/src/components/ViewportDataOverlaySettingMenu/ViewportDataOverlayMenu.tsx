@@ -260,7 +260,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
               key={displaySet.displaySetInstanceUID}
               className="mb-1 flex items-center"
             >
-              <Icons.LayerSegmentation className="text-muted-foreground mr-1 h-6 w-6 flex-shrink-0" />
+              <Icons.LayerSegmentation className="text-muted-foreground mr-1 h-6 w-6 shrink-0" />
               <Select
                 value={displaySet.displaySetInstanceUID}
                 onValueChange={value => handleOverlaySelectionChange(displaySet, value)}
@@ -297,7 +297,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="ml-2 flex-shrink-0"
+                    className="ml-2 shrink-0"
                     dataCY={`overlay-ds-more-button-${displaySet.label?.toUpperCase()}`}
                   >
                     <Icons.More className="h-4 w-4" />
@@ -320,7 +320,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
               key={pendingId}
               className="mb-2 flex items-center"
             >
-              <Icons.LayerSegmentation className="text-muted-foreground mr-1 h-6 w-6 flex-shrink-0" />
+              <Icons.LayerSegmentation className="text-muted-foreground mr-1 h-6 w-6 shrink-0" />
               <Select
                 value=""
                 onValueChange={value => handlePendingSegmentationSelection(pendingId, value)}
@@ -348,7 +348,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="ml-2 flex-shrink-0"
+                    className="ml-2 shrink-0"
                   >
                     <Icons.More className="h-4 w-4" />
                   </Button>
@@ -374,7 +374,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
               key={displaySet.displaySetInstanceUID}
               className="mb-1 flex items-center"
             >
-              <Icons.LayerForeground className="text-muted-foreground mr-1 h-6 w-6 flex-shrink-0" />
+              <Icons.LayerForeground className="text-muted-foreground mr-1 h-6 w-6 shrink-0" />
               <Select
                 value={displaySet.displaySetInstanceUID}
                 onValueChange={value => handleForegroundSelectionChange(displaySet, value)}
@@ -407,7 +407,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="ml-2 flex-shrink-0"
+                    className="ml-2 shrink-0"
                   >
                     <Icons.More className="h-4 w-4" />
                   </Button>
@@ -428,7 +428,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
               key={pendingId}
               className="mb-2 flex items-center"
             >
-              <Icons.LayerForeground className="text-muted-foreground mr-1 h-6 w-6 flex-shrink-0" />
+              <Icons.LayerForeground className="text-muted-foreground mr-1 h-6 w-6 shrink-0" />
               <Select
                 value=""
                 onValueChange={value => handlePendingForegroundSelection(pendingId, value)}
@@ -453,7 +453,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="ml-2 flex-shrink-0"
+                    className="ml-2 shrink-0"
                   >
                     <Icons.More className="h-4 w-4" />
                   </Button>
@@ -474,7 +474,7 @@ function ViewportDataOverlayMenu({ viewportId }: withAppTypes<{ viewportId: stri
         </div>
         {/* Background section */}
         <div className="mt-1 mb-1 flex items-center px-1">
-          <Icons.LayerBackground className="text-muted-foreground mr-1 h-6 w-6 flex-shrink-0" />
+          <Icons.LayerBackground className="text-muted-foreground mr-1 h-6 w-6 shrink-0" />
           <Select
             value={backgroundDisplaySet?.displaySetInstanceUID}
             onValueChange={value => {

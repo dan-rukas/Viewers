@@ -31,19 +31,19 @@ const Item = ({
 
   return (
     <div
-      className="hover:bg-accent flex h-8 w-full flex-shrink-0 cursor-pointer items-center px-2 text-base leading-[18px] hover:rounded"
+      className="hover:bg-accent flex h-8 w-full shrink-0 cursor-pointer items-center px-2 text-base leading-[18px] hover:rounded"
       onClick={onClickHandler}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
       {(icon || useIconSpace) && (
-        <div className="flex w-7 flex-shrink-0 items-center justify-center">{icon}</div>
+        <div className="flex w-7 shrink-0 items-center justify-center">{icon}</div>
       )}
       <span className="flex-grow">{label}</span>
       {secondaryLabel && (
-        <span className="text-muted-foreground ml-2 flex-shrink-0">{secondaryLabel}</span>
+        <span className="text-muted-foreground ml-2 shrink-0">{secondaryLabel}</span>
       )}
-      {rightIcon && <div className="ml-2 flex-shrink-0">{rightIcon}</div>}
+      {rightIcon && <div className="ml-2 shrink-0">{rightIcon}</div>}
     </div>
   );
 };

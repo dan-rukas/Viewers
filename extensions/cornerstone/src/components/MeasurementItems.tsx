@@ -37,7 +37,7 @@ export default function MeasurementAccordion(props) {
   return (
     <Accordion
       type="multiple"
-      className="flex-shrink-0 overflow-hidden"
+      className="shrink-0 overflow-hidden"
     >
       {items.map((item, index) => {
         const { displayText: details = {} } = item;

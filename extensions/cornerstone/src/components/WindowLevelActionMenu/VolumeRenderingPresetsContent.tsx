@@ -71,7 +71,7 @@ export function VolumeRenderingPresetsContent({ presets, viewportId, hide }: Pro
           ))}
         </PresetDialog.PresetGrid>
       </PresetDialog.PresetBody>
-      <FooterAction className="mt-4 flex-shrink-0">
+      <FooterAction className="mt-4 shrink-0">
         <FooterAction.Right>
           <FooterAction.Secondary onClick={hide}>{t('Common:Cancel')}</FooterAction.Secondary>
         </FooterAction.Right>

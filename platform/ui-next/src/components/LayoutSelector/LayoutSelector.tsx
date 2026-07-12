@@ -264,7 +264,7 @@ const Preset = ({
       onClick={handleClick}
       data-cy={title}
     >
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         <Icons.ByName
           name={icon}
           className={cn('group-hover:text-primary', iconSize)}

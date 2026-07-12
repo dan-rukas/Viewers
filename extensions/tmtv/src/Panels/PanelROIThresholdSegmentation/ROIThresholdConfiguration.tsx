@@ -65,7 +65,7 @@ function ROIThresholdConfiguration({ config, dispatch, runCommand }) {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <div className="flex justify-end space-x-2">
             <Button
               variant="secondary"
