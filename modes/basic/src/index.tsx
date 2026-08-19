@@ -300,8 +300,19 @@ export const basicLayout = {
   },
 };
 
-export function layoutTemplate() {
-  return structuredCloneWithFunctions(this.layoutInstance);
+export function layoutTemplate({ servicesManager } = {}) {
+  const template = structuredCloneWithFunctions(this.layoutInstance);
+  // Allow a `layoutTemplateId` customization to select a different layout
+  // template for this route. Read at layout-resolution time, which runs before
+  // the mode scope is applied — so the value must come from the bootstrap or
+  // global phase (applied at appInit), e.g. a `?customization=` module's
+  // `global` block.
+  const layoutTemplateId =
+    servicesManager?.services?.customizationService?.getCustomization('layoutTemplateId');
+  if (typeof layoutTemplateId === 'string') {
+    template.id = layoutTemplateId;
+  }
+  return template;
 }
 
 export const basicRoute = {

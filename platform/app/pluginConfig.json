@@ -65,9 +65,15 @@
     {
       "packageName": "@ohif/extension-ultrasound-pleura-bline",
       "version": "3.0.0"
+    },
+    {
+      "packageName": "@ohif/extension-mobile"
     }
   ],
   "modes": [
+    {
+      "packageName": "@ohif/mode-mobile-basic"
+    },
     {
       "packageName": "@ohif/mode-longitudinal"
     },

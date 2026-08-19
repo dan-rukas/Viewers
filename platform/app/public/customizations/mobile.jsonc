@@ -1,0 +1,64 @@
+// Mobile customization module — composes a mobile variant of existing modes
+// from data alone. Load it with `?customization=mobile`.
+//
+// What each block does:
+// - Panels: empty left panel, measurement-only right.
+// - Toolbar: primary section trimmed to 6 buttons.
+// - Touch bindings via toolGroupAdditions: Pan gains a 1-finger binding;
+//   note additions MERGE into a tool's existing bindings (add-only, no unbind).
+// - `layoutTemplateId` selects the mobile shell for routes that read it
+//   (basic's layoutTemplate hook). It must live in the `global` block:
+//   layout resolution runs before the mode scope applies.
+{
+  "global": {
+    "layoutTemplateId": "@ohif/extension-mobile.layoutTemplateModule.mobileLayout"
+  },
+  "mode": {
+    "basic": {
+      "leftPanels": [],
+      "rightPanels": ["@ohif/extension-cornerstone.panelModule.panelMeasurement"],
+      "toolbarSections": {
+        "$push": [
+          {
+            "primary": ["MeasurementTools", "Zoom", "Pan", "WindowLevel", "Layout", "MoreTools"]
+          }
+        ]
+      },
+      "toolGroupAdditions": {
+        "default": [
+          {
+            "active": [
+              {
+                "toolName": "Pan",
+                "bindings": [{ "mouseButton": 4 }, { "numTouchPoints": 1 }]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "mobile": {
+      "leftPanels": [],
+      "rightPanels": ["@ohif/extension-cornerstone.panelModule.panelMeasurement"],
+      "toolbarSections": {
+        "$push": [
+          {
+            "primary": ["MeasurementTools", "Zoom", "Pan", "WindowLevel", "Layout", "MoreTools"]
+          }
+        ]
+      },
+      "toolGroupAdditions": {
+        "default": [
+          {
+            "active": [
+              {
+                "toolName": "Pan",
+                "bindings": [{ "mouseButton": 4 }, { "numTouchPoints": 1 }]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

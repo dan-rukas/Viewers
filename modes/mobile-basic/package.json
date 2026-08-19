@@ -1,0 +1,30 @@
+{
+  "name": "@ohif/mode-mobile-basic",
+  "version": "0.0.1",
+  "description": "Experimental mobile mode — basic mode composed with the mobile layout template",
+  "author": "Dan Rukas",
+  "license": "MIT",
+  "main": "src/index.tsx",
+  "module": "src/index.tsx",
+  "engines": {
+    "node": ">=24"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "test:unit:ci": "jest --ci --runInBand --collectCoverage --passWithNoTests"
+  },
+  "peerDependencies": {
+    "@ohif/core": "workspace:*",
+    "@ohif/extension-mobile": "workspace:*",
+    "@ohif/mode-basic": "workspace:*"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.29.7"
+  },
+  "keywords": [
+    "ohif-mode"
+  ]
+}
